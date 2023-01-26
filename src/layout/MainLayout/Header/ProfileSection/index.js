@@ -38,10 +38,13 @@ import User1 from 'assets/images/users/user-round.svg';
 
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
+import { useDispatch } from 'react-redux';
+import { removeUser } from 'store/userSlice';
 
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
+    const dispatch = useDispatch();
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
     const navigate = useNavigate();
@@ -55,9 +58,6 @@ const ProfileSection = () => {
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = useRef(null);
-    const handleLogout = async () => {
-        console.log('Logout');
-    };
 
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -76,6 +76,12 @@ const ProfileSection = () => {
     };
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        dispatch(removeUser());
+        navigate('/login');
     };
 
     const prevOpen = useRef(open);

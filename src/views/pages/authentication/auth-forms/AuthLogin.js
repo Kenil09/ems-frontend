@@ -34,15 +34,22 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Google from 'assets/images/icons/social-google.svg';
+import apiClient from 'service/service';
+import { useDispatch } from 'react-redux';
+import { setUser } from 'store/userSlice';
+import jwtDecode from 'jwt-decode';
+import { useNavigate } from 'react-router';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
     const theme = useTheme();
+    const dispatch = useDispatch();
     const scriptedRef = useScriptRef();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const customization = useSelector((state) => state.customization);
     const [checked, setChecked] = useState(true);
+    const navigate = useNavigate();
 
     const googleHandler = async () => {
         console.error('Login');
@@ -57,10 +64,23 @@ const FirebaseLogin = ({ ...others }) => {
         event.preventDefault();
     };
 
+    const handleLogin = async (payload) => {
+        try {
+            const { data } = await apiClient().post('/user/login', payload);
+            localStorage.setItem('accessToken', data.token);
+            const user = jwtDecode(data?.token);
+            dispatch(setUser(user));
+            navigate('/');
+        } catch (error) {
+            // show error here in alert
+            console.log(error.message);
+        }
+    };
+
     return (
         <>
             <Grid container direction="column" justifyContent="center" spacing={2}>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <AnimateButton>
                         <Button
                             disableElevation
@@ -80,8 +100,8 @@ const FirebaseLogin = ({ ...others }) => {
                             Sign in with Google
                         </Button>
                     </AnimateButton>
-                </Grid>
-                <Grid item xs={12}>
+                </Grid> */}
+                {/* <Grid item xs={12}>
                     <Box
                         sx={{
                             alignItems: 'center',
@@ -110,7 +130,7 @@ const FirebaseLogin = ({ ...others }) => {
 
                         <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
                     </Box>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} container alignItems="center" justifyContent="center">
                     <Box sx={{ mb: 2 }}>
                         <Typography variant="subtitle1">Sign in with Email address</Typography>
@@ -120,9 +140,8 @@ const FirebaseLogin = ({ ...others }) => {
 
             <Formik
                 initialValues={{
-                    email: 'info@codedthemes.com',
-                    password: '123456',
-                    submit: null
+                    email: '',
+                    password: ''
                 }}
                 validationSchema={Yup.object().shape({
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
@@ -130,10 +149,9 @@ const FirebaseLogin = ({ ...others }) => {
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        if (scriptedRef.current) {
-                            setStatus({ success: true });
-                            setSubmitting(false);
-                        }
+                        setStatus({ success: true });
+                        setSubmitting(false);
+                        handleLogin(values);
                     } catch (err) {
                         console.error(err);
                         if (scriptedRef.current) {

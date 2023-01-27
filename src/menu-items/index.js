@@ -24,6 +24,13 @@ const menuItems = {
                     url: '/sample-page',
                     icon: icons.IconBrandChrome,
                     breadcrumbs: false
+                },
+                {
+                    id: 'dept-list',
+                    title: 'Department List',
+                    type: 'item',
+                    icon: icons.IconBrandChrome,
+                    url: '/department-list'
                 }
             ]
         }

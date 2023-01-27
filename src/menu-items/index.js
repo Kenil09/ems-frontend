@@ -24,6 +24,22 @@ const menuItems = {
                     url: '/sample-page',
                     icon: icons.IconBrandChrome,
                     breadcrumbs: false
+                },
+                {
+                    id: 'userlist',
+                    title: 'User List',
+                    type: 'item',
+                    url: '/userlist',
+                    icon: icons.IconBrandChrome,
+                    breadcrumbs: false
+                },
+                {
+                    id: 'adduser',
+                    title: 'Add User',
+                    type: 'item',
+                    url: '/adduser',
+                    icon: icons.IconBrandChrome,
+                    breadcrumbs: false
                 }
             ]
         }

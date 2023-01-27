@@ -72,7 +72,6 @@ const FirebaseLogin = ({ ...others }) => {
             dispatch(setUser(user));
             navigate('/');
         } catch (error) {
-            // show error here in alert
             console.log(error.message);
         }
     };

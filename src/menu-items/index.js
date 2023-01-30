@@ -8,10 +8,16 @@ import dashboard from './dashboard';
 import pages from './pages';
 import utilities from './utilities';
 import other from './other';
+import SuperAdmin from './SuperAdmin';
+import jwtDecode from 'jwt-decode';
 
 // ==============================|| MENU ITEMS ||============================== //
 
-const menuItems = {
+// const currentUser = jwtDecode(localStorage.getItem('accessToken'));
+
+const token = localStorage.getItem('accessToken1');
+
+let menuItems = {
     items: [
         {
             id: 'sample-docs-roadmap',
@@ -21,7 +27,7 @@ const menuItems = {
                     id: 'sample-page',
                     title: 'Sample Page',
                     type: 'item',
-                    url: '/sample-page',
+                    url: '/company',
                     icon: icons.IconBrandChrome,
                     breadcrumbs: false
                 }
@@ -29,5 +35,11 @@ const menuItems = {
         }
     ]
 };
+if (token) {
+    const user = jwtDecode(token);
+    if (user.role === 'SuperAdmin') {
+        menuItems = SuperAdmin;
+    }
+}
 
 export default menuItems;

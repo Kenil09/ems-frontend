@@ -1,21 +1,10 @@
 // assets
-import { IconBrandChrome, IconHelp } from '@tabler/icons';
+import { IconBrandChrome, IconHelp, IconBuildingSkyscraper, IconUsers, IconBuilding, IconUser } from '@tabler/icons';
 
 // constant
-const icons = { IconBrandChrome, IconHelp };
-import dashboard from './dashboard';
-
-import pages from './pages';
-import utilities from './utilities';
-import other from './other';
-import SuperAdmin from './SuperAdmin';
-import jwtDecode from 'jwt-decode';
+const icons = { IconBrandChrome, IconHelp, IconBuildingSkyscraper, IconUsers, IconBuilding, IconUser };
 
 // ==============================|| MENU ITEMS ||============================== //
-
-// const currentUser = jwtDecode(localStorage.getItem('accessToken'));
-
-const token = localStorage.getItem('accessToken1');
 
 let menuItems = {
     items: [
@@ -24,22 +13,40 @@ let menuItems = {
             type: 'group',
             children: [
                 {
-                    id: 'sample-page',
-                    title: 'Sample Page',
+                    id: 'company',
+                    title: 'Company',
                     type: 'item',
                     url: '/company',
-                    icon: icons.IconBrandChrome,
+                    icon: icons.IconBuildingSkyscraper,
+                    breadcrumbs: false
+                },
+                {
+                    id: 'users',
+                    title: 'Users',
+                    type: 'item',
+                    url: '/users',
+                    icon: icons.IconUsers,
+                    breadcrumbs: false
+                },
+                {
+                    id: 'department',
+                    title: 'Departmens',
+                    type: 'item',
+                    url: '/departments',
+                    icon: icons.IconBuilding,
+                    breadcrumbs: false
+                },
+                {
+                    id: 'designations',
+                    title: 'Designations',
+                    type: 'item',
+                    url: '/designations',
+                    icon: icons.IconUser,
                     breadcrumbs: false
                 }
             ]
         }
     ]
 };
-if (token) {
-    const user = jwtDecode(token);
-    if (user.role === 'SuperAdmin') {
-        menuItems = SuperAdmin;
-    }
-}
 
 export default menuItems;

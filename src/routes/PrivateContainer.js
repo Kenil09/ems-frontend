@@ -1,10 +1,10 @@
 import jwtDecode from 'jwt-decode';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { setUser } from 'store/userSlice';
-import { useDispatch } from 'react-redux';
+import Page404 from 'views/404Page/Page404';
 
 const PrivateContainer = ({ children, roles }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const PrivateContainer = ({ children, roles }) => {
         if (token) {
             const user = jwtDecode(token);
             if (roles.includes(user?.role)) {
-                navigate('/company');
+                setIsAuthenticated(true);
             }
             // check role here
             // set user to redux
@@ -25,7 +25,7 @@ const PrivateContainer = ({ children, roles }) => {
         }
     };
 
-    return children;
+    return isAuthenticated ? children : <Page404 />;
 };
 
 export default PrivateContainer;

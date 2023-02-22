@@ -39,7 +39,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from 'store/userSlice';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router';
-import HotAlert from 'ui-component/alert/HotAlert';
+import toast from 'react-hot-toast';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -49,7 +49,6 @@ const FirebaseLogin = ({ ...others }) => {
     const scriptedRef = useScriptRef();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const customization = useSelector((state) => state.customization);
-    const [alert, setAlert] = useState({ state: '', message: '', show: '' });
     const [checked, setChecked] = useState(true);
     const navigate = useNavigate();
 
@@ -75,7 +74,7 @@ const FirebaseLogin = ({ ...others }) => {
             navigate('/');
         } catch (error) {
             // show error here in alert
-            setAlert({ state: 'error', message: error.response.data.message, show: true });
+            toast.error(error.response.data.message);
         }
     };
 
@@ -260,7 +259,6 @@ const FirebaseLogin = ({ ...others }) => {
                     </form>
                 )}
             </Formik>
-            <HotAlert message={alert.message} showAlert={alert.show} severity={alert.state} setAlert={setAlert} />
         </>
     );
 };

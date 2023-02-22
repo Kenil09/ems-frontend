@@ -4,10 +4,9 @@ import * as yup from 'yup';
 import Close from '@mui/icons-material/Close';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import toast from 'react-hot-toast';
 import FormInput from 'ui-component/Form/FormInput';
-import { useEffect } from 'react';
-import { useAddCompanyMutation, useUpdateCompanyMutation } from 'store/Services/company';
+// import { useGetCompaniesQuery } from 'store/Services/company';
+import { useAddDesignationMutation, useUpdateDesignationMutation } from 'store/Services/designation';
 
 const style = {
     position: 'relative',
@@ -22,48 +21,52 @@ const style = {
 
 const validationSchema = yup
     .object({
-        name: yup.string('Please enter name').min(2, 'Please enter valid name').max(50, 'Too Long!').required('name is required'),
-        address: yup.string('Please enter address').required('Address is required'),
-        zipcode: yup
-            .string('Please enter zipcode')
-            .matches(/^[0-9]+$/, 'zip code should be number')
-            .length(6, 'zip code length must be 6')
-            .required(),
-        state: yup.string('Please enter state').required('State is required'),
-        city: yup.string('Please enter city').required('City is required')
+        name: yup
+            .string('Please enter designation name')
+            .min(2, 'Please enter valid name')
+            .max(50, 'Too Long!')
+            .required('Designation name is required')
     })
     .required();
 
-const CompanyModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
-    const [addCompany] = useAddCompanyMutation();
-    const [updateCompany] = useUpdateCompanyMutation();
+const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
+    const [addDesignation] = useAddDesignationMutation();
+    const [updateDesignation] = useUpdateDesignationMutation();
+    // const { data: companyData } = useGetCompaniesQuery(undefined, {
+    //     pollingInterval: 60000
+    // });
+
+    // const companyOptions = companyData.companies.map(({ _id, name }) => ({ id: _id, name }));
+
     const methods = useForm({
-        resolver: yupResolver(validationSchema)
+        resolver: yupResolver(validationSchema),
+        defaultValues: {
+            name: '',
+            company: ''
+        }
     });
 
-    const { setValue } = methods;
-
     const onSubmit = (values) => {
+        console.log('val', values);
         if (isEditMode) {
-            updateCompany({ id: isEditMode?._id, data: values });
-            toast.success('Company updated successfully');
+            updateDesignation({ id: isEditMode?._id, data: values });
         } else {
-            addCompany(values);
-            toast.success('Company added successfully');
+            addDesignation(values);
+            toast.success('Designation added successfully');
         }
         handleEvent();
         // handle submit
     };
 
-    useEffect(() => {
-        if (isEditMode) {
-            setValue('name', isEditMode?.name);
-            setValue('address', isEditMode?.address);
-            setValue('city', isEditMode?.city);
-            setValue('state', isEditMode?.state);
-            setValue('zipcode', isEditMode?.zipcode);
-        }
-    }, [isEditMode]);
+    // useEffect(() => {
+    //     if (isEditMode) {
+    //         setValue('name', isEditMode?.name);
+    //         setValue('address', isEditMode?.address);
+    //         setValue('city', isEditMode?.city);
+    //         setValue('state', isEditMode?.state);
+    //         setValue('zipcode', isEditMode?.zipcode);
+    //     }
+    // }, [isEditMode]);
 
     return (
         <Modal open={open} onClose={handleEvent} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
@@ -92,10 +95,7 @@ const CompanyModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                         <form onSubmit={methods.handleSubmit(onSubmit)}>
                             <Stack spacing={3}>
                                 <FormInput name="name" label="Name" type="name" />
-                                <FormInput name="address" label="Adresss" type="address" />
-                                <FormInput name="city" label="City" type="city" />
-                                <FormInput name="state" label="State" type="state" />
-                                <FormInput name="zipcode" label="Zipcode" type="zipcode" />
+                                {/* <FormInput name="company" label="Company" type="select" options={companyOptions} /> */}
                             </Stack>
                             <Box style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
                                 <Button type="submit" variant="contained" color="secondary">
@@ -110,9 +110,9 @@ const CompanyModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
     );
 };
 
-export default CompanyModal;
+export default DesignationModal;
 
-CompanyModal.propTypes = {
+DesignationModal.propTypes = {
     open: PropTypes.bool.isRequired,
     handleEvent: PropTypes.func.isRequired,
     modalTitle: PropTypes.string.isRequired,

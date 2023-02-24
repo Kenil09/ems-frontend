@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import { FormControl, Select, TextField, MenuItem, InputLabel, FormHelperText } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { useFormContext } from 'react-hook-form';
 
 // eslint-disable-next-line react/prop-types
@@ -16,11 +18,14 @@ function FormInput({ name, disabled, label, required, onChange, type = 'text', c
                     case 'select':
                         return (
                             <>
-                                <InputLabel id={`label-${name}`}>{label}</InputLabel>
+                                <InputLabel id={`label-${name}`} color={color || 'secondary'}>
+                                    {label}
+                                </InputLabel>
                                 <Select
                                     {...fieldRegister}
                                     value={methods.watch(name)}
                                     label={label}
+                                    color={color || 'secondary'}
                                     labelId={`label-${name}`}
                                     error={Boolean(error)}
                                 >
@@ -31,6 +36,22 @@ function FormInput({ name, disabled, label, required, onChange, type = 'text', c
                                     ))}
                                 </Select>
                                 <FormHelperText error>{error}</FormHelperText>
+                            </>
+                        );
+
+                    case 'date':
+                        return (
+                            <>
+                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                    <DatePicker
+                                        {...fieldRegister}
+                                        value={methods.watch(name)}
+                                        label={label}
+                                        color={color || 'secondary'}
+                                        error={Boolean(error)}
+                                        renderInput={(params) => <TextField {...params} />}
+                                    />
+                                </LocalizationProvider>
                             </>
                         );
 

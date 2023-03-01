@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
+import * as React from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
 
 // project imports
 import AuthWrapper1 from '../AuthWrapper1';

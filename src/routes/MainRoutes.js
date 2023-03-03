@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import Department_list from 'views/list/Department_list';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -18,6 +19,7 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
+const Roles = ['superAdmin', 'admin', 'manager', 'employee'];
 
 const MainRoutes = {
     path: '/',
@@ -25,65 +27,18 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <DashboardDefault />
-        },
-        {
-            path: 'dashboard',
-            children: [
-                {
-                    path: 'default',
-                    element: <DashboardDefault />
-                }
-            ]
-        },
-        {
-            path: 'utils',
-            children: [
-                {
-                    path: 'util-typography',
-                    element: <UtilsTypography />
-                }
-            ]
-        },
-        {
-            path: 'utils',
-            children: [
-                {
-                    path: 'util-color',
-                    element: <UtilsColor />
-                }
-            ]
-        },
-        {
-            path: 'utils',
-            children: [
-                {
-                    path: 'util-shadow',
-                    element: <UtilsShadow />
-                }
-            ]
-        },
-        {
-            path: 'icons',
-            children: [
-                {
-                    path: 'tabler-icons',
-                    element: <UtilsTablerIcons />
-                }
-            ]
-        },
-        {
-            path: 'icons',
-            children: [
-                {
-                    path: 'material-icons',
-                    element: <UtilsMaterialIcons />
-                }
-            ]
+            element: <DashboardDefault />,
+            role: Roles
         },
         {
             path: 'sample-page',
-            element: <SamplePage />
+            element: <SamplePage />,
+            role: Roles
+        },
+        {
+            path: 'department-list',
+            element: <Department_list />,
+            role: Roles
         }
     ]
 };

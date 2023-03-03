@@ -23,6 +23,8 @@
     "plugins": ["prettier", "react", "react-hooks"],
     "rules": {
         "react/jsx-filename-extension": 0,
+        "react/jsx-uses-react": "error",   
+        "react/jsx-uses-vars": "error" ,
         "no-param-reassign": 0,
         "react/prop-types": 1,
         "react/require-default-props": 0,

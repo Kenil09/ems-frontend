@@ -7,8 +7,7 @@ import { Provider } from 'react-redux';
 // project imports
 import * as serviceWorker from 'serviceWorker';
 import App from 'App';
-import { store } from 'store';
-
+import { store } from 'store/store';
 // style + assets
 import 'assets/scss/style.scss';
 import config from './config';

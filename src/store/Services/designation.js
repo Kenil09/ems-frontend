@@ -17,11 +17,14 @@ export const designationApi = api.injectEndpoints({
             invalidatesTags: ['designations']
         }),
         updateDesignation: builder.mutation({
-            query: (payload) => ({
-                url: `designations`,
-                method: `put`,
-                body: payload
-            }),
+            query: ({ id, data }) => {
+                console.log(data, 'Data');
+                return {
+                    url: `designations/${id}`,
+                    method: `put`,
+                    body: data
+                };
+            },
             invalidatesTags: ['designations']
         }),
         deleteDesination: builder.mutation({

@@ -43,9 +43,9 @@ const CompanyModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
 
     const { setValue } = methods;
 
-    const onSubmit = (values) => {
+    const onSubmit = async (values) => {
         if (isEditMode) {
-            updateCompany({ id: isEditMode?._id, data: values });
+            await updateCompany({ id: isEditMode?._id, data: values });
             toast.success('Company updated successfully');
         } else {
             addCompany(values);

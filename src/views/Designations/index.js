@@ -5,7 +5,8 @@ import { Box, Tooltip, IconButton, Button } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import MUIDataTable from 'mui-datatables';
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons';
-import { useGetDesignationsQuery } from 'store/Services/designation';
+import { useGetDesignationsQuery, useDeleteDesinationMutation } from 'store/Services/designation';
+import toast from 'react-hot-toast';
 import DesignationModal from './DesignationModal';
 import dayjs from 'dayjs';
 
@@ -13,6 +14,7 @@ const Designations = () => {
     const [show, setShow] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState();
+    const [deleteDesination, { error }] = useDeleteDesinationMutation();
 
     const { data, refetch } = useGetDesignationsQuery(undefined, {
         pollingInterval: 60000
@@ -25,6 +27,7 @@ const Designations = () => {
 
     useEffect(() => {
         refetch();
+        console.log(data, 'data useeffect');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -46,7 +49,14 @@ const Designations = () => {
         {
             name: 'createdAt',
             label: 'Added Time',
-            customBodyRender: (value) => dayjs('DD-MMM-YYYY HH:mm A')
+            customBodyRender: (value) => dayjs('DD-MMM-YYYY')
+        },
+        {
+            name: 'updatedAt',
+            label: 'Update Time',
+            customBodyRender: (value) => {
+                return new Date(value).getDate();
+            }
         },
         {
             name: 'Actions',
@@ -64,8 +74,8 @@ const Designations = () => {
                                     event.stopPropagation();
                                     handleEvent();
                                     setModalTitle('Update Designation Details');
-                                    const index = data.companies.findIndex((company) => company._id === tableMeta.rowData[0]);
-                                    setIsEditMode(data.companies[index]);
+                                    const index = data.designations.findIndex((designations) => designations._id === tableMeta.rowData[0]);
+                                    setIsEditMode(data.designations[index]);
                                 }}
                                 sx={{ marginRight: '12px' }}
                             >
@@ -75,11 +85,10 @@ const Designations = () => {
                         <Tooltip title="Delete">
                             <IconButton
                                 color="secondary"
-                                onClick={(event) => {
+                                onClick={async (event) => {
                                     event.stopPropagation();
-                                    // deleteCompany(tableMeta.rowData[0]);
-                                    // setConfirmationOpen(true);
-                                    // setDeleteData(tableMeta.rowData[0]);
+                                    await deleteDesination(tableMeta.rowData[0]);
+                                    toast.success('Designation deleted successfully');
                                 }}
                                 sx={{ color: 'error.main' }}
                             >
@@ -120,7 +129,7 @@ const Designations = () => {
                     Add Designation
                 </Button>
             </Box>
-            <MUIDataTable columns={columns} data={[]} options={options} />
+            <MUIDataTable columns={columns} data={data?.designations} options={options} />
             <DesignationModal open={show} handleEvent={handleEvent} modalTitle={modalTitle} isEditMode={isEditMode} />
         </MainCard>
     );

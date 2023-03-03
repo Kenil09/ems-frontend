@@ -7,6 +7,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormInput from 'ui-component/Form/FormInput';
 // import { useGetCompaniesQuery } from 'store/Services/company';
 import { useAddDesignationMutation, useUpdateDesignationMutation } from 'store/Services/designation';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const style = {
     position: 'relative',
@@ -32,58 +35,40 @@ const validationSchema = yup
 const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
     const [addDesignation] = useAddDesignationMutation();
     const [updateDesignation] = useUpdateDesignationMutation();
+
     // const { data: companyData } = useGetCompaniesQuery(undefined, {
     //     pollingInterval: 60000
     // });
-
+    const user = useSelector((state) => state.user.user);
     // const companyOptions = companyData.companies.map(({ _id, name }) => ({ id: _id, name }));
-    const departmentOptions = [
-        { id: 'management', name: 'Management' },
-        { id: 'marketing', name: 'Marketing' },
-        { id: 'finance', name: 'Finance' },
-        { id: 'operations', name: 'Operations' },
-        { id: 'customer', name: 'Customer Support' }
-    ];
-    const roleOptions = [
-        { id: 'admin', name: 'Admin' },
-        { id: 'member', name: 'Team Member' },
-        { id: 'incharge', name: 'Team Incharge' },
-        { id: 'manger', name: 'Manager' },
-        { id: 'leader', name: 'Department Leader' }
-    ];
-    const jobTypeOptions = [
-        { id: 'permenant ', name: 'Permenant' },
-        { id: 'contract', name: 'On Contract' },
-        { id: 'temporary', name: 'Temporary' },
-        { id: 'trainee', name: 'Trainee' }
-    ];
-    const genderOptions = [
-        { id: 'm', name: 'Male' },
-        { id: 'f', name: 'Female' },
-        { id: 'o', name: 'Other' }
-    ];
-    const maritalOptions = [
-        { id: 'unmarried', name: 'Not Married' },
-        { id: 'married', name: 'Married' }
-    ];
 
     const methods = useForm({
         resolver: yupResolver(validationSchema),
         defaultValues: {
-            name: '',
-            company: ''
+            name: ''
         }
     });
+    const { setValue } = methods;
 
-    const onSubmit = (values) => {
-        console.log('val', values);
+    useEffect(() => {
         if (isEditMode) {
-            updateDesignation({ id: isEditMode?._id, data: values });
+            setValue('name', isEditMode?.name);
+        } else {
+            setValue('name', '');
+        }
+    }, [isEditMode]);
+    const onSubmit = async (values) => {
+        if (isEditMode) {
+            console.log(values, 'values');
+            await updateDesignation({ id: isEditMode?._id, data: values });
+            toast.success('Designation updated successfully');
+            handleEvent();
         } else {
             addDesignation(values);
+            handleEvent();
             toast.success('Designation added successfully');
         }
-        handleEvent();
+
         // handle submit
     };
 
@@ -126,49 +111,9 @@ const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                             {/* <Grid item xs={12}> */}
                             <Grid container spacing={2}>
                                 <Grid item xs={6}>
-                                    <FormInput name="firstName" label="First Name" type="name" />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="lastName" label="Last Name" type="name" />
-                                    {/* <FormInput name="email" label="Email" type="email" /> */}
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="nickName" label="Nick Name" type="name" />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="email" label="Email" type="email" />
-                                </Grid>
-
-                                <Grid item xs={6}>
-                                    <FormInput name="department" label="Department" type="select" options={departmentOptions} />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="role" label="Role" type="select" options={roleOptions} />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="type" label="Job Type" type="select" options={jobTypeOptions} />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="date" label="Date of Joining" type="date" />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="experince" label="Current Experince" type="experince" />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="manager" label="Reporting Manager" type="manager" />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="dob" label="Date of Birth" type="date" />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="gender" label="Gender" type="select" options={genderOptions} />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <FormInput name="marital" label="Marital Status" type="select" options={maritalOptions} />
+                                    <FormInput name="name" id="name" label="Designation Name" type="name" />
                                 </Grid>
                             </Grid>
-                            {/* </Grid> */}
-                            {/* </Stack> */}
                             <Box style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
                                 <Button type="submit" variant="contained" color="secondary">
                                     save

@@ -144,13 +144,13 @@ function Landing_page() {
                 </div>
 
                 <div class="col-md-5 img2">
-                    <img src="public\assets\images\img2.png" alt="" />
+                    <img src="../p" alt="" />
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-4  img3">
-                    <img src="public\assets\images\img4.1.png" alt="" />
+                    <img src="../public/assets/images/home/img4.1.png" alt="" />
                 </div>
                 <div class="col-md-6 div3">
                     <h1 class="heading">

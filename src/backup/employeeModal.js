@@ -1,4 +1,4 @@
-import { Modal, Box, Typography, IconButton, Button, Grid } from '@mui/material';
+import { Modal, Box, Typography, IconButton, Stack, Button, Grid, Divider } from '@mui/material';
 import PropTypes from 'prop-types';
 import * as yup from 'yup';
 import Close from '@mui/icons-material/Close';

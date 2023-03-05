@@ -1,8 +1,17 @@
 // assets
-import { IconBrandChrome, IconHelp, IconBuildingSkyscraper, IconUsers, IconBuilding, IconUser } from '@tabler/icons';
+import {
+    IconBrandChrome,
+    IconHelp,
+    IconBuildingSkyscraper,
+    IconUsers,
+    IconBuilding,
+    IconUser,
+    IconCalendarTime,
+    IconCalendarEvent
+} from '@tabler/icons';
 
 // constant
-const icons = { IconBrandChrome, IconHelp, IconBuildingSkyscraper, IconUsers, IconBuilding, IconUser };
+const icons = { IconBrandChrome, IconHelp, IconBuildingSkyscraper, IconUsers, IconBuilding, IconUser, IconCalendarTime, IconCalendarEvent };
 
 // ==============================|| MENU ITEMS ||============================== //
 
@@ -13,16 +22,8 @@ let menuItems = {
             type: 'group',
             children: [
                 {
-                    id: 'company',
-                    title: 'Company',
-                    type: 'item',
-                    url: '/company',
-                    icon: icons.IconBuildingSkyscraper,
-                    breadcrumbs: false
-                },
-                {
                     id: 'users',
-                    title: 'Users',
+                    title: 'Employee',
                     type: 'item',
                     url: '/users',
                     icon: icons.IconUsers,
@@ -43,6 +44,21 @@ let menuItems = {
                     url: '/designations',
                     icon: icons.IconUser,
                     breadcrumbs: false
+                },
+                {
+                    id: 'shift',
+                    title: 'Shift Schedule',
+                    type: 'item',
+                    url: '/shift',
+                    icon: icons.IconCalendarTime,
+                    breadcrumbs: false
+                },
+                {
+                    id: 'leave',
+                    title: 'Leave tracker',
+                    type: 'item',
+                    url: '/leave',
+                    icon: icons.IconCalendarEvent
                 }
             ]
         }

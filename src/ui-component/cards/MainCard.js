@@ -3,7 +3,8 @@ import { forwardRef } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, Divider, Typography, IconButton, Stack } from '@mui/material';
+import { ArrowBackIosNew } from '@mui/icons-material';
 
 // constant
 const headerSX = {
@@ -26,6 +27,8 @@ const MainCard = forwardRef(
             shadow,
             sx = {},
             title,
+            backIcon,
+            handleBackEvent,
             ...others
         },
         ref
@@ -46,10 +49,17 @@ const MainCard = forwardRef(
                 }}
             >
                 {/* card header and action */}
-                {!darkTitle && title && <CardHeader sx={headerSX} title={title} action={secondary} />}
-                {darkTitle && title && (
-                    <CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} />
-                )}
+                <Stack direction="row" spacing={0}>
+                    {backIcon && (
+                        <IconButton color="secondary" onClick={handleBackEvent}>
+                            <ArrowBackIosNew color="secondary" />
+                        </IconButton>
+                    )}
+                    {!darkTitle && title && <CardHeader sx={headerSX} title={title} action={secondary} />}
+                    {darkTitle && title && (
+                        <CardHeader sx={headerSX} title={<Typography variant="h3">{title}</Typography>} action={secondary} />
+                    )}
+                </Stack>
 
                 {/* content & header divider */}
                 {title && <Divider />}

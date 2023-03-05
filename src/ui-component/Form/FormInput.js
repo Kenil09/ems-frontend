@@ -5,7 +5,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { useFormContext } from 'react-hook-form';
 
 // eslint-disable-next-line react/prop-types
-function FormInput({ name, disabled, label, required, onChange, type = 'text', color, options }) {
+function FormInput({ name, disabled, label, required, onChange, type = 'text', color, options, variant }) {
     const methods = useFormContext();
 
     const fieldRegister = methods.register(name, { onChange: onChange ? onChange : () => {} });
@@ -18,24 +18,29 @@ function FormInput({ name, disabled, label, required, onChange, type = 'text', c
                     case 'select':
                         return (
                             <>
-                                <InputLabel id={`label-${name}`} color={color || 'secondary'}>
-                                    {label}
-                                </InputLabel>
+                                {label && (
+                                    <InputLabel id={`label-${name}`} color={color || 'secondary'}>
+                                        {label}
+                                    </InputLabel>
+                                )}
                                 <Select
                                     {...fieldRegister}
                                     value={methods.watch(name)}
                                     label={label}
                                     color={color || 'secondary'}
+                                    variant={variant || 'outlined'}
                                     labelId={`label-${name}`}
                                     error={Boolean(error)}
                                 >
-                                    {options.map(({ id, name }) => (
-                                        <MenuItem key={id} value={id}>
-                                            {name}
+                                    {options.map(({ value, label }) => (
+                                        <MenuItem key={value} value={value}>
+                                            {label}
                                         </MenuItem>
                                     ))}
                                 </Select>
-                                <FormHelperText error>{error}</FormHelperText>
+                                <FormHelperText error sx={{ textAlign: 'start' }}>
+                                    {error}
+                                </FormHelperText>
                             </>
                         );
 
@@ -59,10 +64,12 @@ function FormInput({ name, disabled, label, required, onChange, type = 'text', c
                         return (
                             <TextField
                                 type={type}
-                                label={label}
+                                label={label || ''}
                                 disabled={disabled}
                                 color={color || 'secondary'}
+                                size="medium"
                                 required={required}
+                                variant={variant || 'outlined'}
                                 error={Boolean(error)}
                                 helperText={error}
                                 {...fieldRegister}

@@ -5,6 +5,8 @@ import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 import userReducer from './userSlice';
 import companyReducer from './companySlice';
+import departmentReducer from './departmentSlice';
+import usersReducer from './usersSlice';
 import { api } from './Services/api';
 
 const persistConfig = {
@@ -16,7 +18,9 @@ const rootReducer = combineReducers({
     [api.reducerPath]: api.reducer,
     customization: customizationReducer,
     user: userReducer,
-    company: companyReducer
+    company: companyReducer,
+    department: departmentReducer,
+    users: usersReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

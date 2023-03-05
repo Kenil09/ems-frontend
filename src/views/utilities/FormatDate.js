@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 
-export default FormatDate = (value) => {
+const FormatDate = (value) => {
     return dayjs(value).format('DD-MMM-YYYY HH:mm A');
 };
+
+export default FormatDate;

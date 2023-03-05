@@ -110,8 +110,9 @@
     padding: 13px 30px;
     border-radius: 30px;
     transition: .4s;
-    margin-left: 5%;
-    margin-top: 2%;
+    margin-left: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .btn:hover {
@@ -128,19 +129,17 @@
 .title h2 {
 
     font-size: 45px;
-    width: 1130px;
+    width: 100%;
     margin: 30px auto;
     text-align: center;
 }
 
 .box {
-    display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 400px;
 }
 
-.card {
+/* .card {
     height: 365px;
     width: 335px;
     padding: 20px 35px;
@@ -149,14 +148,22 @@
     position: relative;
     overflow: hidden;
     text-align: center;
+} */
+.card {
+    margin: 30px;
+    padding: 20px 35px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
 }
 
-h5 {
+.h5 {
     font-size: 23px;
-    margin-bottom: 15px;
+    margin: 20px;
 }
 
-.pra p {
+.pra {
 
     font-size: 16px;
     line-height: 27px;
@@ -183,13 +190,13 @@ h5 {
 
 
 .header-top {
-    margin-top: 5%;
-    margin-left: 5%;
+    margin-top: 10px;
+    margin-left: 10px;
 }
 
 
 .hero {
-    height: 100vh;
+
     width: 100%;
     background-color: #3c59eb;
     background-size: cover;
@@ -200,9 +207,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 45px;
-    padding-left: 8%;
-    padding-right: 8%;
+    padding: 30px;
 }
 
 .logo {
@@ -210,6 +215,7 @@ nav {
     font-size: 35px;
     letter-spacing: 1px;
     cursor: pointer;
+
 }
 
 span {
@@ -217,20 +223,21 @@ span {
 }
 
 
-a {
+.a {
     color: white;
     text-decoration: none;
     font-weight: bold;
     text-transform: capitalize;
 }
 
-a:hover {
+.a:hover {
     color: #f9004d;
     transition: .4s;
 }
 
 .text {
     color: white;
+    margin-left: 30px;
 }
 
 .txt {
@@ -238,6 +245,19 @@ a:hover {
 }
 
 .video {
-    margin-bottom: 25%;
+    margin-bottom: 25px;
     margin-left: 80px;
+}
+
+.video1 {
+    width: 300px;
+    height: 400px;
+}
+
+.imgtext {
+    margin-bottom: 10px;
+}
+
+.all {
+    overflow: hidden;
 }

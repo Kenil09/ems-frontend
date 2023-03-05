@@ -5,14 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Landing_page() {
     return (
-        <div>
+        <div class="all">
             <div class="hero">
                 <nav>
                     <h2 class="logo">
                         EM<span>PS</span>
                     </h2>
 
-                    <a href="#" class="btn a">
+                    <a href="#" class="btn btn-outline-info">
                         Sign&nbsp;in
                     </a>
                 </nav>
@@ -27,20 +27,13 @@ function Landing_page() {
                             matter of minutes. Our consolidated software allows you to record, store, and access information in real time.
                             Save time and effort, and do more on the go!
                         </p>
-                        <button type="submit" class="btn a">
+                        <button type="submit" class="btn btn-outline-info">
                             Let's&nbsp;Get&nbsp;Started
                         </button>
                     </div>
                     <div class="col-md-4 video">
-                        <video
-                            autoplay=""
-                            loop=""
-                            muted=""
-                            poster="https://www.zohowebstatic.com/sites/zweb/images/people/smart-time-header.jpg"
-                            width="350"
-                            height="400"
-                        >
-                            <source type="video/mp4" src="https://www.zohowebstatic.com/sites/zweb/images/people/smart-time-header.mp4" />
+                        <video autoPlay muted loop class="video1">
+                            <source type="video/mp4" src={require('../../assets/images/home/video.mp4')} />
                         </video>
                     </div>
                 </div>
@@ -55,29 +48,26 @@ function Landing_page() {
                         timesheets to analyze your employee potential and performance.
                     </p>
                 </div>
-
-                <div class="box">
-                    <div class="card">
-                        <img src="https://www.zohowebstatic.com/sites/zweb/images/people/manage-time.png" alt="" />
-                        <h5>Manage</h5>
-                        <div class="pra">
-                            <p>Take complete control of employee attendance, shifts, and job tracking.</p>
+                <div class="row box">
+                    <div class="col-md-3 card">
+                        <img class="imgtext" src={require('../../assets/images/home/box1.png')} alt="" />
+                        <h5 class="h5">Manage</h5>
+                        <div>
+                            <p class="pra">Take complete control of employee attendance, shifts, and job tracking.</p>
                         </div>
                     </div>
-
-                    <div class="card">
-                        <img src="https://www.zohowebstatic.com/sites/zweb/images/people/engage-time.png" alt="" />
-                        <h5>Empower</h5>
-                        <div class="pra">
-                            <p>Enable your remote and mobile workforce to check-in from anywhere.</p>
+                    <div class="col-md-3 card">
+                        <img class="imgtext" src={require('../../assets/images/home/box2.png')} alt="" />
+                        <h5 class="h5">Empower</h5>
+                        <div>
+                            <p class="pra">Enable your remote and mobile workforce to check-in from anywhere.</p>
                         </div>
                     </div>
-
-                    <div class="card">
-                        <img src="https://www.zohowebstatic.com/sites/zweb/images/people/analyze-time.png" alt="" />
-                        <h5>Analyze</h5>
-                        <div class="pra">
-                            <p>Generate precise reports and accelerate your team’s productivity.</p>
+                    <div class="col-md-3 card">
+                        <img class="imgtext" src={require('../../assets/images/home/box3.png')} alt="" />
+                        <h5 class="h5">Analyze</h5>
+                        <div>
+                            <p class="pra">Generate precise reports and accelerate your team’s productivity.</p>
                         </div>
                     </div>
                 </div>
@@ -85,7 +75,7 @@ function Landing_page() {
 
             <div class="row">
                 <div class="col-md-5 right">
-                    <img src="public\assets\images\img1.png" alt="" />
+                    <img src={require('../../assets/images/home/img1.png')} alt="" />
                 </div>
                 <div class="col-md-5 left">
                     <h1 class="heading">
@@ -144,13 +134,13 @@ function Landing_page() {
                 </div>
 
                 <div class="col-md-5 img2">
-                    <img src="public\assets\images\img2.png" alt="" />
+                    <img src={require('../../assets/images/home/img2.png')} alt="" />
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-4  img3">
-                    <img src="public\assets\images\img4.1.png" alt="" />
+                    <img src={require('../../assets/images/home/img3.png')} alt="" />
                 </div>
                 <div class="col-md-6 div3">
                     <h1 class="heading">
@@ -207,13 +197,13 @@ function Landing_page() {
                 </div>
 
                 <div class="col-md-5 img2">
-                    <img src="public\assets\images\img4.png" alt="" />
+                    <img src={require('../../assets/images/home/img4.png')} alt="" />
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 right">
-                    <img src="public\assets\images\zp-privacybanner.png" class="img" alt="" />
+                    <img src={require('../../assets/images/home/block1.png')} class="img" alt="" />
 
                     <div class="head">
                         <h2>Trust and security</h2>
@@ -234,7 +224,7 @@ function Landing_page() {
                 </div>
 
                 <div class="col-md-5 div">
-                    <img src="public\assets\images\zp-grow.png" class="img1" alt="" />
+                    <img src={require('../../assets/images/home/block2.png')} class="img1" alt="" />
 
                     <h2>Increased business agility</h2>
 

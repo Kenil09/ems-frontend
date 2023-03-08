@@ -129,7 +129,8 @@ export const CompanyStep = ({ setActiveStep, type, handleUser, handleClose, hand
                         onClick={(e) => {
                             setActiveStep(0);
                         }}
-                        variant="contained"
+                        variant="text"
+                        style={{ color: '#673ab7' }}
                     >
                         Back
                     </Button>
@@ -141,6 +142,7 @@ export const CompanyStep = ({ setActiveStep, type, handleUser, handleClose, hand
                             formik.handleSubmit();
                         }}
                         variant="contained"
+                        style={{ backgroundColor: '#673ab7' }}
                     >
                         Submit
                     </Button>

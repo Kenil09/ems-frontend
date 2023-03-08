@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import Loadable from 'ui-component/Loadable';
 import MinimalLayout from 'layout/MinimalLayout';
+import { RegisterOTP } from 'views/pages/authentication/authentication3/RegisterOTP';
 
 // login option 3 routing
 const AuthLogin3 = Loadable(lazy(() => import('views/pages/authentication/authentication3/Login3')));
@@ -31,6 +32,10 @@ const PublicRoutes = {
         {
             path: '/land-page',
             element: <LandPage />
+        },
+        {
+            path: '/registerOtp/:token',
+            element: <RegisterOTP />
         }
     ]
 };

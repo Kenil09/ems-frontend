@@ -7,6 +7,7 @@ import { UserStep } from './UserStep';
 import { SignUpStepper } from './SignUpStepper';
 import CloseIcon from '@mui/icons-material/Close';
 import { Typography, IconButton } from '@mui/material';
+import toast from 'react-hot-toast';
 import { CompanyStep } from './CompanyStep';
 import { useDispatch } from 'react-redux';
 import { deleteCacheData } from 'store/SignUpSlice';
@@ -36,6 +37,8 @@ export const SignupModel = ({ open, handleClose }) => {
             };
             console.log(newPayload, 'newpayload');
             const data = await axios.post('http://localhost:3001/company/', newPayload);
+            handleClose();
+            toast.success('Email is sent on Register EmailID');
             console.log('successfully');
             console.log(data);
         } catch (Err) {
@@ -45,6 +48,7 @@ export const SignupModel = ({ open, handleClose }) => {
     const handleEvent = () => {
         dispatch(deleteCacheData());
         handleClose();
+        setActiveStep(0);
     };
     return (
         <React.Fragment>

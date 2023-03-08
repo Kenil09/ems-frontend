@@ -5,7 +5,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { useFormContext } from 'react-hook-form';
 
 // eslint-disable-next-line react/prop-types
-function FormInput({ name, disabled, label, required, onChange, type = 'text', color, options }) {
+function FormInput({ name, disabled, label, required, onChange, type = 'text', value, color, options }) {
     const methods = useFormContext();
 
     const fieldRegister = methods.register(name, { onChange: onChange ? onChange : () => {} });
@@ -61,10 +61,12 @@ function FormInput({ name, disabled, label, required, onChange, type = 'text', c
                                 type={type}
                                 label={label}
                                 disabled={disabled}
+                                value={value}
                                 color={color || 'secondary'}
                                 required={required}
                                 error={Boolean(error)}
                                 helperText={error}
+                                InputLabelProps={{ shrink: true }}
                                 {...fieldRegister}
                             />
                         );

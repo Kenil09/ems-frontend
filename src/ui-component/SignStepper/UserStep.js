@@ -36,8 +36,7 @@ const style = {
 const validationSchema = yup.object({
     firstName: yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('firstName is required'),
     lastName: yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('lastName is required'),
-    email: yup.string('Enter the email').email('Please enter valid email').required('Email is required'),
-    password: yup.string('Enter the password').min(6, 'password length must be 6 or more').required('Password is required')
+    email: yup.string('Enter the email').email('Please enter valid email').required('Email is required')
 });
 export const UserStep = ({ type, setActiveStep }) => {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -47,8 +46,7 @@ export const UserStep = ({ type, setActiveStep }) => {
         initialValues: {
             firstName: SignUpCache?.User?.firstName || '',
             lastName: SignUpCache?.User?.lastName || '',
-            email: SignUpCache?.User?.email || '',
-            password: SignUpCache?.User?.password || ''
+            email: SignUpCache?.User?.email || ''
         },
         enableReinitialize: true,
         validationSchema,
@@ -102,31 +100,6 @@ export const UserStep = ({ type, setActiveStep }) => {
                         />
                     </FormControl>
                 </Grid>
-                <Grid item xs={12}>
-                    <FormControl fullWidth>
-                        <TextField
-                            name="password"
-                            id="password"
-                            onChange={formik.handleChange}
-                            defaultValue={SignUpCache?.User?.password}
-                            type={showPassword ? 'text' : 'password'}
-                            style={{ fontWeight: 'bolder' }}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
-                                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                        </IconButton>
-                                    </InputAdornment>
-                                )
-                            }}
-                            error={formik.touched.password && Boolean(formik.errors.password)}
-                            helperText={formik.touched.password && formik.errors.password}
-                            placeholder="Enter the password"
-                            variant="outlined"
-                        />
-                    </FormControl>
-                </Grid>
             </Grid>
 
             <Box style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -137,6 +110,7 @@ export const UserStep = ({ type, setActiveStep }) => {
                         formik.handleSubmit();
                     }}
                     variant="contained"
+                    color="secondary"
                 >
                     Next
                 </Button>

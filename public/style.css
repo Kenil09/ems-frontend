@@ -8,14 +8,12 @@
     margin-left: 20px;
 }
 
-
-
 .list {
     list-style: none;
 }
 
 .list .list-item:before {
-    content: "\00BB \0020";
+    content: '\00BB \0020';
     color: #03a9f5;
 }
 
@@ -25,7 +23,6 @@
     padding-left: 30px;
     font-size: 16px;
 }
-
 
 .learn-more {
     color: #03a9f5;
@@ -91,7 +88,6 @@
 .first {
     margin-left: 15%;
     margin-right: 15%;
-
 }
 
 .head1 {
@@ -110,7 +106,7 @@
     font-weight: bold;
     padding: 13px 30px;
     border-radius: 30px;
-    transition: .4s;
+    transition: 0.4s;
     margin-left: 50px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -131,7 +127,6 @@
 }
 
 .title h2 {
-
     font-size: 45px;
     width: 100%;
     margin: 30px auto;
@@ -170,13 +165,10 @@
 }
 
 .pra {
-
     font-size: 16px;
     line-height: 27px;
     margin-bottom: 25px;
 }
-
-
 
 .manage {
     font-size: 16px;
@@ -194,15 +186,12 @@
     margin-right: 50px;
 }
 
-
 .header-top {
     margin-top: 10px;
     margin-left: 10px;
 }
 
-
 .hero {
-
     width: 100%;
     background-color: #3c59eb;
     background-size: cover;
@@ -221,13 +210,11 @@ nav {
     font-size: 35px;
     letter-spacing: 1px;
     cursor: pointer;
-
 }
 
 span {
     color: #f9004d;
 }
-
 
 .a {
     color: white;
@@ -238,7 +225,7 @@ span {
 
 .a:hover {
     color: #f9004d;
-    transition: .4s;
+    transition: 0.4s;
 }
 
 .text {
@@ -254,6 +241,14 @@ span {
     margin-bottom: 25px;
     margin-left: 80px;
 }
+/* .MuiInputLabel-root {
+    font-size: 17px !important;
+    padding-bottom: 17px !important;
+}
+
+.MuiInput-root {
+    height: 20px !important;
+} */
 
 .video1 {
     width: 300px;

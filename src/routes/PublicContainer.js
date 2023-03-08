@@ -11,7 +11,6 @@ const PublicContainer = ({ children }) => {
     const checkAuth = () => {
         const token = localStorage.getItem('accessToken');
         if (token) {
-            console.log('token');
             navigate('/');
             // check role here
             //set user to redux

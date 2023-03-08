@@ -39,6 +39,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from 'store/userSlice';
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -73,7 +74,7 @@ const FirebaseLogin = ({ ...others }) => {
             navigate('/');
         } catch (error) {
             // show error here in alert
-            console.log(error.message);
+            toast.error(error.response.data.message);
         }
     };
 

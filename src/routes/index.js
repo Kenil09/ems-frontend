@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
 // routes
-import MainRoutes from './MainRoutes';
+import PrivateRoutes from './PrivateRoutes';
 import PublicRoutes from './PublicRoutes';
 import PrivateContainer from './PrivateContainer';
 import PublicContainer from './PublicContainer';
@@ -10,8 +10,8 @@ import PublicContainer from './PublicContainer';
 export default function ThemeRoutes() {
     return (
         <Routes>
-            <Route path={MainRoutes.path} element={MainRoutes.element}>
-                {MainRoutes.children.map(({ path, element, role }) => (
+            <Route path={PrivateRoutes.path} element={PrivateRoutes.element}>
+                {PrivateRoutes.children.map(({ path, element, role }) => (
                     <Route path={path} element={<PrivateContainer roles={role}>{element}</PrivateContainer>} key={path} />
                 ))}
             </Route>
@@ -23,5 +23,5 @@ export default function ThemeRoutes() {
         </Routes>
     );
 
-    // return useRoutes([MainRoutes, PublicRoutes]);
+    // return useRoutes([PrivateRoutes, PublicRoutes]);
 }

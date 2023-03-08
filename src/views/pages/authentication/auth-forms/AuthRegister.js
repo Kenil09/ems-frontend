@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { SignupModel } from 'ui-component/SignStepper/SignupModel';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -45,9 +45,16 @@ const FirebaseRegister = ({ ...others }) => {
     const customization = useSelector((state) => state.customization);
     const [showPassword, setShowPassword] = useState(false);
     const [checked, setChecked] = useState(true);
-
     const [strength, setStrength] = useState(0);
     const [level, setLevel] = useState();
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const googleHandler = async () => {
         console.error('Register');
@@ -123,7 +130,7 @@ const FirebaseRegister = ({ ...others }) => {
                     </Box>
                 </Grid>
             </Grid>
-
+            {/* 
             <Formik
                 initialValues={{
                     email: '',
@@ -151,8 +158,8 @@ const FirebaseRegister = ({ ...others }) => {
                 }}
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-                    <form noValidate onSubmit={handleSubmit} {...others}>
-                        <Grid container spacing={matchDownSM ? 0 : 2}>
+                    <form noValidate onSubmit={handleSubmit} {...others}> */}
+            {/* <Grid container spacing={matchDownSM ? 0 : 2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     fullWidth
@@ -251,8 +258,8 @@ const FirebaseRegister = ({ ...others }) => {
                                     </Grid>
                                 </Box>
                             </FormControl>
-                        )}
-
+                        )} */}
+            {/* 
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>
                                 <FormControlLabel
@@ -279,26 +286,30 @@ const FirebaseRegister = ({ ...others }) => {
                             <Box sx={{ mt: 3 }}>
                                 <FormHelperText error>{errors.submit}</FormHelperText>
                             </Box>
-                        )}
+                        )} */}
+            {/* </form> */}
+            {/* )} */}
+            {/* </Formik> */}
 
-                        <Box sx={{ mt: 2 }}>
-                            <AnimateButton>
-                                <Button
-                                    disableElevation
-                                    disabled={isSubmitting}
-                                    fullWidth
-                                    size="large"
-                                    type="submit"
-                                    variant="contained"
-                                    color="secondary"
-                                >
-                                    Sign up
-                                </Button>
-                            </AnimateButton>
-                        </Box>
-                    </form>
-                )}
-            </Formik>
+            <Box sx={{ mt: 2 }}>
+                <AnimateButton>
+                    <Button
+                        disableElevation
+                        onClick={() => {
+                            handleOpen();
+                        }}
+                        fullWidth
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                        color="secondary"
+                    >
+                        Sign up
+                    </Button>
+                </AnimateButton>
+            </Box>
+
+            <SignupModel open={open} handleClose={handleClose} />
         </>
     );
 };

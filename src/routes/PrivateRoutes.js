@@ -3,7 +3,6 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
-import Department_list from 'views/list/Department_list';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -17,6 +16,8 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+const Company = Loadable(lazy(() => import('views/Company')));
+const Designations = Loadable(lazy(() => import('views/Designations')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 const Roles = ['superAdmin', 'admin', 'manager', 'employee'];
@@ -36,8 +37,13 @@ const MainRoutes = {
             role: Roles
         },
         {
-            path: 'department-list',
-            element: <Department_list />,
+            path: '/company',
+            element: <Company />,
+            role: Roles
+        },
+        {
+            path: '/designations',
+            element: <Designations />,
             role: Roles
         }
     ]

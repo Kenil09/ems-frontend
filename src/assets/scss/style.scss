@@ -135,3 +135,9 @@
     background-color: black;
     font-size: larger;
 }
+
+.form-label-required {
+    .MuiFormLabel-asterisk {
+        color: red
+    }
+}

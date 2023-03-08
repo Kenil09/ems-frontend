@@ -7,12 +7,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import MainCard from 'ui-component/cards/MainCard';
 import MUIDataTable from 'mui-datatables';
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons';
-import DepartmentModal from './DepartmentModal';
+import EmployeeModal from './EmployeeModal';
 import { deleteDepartment, fetchDepartments } from 'store/departmentSlice';
+import { fetchUsers } from 'store/usersSlice';
+import { fetchDesignations } from 'store/designationSlice';
 import FormatDate from 'views/utilities/FormatDate';
 import apiClient from 'service/service';
 
-const Department = () => {
+const Employee = () => {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.department.data);
     const [show, setShow] = useState(false);
@@ -21,10 +23,12 @@ const Department = () => {
 
     useEffect(() => {
         dispatch(fetchDepartments());
+        dispatch(fetchUsers());
+        dispatch(fetchDesignations());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const removeDepartment = async (id) => {
+    const removeEmployee = async (id) => {
         try {
             const { data } = await apiClient().delete(`/department/${id}`);
             dispatch(deleteDepartment(data?.department));
@@ -38,8 +42,6 @@ const Department = () => {
         setShow(!show);
         setIsEditMode();
     };
-
-    console.log(data);
 
     const columns = [
         {
@@ -60,14 +62,14 @@ const Department = () => {
             name: 'departmentLead',
             label: 'Department Lead',
             options: {
-                customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
+                customBodyRender: (value) => `${value?.firstName} ${value?.lastName}`
             }
         },
         {
             name: 'createdBy',
             label: 'Added By',
             options: {
-                customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
+                customBodyRender: (value) => `${value?.firstName} ${value?.lastName}`
             }
         },
         {
@@ -108,7 +110,7 @@ const Department = () => {
                                 onClick={(event) => {
                                     event.stopPropagation();
                                     handleEvent();
-                                    setModalTitle('Update Deparment');
+                                    setModalTitle('Update Employee');
                                     const index = data.findIndex((company) => company._id === tableMeta.rowData[0]);
                                     setIsEditMode(data[index]);
                                 }}
@@ -122,7 +124,7 @@ const Department = () => {
                                 color="secondary"
                                 onClick={(event) => {
                                     event.stopPropagation();
-                                    removeDepartment(tableMeta.rowData[0]);
+                                    removeEmployee(tableMeta.rowData[0]);
                                 }}
                                 sx={{ color: 'error.main' }}
                             >
@@ -147,11 +149,11 @@ const Department = () => {
     return (
         <>
             {!show ? (
-                <MainCard title="Departments">
+                <MainCard title="Users">
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
                         <Button
                             onClick={() => {
-                                setModalTitle('Add Department');
+                                setModalTitle('Add Employee');
                                 handleEvent();
                             }}
                             variant="contained"
@@ -162,17 +164,17 @@ const Department = () => {
                             size="large"
                             disableElevation
                         >
-                            Add Department
+                            Invite User
                         </Button>
                     </Box>
 
                     <MUIDataTable columns={columns} data={data} options={options} />
                 </MainCard>
             ) : (
-                <DepartmentModal open={show} handleEvent={handleEvent} modalTitle={modalTitle} isEditMode={isEditMode} />
+                <EmployeeModal handleEvent={handleEvent} modalTitle={modalTitle} isEditMode={isEditMode} />
             )}
         </>
     );
 };
 
-export default Department;
+export default Employee;

@@ -1,0 +1,279 @@
+import { Grid, Box, Button, TextField, FormControl } from '@mui/material';
+import * as yup from 'yup';
+import MainCard from 'ui-component/cards/MainCard';
+import { useSelector, useDispatch } from 'react-redux';
+import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import toast from 'react-hot-toast';
+import FormInput from 'ui-component/Form/FormInput';
+import { useEffect } from 'react';
+import { addDepartment, updateDepartment } from 'store/departmentSlice';
+import apiClient from 'service/service';
+import SystemFields from 'views/utilities/SystemFields';
+import CustomFormLabel from 'ui-component/Form/CustomFormLabel';
+import { FormComponentGrid, FormRowGrid, FormLabelGrid, FormInputGrid } from 'ui-component/Grid/Form/CustomGrid';
+import CustomFormHeader from 'ui-component/header/CustomFormHeader';
+import {
+    Roles,
+    EmployeeTyes,
+    getDepartmentOptions,
+    getDesignationOptions,
+    getUserOptions,
+    GenderOptions,
+    MaritalStatusOptions
+} from 'views/utilities/FormOptions';
+import EducationDetails from './EducationDetailsForm';
+
+const validationSchema = yup
+    .object({
+        firstName: yup.string('Enter the first name').required('First name is required'),
+        lastName: yup.string('Enter the last name').required('Last name is required'),
+        email: yup.string('Enter the email').required('Email is required'),
+        nickName: yup.string().nullable().notRequired(),
+        department: yup.string('Enter the department').nullable().notRequired(),
+        role: yup.string('Enter the role').notRequired(),
+        designation: yup.string('Enter the designation').nullable().notRequired(),
+        location: yup.string().nullable().notRequired(),
+        employeeType: yup.string().oneOf(['permanent', 'onContract', 'temporary', 'trainee']).nullable().notRequired(),
+        joiningDate: yup.date()
+    })
+    .required();
+
+const EmployeeModel = ({ handleEvent, modalTitle, isEditMode }) => {
+    const dispatch = useDispatch();
+
+    const userOptions = getUserOptions(useSelector(({ users }) => users.data));
+    const departmentOptions = getDepartmentOptions(useSelector(({ department }) => department.data));
+    const designationOptions = getDesignationOptions(useSelector(({ designation }) => designation.data));
+
+    const methods = useForm({
+        resolver: yupResolver(validationSchema)
+    });
+
+    const { setValue } = methods;
+
+    useEffect(() => {
+        if (isEditMode) {
+            setValue('name', isEditMode.name);
+            setValue('departmentLead', isEditMode.departmentLead?._id);
+            setValue('parentDepartment', isEditMode.parentDepartment?._id);
+        }
+    }, []);
+
+    const onSubmit = async (values) => {
+        try {
+            if (isEditMode) {
+                const { data } = await apiClient().put(`/department/${isEditMode?._id}`, values);
+                dispatch(updateDepartment(data.department));
+                toast.success(data.message);
+            } else {
+                const { data } = await apiClient().post('/department', values);
+                dispatch(addDepartment(data.department));
+                toast.success(data.message);
+            }
+            handleEvent();
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.data?.message);
+        }
+    };
+
+    return (
+        <MainCard title={modalTitle} backIcon handleBackEvent={handleEvent}>
+            {/* <Box style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h3" color="purple">
+                    Employee Details
+                </Typography>
+            </Box> */}
+            <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                    <Grid container spacing={5}>
+                        <FormRowGrid>
+                            <CustomFormHeader content="Basic Information" />
+                        </FormRowGrid>
+
+                        <FormRowGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-name" required content="First Name" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="firstName" type="firstName" variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-nick-name" content="Nick Name" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="nickName" type="nickName" variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-last-name" required content="Last Name" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="lastName" type="lastName" variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-email-name" required content="Email" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="email" type="email" variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <CustomFormHeader content="Work Information" />
+                        </FormRowGrid>
+
+                        <FormRowGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-department" required content="Department" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="department" type="select" options={departmentOptions} variant="standard" searchAble />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-role" required content="Role" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="role" type="select" variant="standard" options={Roles} />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-designation" content="Designation" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput
+                                        name="designation"
+                                        type="select"
+                                        variant={'standard'}
+                                        options={designationOptions}
+                                        searchAble
+                                    />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-employeeType" content="Employee Type" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="employeeType" type="select" options={EmployeeTyes} variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-location" content="Location" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="location" type="location" variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-dateOfJoining" content="Date of Joining" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="joiningDate" type="date" variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <CustomFormHeader content="Hierarchy Information" />
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-reportingManager" content="Reporting Manager" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="reportingManager" type="select" options={userOptions} variant="standard" searchAble />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <CustomFormHeader content="Personal Details" />
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-birthdate" content="Date of birth" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="birthDate" type="date" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-age" content="Age" />
+                                </FormLabelGrid>
+                                <FormComponentGrid>
+                                    <FormControl fullWidth>
+                                        <TextField name="age" value={'helo'} variant="standard" size="medium" />
+                                    </FormControl>
+                                </FormComponentGrid>
+                            </FormComponentGrid>
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-gender" content="Gender" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="gender" type="select" options={GenderOptions} variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-marital-status" content="Marital Status" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="maritalStatus" type="select" options={MaritalStatusOptions} variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <FormComponentGrid>
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-aboutMe" content="About me" />
+                                </FormLabelGrid>
+                                <FormInputGrid>
+                                    <FormInput name="aboutMeInfo" multiline variant="standard" />
+                                </FormInputGrid>
+                            </FormComponentGrid>
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <CustomFormHeader content="Education Details" />
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <EducationDetails />
+                        </FormRowGrid>
+                        {isEditMode && <SystemFields data={isEditMode} />}
+                    </Grid>
+
+                    <Box style={{ marginTop: '30px', display: 'flex', justifyContent: 'flex-start' }}>
+                        <Button type="submit" variant="contained" color="secondary">
+                            {isEditMode ? 'Update' : 'Save'}
+                        </Button>
+                    </Box>
+                </form>
+            </FormProvider>
+        </MainCard>
+    );
+};
+
+export default EmployeeModel;

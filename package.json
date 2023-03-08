@@ -13,7 +13,7 @@
         "@mui/styles": "^5.8.6",
         "@mui/system": "^5.8.6",
         "@mui/utils": "^5.8.6",
-        "@mui/x-date-pickers": "^5.0.20",
+        "@mui/x-date-pickers": "^6.0.0",
         "@reduxjs/toolkit": "^1.9.1",
         "@tabler/icons": "^1.72.0",
         "apexcharts": "^3.35.3",

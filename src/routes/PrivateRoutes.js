@@ -14,10 +14,11 @@ const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 const UtilsMaterialIcons = Loadable(lazy(() => import('views/utilities/MaterialIcons')));
 const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons')));
 
-// sample page routing
+// page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 const Departments = Loadable(lazy(() => import('views/Department')));
 const Designations = Loadable(lazy(() => import('views/Designations')));
+const Employees = Loadable(lazy(() => import('views/Employee')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 const Roles = ['superAdmin', 'admin', 'manager', 'employee'];
@@ -44,6 +45,11 @@ const MainRoutes = {
         {
             path: '/departments',
             element: <Departments />,
+            role: Roles
+        },
+        {
+            path: '/employees',
+            element: <Employees />,
             role: Roles
         }
     ]

@@ -25,7 +25,7 @@ let menuItems = {
                     id: 'users',
                     title: 'Employee',
                     type: 'item',
-                    url: '/users',
+                    url: '/employees',
                     icon: icons.IconUsers,
                     breadcrumbs: false
                 },

@@ -10,7 +10,8 @@ import { useEffect } from 'react';
 import { fetchDepartments, addDepartment, updateDepartment } from 'store/departmentSlice';
 import { fetchUsers } from 'store/usersSlice';
 import apiClient from 'service/service';
-import RecordData from 'views/utilities/RecordData';
+import SystemFields from 'views/utilities/SystemFields';
+import CustomFormLabel from 'ui-component/Form/CustomFormLabel';
 
 const validationSchema = yup
     .object({
@@ -27,11 +28,6 @@ const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
         label: `${firstName} ${lastName}`
     }));
     const departmentOptions = useSelector((state) => state.department.data)?.map(({ _id, name }) => ({ label: name, value: _id }));
-
-    let fakeDepartmens = [];
-    for (let i = 0; i <= 50; i++) {
-        fakeDepartmens.push({ label: 'Fake Department', value: Math.floor(100000 + Math.random() * 900000) });
-    }
 
     const methods = useForm({
         resolver: yupResolver(validationSchema),
@@ -88,9 +84,7 @@ const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                     <Grid container spacing={5}>
                         <Grid item xs={12} container direction="row">
                             <Grid item xs={2}>
-                                <FormLabel id="label-name" required>
-                                    Department Name
-                                </FormLabel>
+                                <CustomFormLabel id="label-name" required content="Department Name" />
                             </Grid>
                             <Grid item xs={4}>
                                 <FormInput name="name" type="name" variant="standard" />
@@ -99,9 +93,7 @@ const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
 
                         <Grid item xs={12} container direction="row">
                             <Grid item xs={2}>
-                                <FormLabel id="label-name" required>
-                                    Department Lead
-                                </FormLabel>
+                                <CustomFormLabel id="label-lead" required content="Department Lead" />
                             </Grid>
                             <Grid item xs={4}>
                                 <FormInput name="departmentLead" type="select" options={userOptions || []} variant="standard" />
@@ -109,13 +101,13 @@ const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                         </Grid>
                         <Grid item xs={12} container direction="row">
                             <Grid item xs={2}>
-                                <FormLabel id="label-name">Parent Department</FormLabel>
+                                <CustomFormLabel id="label-name" content="Parent Department" />
                             </Grid>
                             <Grid item xs={4}>
-                                <FormInput name="parentDepartment" type="select" options={fakeDepartmens || []} variant="standard" />
+                                <FormInput name="parentDepartment" type="select" options={departmentOptions || []} variant="standard" />
                             </Grid>
                         </Grid>
-                        {isEditMode && <RecordData data={isEditMode} />}
+                        {isEditMode && <SystemFields data={isEditMode} />}
                     </Grid>
 
                     <Box style={{ marginTop: '30px', display: 'flex', justifyContent: 'flex-start' }}>

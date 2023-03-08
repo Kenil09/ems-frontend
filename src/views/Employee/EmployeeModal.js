@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import toast from 'react-hot-toast';
 import FormInput from 'ui-component/Form/FormInput';
 import { useEffect } from 'react';
-import { addDepartment, updateDepartment } from 'store/departmentSlice';
+import { addUser, updateUser } from 'store/usersSlice';
 import apiClient from 'service/service';
 import SystemFields from 'views/utilities/SystemFields';
 import CustomFormLabel from 'ui-component/Form/CustomFormLabel';
@@ -23,6 +23,8 @@ import {
     MaritalStatusOptions
 } from 'views/utilities/FormOptions';
 import EducationDetails from './EducationDetailsForm';
+import WorkExperienceForm from './WorkExperienceForm';
+import dayjs from 'dayjs';
 
 const validationSchema = yup
     .object({
@@ -31,11 +33,44 @@ const validationSchema = yup
         email: yup.string('Enter the email').required('Email is required'),
         nickName: yup.string().nullable().notRequired(),
         department: yup.string('Enter the department').nullable().notRequired(),
-        role: yup.string('Enter the role').notRequired(),
+        role: yup
+            .string('Enter the role')
+            .oneOf(['admin', 'teamMember', 'teamIncharge', 'manager'], 'Role is required')
+            .required('Role is required'),
         designation: yup.string('Enter the designation').nullable().notRequired(),
         location: yup.string().nullable().notRequired(),
-        employeeType: yup.string().oneOf(['permanent', 'onContract', 'temporary', 'trainee']).nullable().notRequired(),
-        joiningDate: yup.date()
+        employeeType: yup
+            .string()
+            .oneOf(['permanent', 'onContract', 'temporary', 'trainee', ''], 'Enter the Employee Type')
+            .nullable()
+            .notRequired(),
+        joiningDate: yup.string().nullable().notRequired(),
+        reportingManager: yup.string().notRequired(),
+        birthDate: yup.string().nullable().notRequired(),
+        gender: yup.string(),
+        maritalStatus: yup.string(),
+        aboutMeInfo: yup.string(),
+        educationDetails: yup.array().of(
+            yup
+                .object()
+                .shape({
+                    university: yup.string().required('Enter university name'),
+                    degree: yup.string().required('Enter degree'),
+                    dateOfCompletion: yup.date().typeError('Enter valid date').required('Enter date of cpmpletion')
+                })
+                .required()
+        ),
+        workExperience: yup.array().of(
+            yup
+                .object({
+                    previousCompany: yup.string().required('Enter previous company detail'),
+                    jobTitle: yup.string().required('Enter the job title'),
+                    fromDate: yup.string().typeError('Enter valid date').required('Enter from date'),
+                    toDate: yup.string().typeError('Enter valid date').required('Enter to date'),
+                    jobDescription: yup.string().required('Enter Job details')
+                })
+                .required()
+        )
     })
     .required();
 
@@ -47,28 +82,89 @@ const EmployeeModel = ({ handleEvent, modalTitle, isEditMode }) => {
     const designationOptions = getDesignationOptions(useSelector(({ designation }) => designation.data));
 
     const methods = useForm({
-        resolver: yupResolver(validationSchema)
+        resolver: yupResolver(validationSchema),
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            nickName: '',
+            email: '',
+            department: '',
+            role: '',
+            designation: '',
+            employeeType: '',
+            location: '',
+            joiningDate: null,
+            reportingManager: '',
+            birthDate: '',
+            gender: '',
+            maritalStatus: '',
+            aboutMeInfo: '',
+            educationDetails: [],
+            workExperience: []
+            // educationDetails: [{ university: '', degree: '', dateOfCompletion: null }],
+            // workExperience: [{ previousCompany: '', jobTitle: '', fromDate: null, toDate: null, jobDescription: '' }]
+        },
+        mode: 'onChange'
     });
 
     const { setValue } = methods;
 
     useEffect(() => {
         if (isEditMode) {
-            setValue('name', isEditMode.name);
-            setValue('departmentLead', isEditMode.departmentLead?._id);
-            setValue('parentDepartment', isEditMode.parentDepartment?._id);
+            const options = [
+                'firstName',
+                'lastName',
+                'nickName',
+                'email',
+                'role',
+                'employeeType',
+                'location',
+                'joiningDate',
+                'birthDate',
+                'gender',
+                'maritalStatus',
+                'aboutMeInfo',
+                'educationDetails',
+                'workExperience'
+            ];
+            setValue('department', isEditMode['department']?._id);
+            setValue('designation', isEditMode['designation']?._id);
+            setValue('reportingManager', isEditMode['reportingManager']?._id);
+            Object.keys(isEditMode).forEach((key) => {
+                if (options.includes(key)) {
+                    setValue(key, isEditMode[key]);
+                }
+            });
+        } else {
+            setValue('joiningDate', dayjs().toISOString());
         }
     }, []);
+
+    const filterData = (values) => {
+        const data = values;
+        const keys = Object.keys(values);
+        keys.forEach((key) => {
+            if (!data[key]) {
+                delete data[key];
+            }
+            if (['educationDetails', 'workExperience'].includes(key)) {
+                if (!data[key].length) {
+                    delete data[key];
+                }
+            }
+        });
+        return data;
+    };
 
     const onSubmit = async (values) => {
         try {
             if (isEditMode) {
-                const { data } = await apiClient().put(`/department/${isEditMode?._id}`, values);
-                dispatch(updateDepartment(data.department));
+                const { data } = await apiClient().put(`/user/${isEditMode?._id}`, values);
+                dispatch(updateUser(data.user));
                 toast.success(data.message);
             } else {
-                const { data } = await apiClient().post('/department', values);
-                dispatch(addDepartment(data.department));
+                const { data } = await apiClient().post('/user', values);
+                dispatch(addUser(data.user));
                 toast.success(data.message);
             }
             handleEvent();
@@ -217,16 +313,16 @@ const EmployeeModel = ({ handleEvent, modalTitle, isEditMode }) => {
                                     <FormInput name="birthDate" type="date" />
                                 </FormInputGrid>
                             </FormComponentGrid>
-                            <FormComponentGrid>
+                            {/* <FormComponentGrid>
                                 <FormLabelGrid>
                                     <CustomFormLabel id="label-age" content="Age" />
                                 </FormLabelGrid>
-                                <FormComponentGrid>
+                                <FormInputGrid>
                                     <FormControl fullWidth>
-                                        <TextField name="age" value={'helo'} variant="standard" size="medium" />
+                                        <TextField name="age" value={dayjs()} variant="standard" size="medium" />
                                     </FormControl>
-                                </FormComponentGrid>
-                            </FormComponentGrid>
+                                </FormInputGrid>
+                            </FormComponentGrid> */}
                         </FormRowGrid>
                         <FormRowGrid>
                             <FormComponentGrid>
@@ -262,7 +358,20 @@ const EmployeeModel = ({ handleEvent, modalTitle, isEditMode }) => {
                         <FormRowGrid>
                             <EducationDetails />
                         </FormRowGrid>
-                        {isEditMode && <SystemFields data={isEditMode} />}
+                        <FormRowGrid>
+                            <CustomFormHeader content="Work Experience" />
+                        </FormRowGrid>
+                        <FormRowGrid>
+                            <WorkExperienceForm />
+                        </FormRowGrid>
+                        {isEditMode && (
+                            <>
+                                <FormRowGrid>
+                                    <CustomFormHeader content="System Fields" />
+                                </FormRowGrid>
+                                <SystemFields data={isEditMode} />
+                            </>
+                        )}
                     </Grid>
 
                     <Box style={{ marginTop: '30px', display: 'flex', justifyContent: 'flex-start' }}>

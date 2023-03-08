@@ -9,14 +9,14 @@ import MUIDataTable from 'mui-datatables';
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons';
 import EmployeeModal from './EmployeeModal';
 import { deleteDepartment, fetchDepartments } from 'store/departmentSlice';
-import { fetchUsers } from 'store/usersSlice';
+import { deleteUser, fetchUsers } from 'store/usersSlice';
 import { fetchDesignations } from 'store/designationSlice';
 import FormatDate from 'views/utilities/FormatDate';
 import apiClient from 'service/service';
 
 const Employee = () => {
     const dispatch = useDispatch();
-    const data = useSelector((state) => state.department.data);
+    const data = useSelector((state) => state.users.data);
     const [show, setShow] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
@@ -30,8 +30,8 @@ const Employee = () => {
 
     const removeEmployee = async (id) => {
         try {
-            const { data } = await apiClient().delete(`/department/${id}`);
-            dispatch(deleteDepartment(data?.department));
+            const { data } = await apiClient().delete(`/user/${id}`);
+            dispatch(deleteUser(data?.user));
             toast.success(data?.message);
         } catch (error) {
             toast.error(error.data?.message);
@@ -55,21 +55,58 @@ const Employee = () => {
             }
         },
         {
-            name: 'name',
-            label: 'Name'
+            name: 'firstName',
+            label: 'First Name'
         },
         {
-            name: 'departmentLead',
-            label: 'Department Lead',
+            name: 'lastName',
+            label: 'Last Name'
+        },
+        {
+            name: 'nickName',
+            label: 'Nick Name'
+        },
+        {
+            name: 'email',
+            label: 'Email Address'
+        },
+        {
+            name: 'department',
+            label: 'Department',
             options: {
-                customBodyRender: (value) => `${value?.firstName} ${value?.lastName}`
+                customBodyRender: (value) => value?.name
+            }
+        },
+        {
+            name: 'designation',
+            label: 'Designation',
+            options: {
+                customBodyRender: (value) => value?.name
+            }
+        },
+        {
+            name: 'role',
+            label: 'Role'
+        },
+        {
+            name: 'reportingManager',
+            label: 'Reporting Manager',
+            options: {
+                customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
+            }
+        },
+        {
+            name: 'joiningDate',
+            label: 'Joining Date',
+            options: {
+                customBodyRender: (value) => FormatDate(value)
             }
         },
         {
             name: 'createdBy',
             label: 'Added By',
             options: {
-                customBodyRender: (value) => `${value?.firstName} ${value?.lastName}`
+                customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
             }
         },
         {

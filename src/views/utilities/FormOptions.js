@@ -24,7 +24,7 @@ export const MaritalStatusOptions = [
 ];
 
 export const getDesignationOptions = (data) => {
-    return data?.map(({ name }) => ({ label: name, value: name }));
+    return data?.map(({ _id, name }) => ({ label: name, value: _id }));
 };
 
 export const getDepartmentOptions = (data) => {

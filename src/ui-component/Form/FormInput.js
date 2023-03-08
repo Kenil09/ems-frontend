@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { Search } from '@mui/icons-material';
 import { useState, useMemo } from 'react';
 import { makeStyles } from '@mui/styles';
+import dayjs from 'dayjs';
 
 const useStyles = makeStyles(() => ({
     resize: {
@@ -25,7 +26,20 @@ const useStyles = makeStyles(() => ({
 const containsText = (text, searchText) => text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
 
 // eslint-disable-next-line react/prop-types
-function FormInput({ name, disabled, label, required, onChange, type = 'text', color, options, variant, searchAble, multiline }) {
+function FormInput({
+    name,
+    disabled,
+    label,
+    required,
+    onChange,
+    type = 'text',
+    color,
+    options,
+    variant,
+    searchAble,
+    multiline,
+    fieldArray
+}) {
     const classes = useStyles();
     const methods = useFormContext();
     const [searchText, setSearchText] = useState('');
@@ -36,7 +50,20 @@ function FormInput({ name, disabled, label, required, onChange, type = 'text', c
         return options;
     }, [options, searchText]);
     const fieldRegister = methods.register(name, { onChange: onChange ? onChange : () => {} });
-    const error = methods.formState.errors[name]?.message;
+    const field = name.split('.');
+    const getFieldError = () => {
+        if (Object.keys(methods.formState.errors).length === 0) {
+            return undefined;
+        }
+        if (!methods.formState.errors?.[field[0]]) {
+            return undefined;
+        }
+        if (typeof methods.formState.errors?.[field[0]][Number(field[1])] === undefined) {
+            return undefined;
+        }
+        return methods.formState.errors?.[field[0]][Number(field[1])]?.[field[2]]?.message;
+    };
+    const error = Boolean(fieldArray) ? getFieldError() : methods.formState.errors[name]?.message;
 
     return (
         <FormControl fullWidth>
@@ -101,15 +128,17 @@ function FormInput({ name, disabled, label, required, onChange, type = 'text', c
                                 <LocalizationProvider dateAdapter={AdapterMoment}>
                                     <DatePicker
                                         {...fieldRegister}
-                                        // value={methods.watch(name)}
+                                        value={methods.watch(name)}
                                         label={label}
                                         onChange={(newValue) => {
-                                            methods.setValue(name, newValue);
+                                            methods.setValue(name, dayjs(newValue).toISOString());
                                         }}
                                         color={color || 'secondary'}
                                         error={Boolean(error)}
                                         className={classes.customDatePicker}
-                                        renderInput={(params) => <TextField variant="standard" {...params} />}
+                                        renderInput={(params) => (
+                                            <TextField variant="standard" {...params} error={Boolean(error)} helperText={error} />
+                                        )}
                                     />
                                 </LocalizationProvider>
                             </>

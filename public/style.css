@@ -1,12 +1,14 @@
 .right {
-    margin-top: 10%;
-    margin-left: 8%;
+    margin-top: 30px;
+    margin-left: 50px;
 }
 
 .left {
-    margin-top: 13%;
-    margin-left: 5%;
+    margin-top: 10px;
+    margin-left: 20px;
 }
+
+
 
 .list {
     list-style: none;
@@ -24,6 +26,7 @@
     font-size: 16px;
 }
 
+
 .learn-more {
     color: #03a9f5;
     border-bottom: 2px solid #03a9f5;
@@ -31,31 +34,29 @@
     font-family: var(--zf-secondary-medium);
     font-size: 17px;
     text-decoration: none;
-    margin-left: 15%;
+    margin-left: 50px;
 }
 
 .content {
     font-size: 16px;
     color: #222;
     line-height: 1.8;
-    margin-top: 8%;
-    margin-bottom: 6%;
+    margin-top: 20px;
+    margin-bottom: 15px;
 }
 
 .img2 {
-    margin-top: 6%;
-    margin-right: 5%;
+    margin-top: 20px;
+    padding-right: 50px;
+    margin-right: 40px;
 }
 
 .img3 {
-    margin-left: 5%;
-    margin-right: 3%;
-    margin-top: 10%;
+    margin-top: 20px;
 }
 
 .div3 {
-    margin-top: 22%;
-    margin-left: 8%;
+    padding-left: 15px;
 }
 
 .img {
@@ -123,7 +124,10 @@
 
 .service {
     width: 100%;
-    padding: 100px 0px;
+    padding-top: 100px;
+    padding-bottom: 50px;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 .title h2 {
@@ -137,6 +141,8 @@
 .box {
     justify-content: center;
     align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 /* .card {

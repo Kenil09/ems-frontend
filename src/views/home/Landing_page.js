@@ -73,11 +73,11 @@ function Landing_page() {
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-5 right">
+            <div class="row box">
+                <div class="col-md-5 img2">
                     <img src={require('../../assets/images/home/img1.png')} alt="" />
                 </div>
-                <div class="col-md-5 left">
+                <div class="col-md-5 left box">
                     <h1 class="heading">
                         <b>Core HR simplified</b>
                     </h1>
@@ -105,8 +105,8 @@ function Landing_page() {
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-5 right">
+            <div class="row box">
+                <div class="col-md-5 right box">
                     <h1 class="heading">
                         <b>Optimize your time and attendance</b>
                     </h1>
@@ -133,16 +133,17 @@ function Landing_page() {
                     </a>
                 </div>
 
-                <div class="col-md-5 img2">
+                <div class="col-md-5 img2 box">
                     <img src={require('../../assets/images/home/img2.png')} alt="" />
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-4  img3">
+            <div class="row box">
+                <div class="col-md-5 img2">
                     <img src={require('../../assets/images/home/img3.png')} alt="" />
                 </div>
-                <div class="col-md-6 div3">
+
+                <div class="col-md-6 left div3">
                     <h1 class="heading">
                         <b>Performance management at its best</b>
                     </h1>
@@ -170,7 +171,7 @@ function Landing_page() {
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row box">
                 <div class="col-md-5 right">
                     <h1 class="heading">
                         <b>Reimagine learning and development</b>
@@ -196,22 +197,22 @@ function Landing_page() {
                     </a>
                 </div>
 
-                <div class="col-md-5 img2">
+                <div class="col-md-5 left">
                     <img src={require('../../assets/images/home/img4.png')} alt="" />
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6 right">
+            <div class="row box">
+                <div class="col-md-5 right">
                     <img src={require('../../assets/images/home/block1.png')} class="img" alt="" />
 
                     <div class="head">
                         <h2>Trust and security</h2>
                     </div>
-                    <div class="data">
+                    <div class="data box">
                         <p>
                             Trust and customer security is the foundation of everything
-                            <br /> &nbsp &nbsp we do at Zoho. Built on our own cloud, battle-tested
+                            <br /> we do at Zoho. Built on our own cloud, battle-tested
                             <br /> infrastructure, we deploy industry-leading safety measures so
                             <br /> you can rest assured that your data is safe and protected 24/7.
                         </p>
@@ -228,7 +229,7 @@ function Landing_page() {
 
                     <h2>Increased business agility</h2>
 
-                    <div class="data">
+                    <div class="data box">
                         <p>
                             The skills your company needs, where employees work and how your company itself functions continue evolving.
                             Zoho arms you with the ability to adapt to these changes, to have consistent, accurate, and real-time visibility

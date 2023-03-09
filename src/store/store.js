@@ -8,6 +8,7 @@ import companyReducer from './companySlice';
 import departmentReducer from './departmentSlice';
 import usersReducer from './usersSlice';
 import designationReducer from './designationSlice';
+import SignUpSlice from './SignUpSlice';
 import { api } from './Services/api';
 
 const persistConfig = {
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
     company: companyReducer,
     department: departmentReducer,
     users: usersReducer,
-    designation: designationReducer
+    designation: designationReducer,
+    SignUpUser: SignUpSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

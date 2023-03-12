@@ -21,29 +21,27 @@ import { LoadingButton } from '@mui/lab';
 
 import Iconify from 'ui-component/Iconify';
 
-export const RegisterOTP = () => {
+function RegisterOTP() {
     const [showPassword, setShowPassword] = useState(false);
     const { token } = useParams();
-    const [Email, setEmail] = useState('');
+    let email;
     const navigate = useNavigate();
-    useEffect(() => {
-        if (token) {
-            const { email } = jwtDecode(token);
-            setEmail(email);
-        }
-    }, []);
+    if (token) {
+        const userData = jwtDecode(token);
+        email = userData.email;
+    }
     const RegisterSchema = Yup.object().shape({
         // email: Yup.string('Enter the email').email('Please enter valid email').required('Email is required'),
         password: Yup.string('Enter the password').min(6, 'password length must be 6 or more').required('Password is required'),
         securityCode: Yup.string('Enter the securityCode').required('Enter OTP')
     });
-
+    console.log(email, 'email');
     const defaultValues = {
-        email: Email || '',
+        email: email || '',
         password: '',
         securityCode: ''
     };
-
+    console.log(defaultValues, 'defaultValues');
     const methods = useForm({
         resolver: yupResolver(RegisterSchema),
         defaultValues
@@ -55,7 +53,7 @@ export const RegisterOTP = () => {
     } = methods;
 
     const Submit = async (values) => {
-        const newPayload = { email: Email, password: values.password, securityCode: values.securityCode };
+        const newPayload = { email: email, password: values.password, securityCode: values.securityCode };
         console.log(values);
         try {
             const data = await axios.post('http://localhost:3001/user/register', newPayload);
@@ -80,7 +78,7 @@ export const RegisterOTP = () => {
                                     <FormProvider {...methods}>
                                         <form onSubmit={methods.handleSubmit(Submit)}>
                                             <Stack spacing={4}>
-                                                <FormInput name="email" label="Email" type="text" value={Email} disabled />
+                                                <FormInput name="email" label="Email" type={'text'} defaultValue={email} disabled />
                                                 <FormInput name="password" label="Password" type={'password'} />
                                                 <div className="custom-styles">
                                                     <ReactInputVerificationCode
@@ -129,4 +127,5 @@ export const RegisterOTP = () => {
             </Grid>
         </AuthWrapper1>
     );
-};
+}
+export default RegisterOTP;

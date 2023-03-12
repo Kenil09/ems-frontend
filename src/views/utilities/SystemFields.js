@@ -25,7 +25,7 @@ const SystemFields = ({ data }) => {
                             <TextField
                                 name="createdBy"
                                 disabled
-                                value={`${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`}
+                                value={data?.createdBy ? `${data?.createdBy?.firstName} ${data?.createdBy?.lastName}` : ''}
                                 InputProps={{
                                     classes: {
                                         input: classes.resize
@@ -71,11 +71,7 @@ const SystemFields = ({ data }) => {
                                         input: classes.resize
                                     }
                                 }}
-                                value={
-                                    data?.updatedBy
-                                        ? `${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`
-                                        : `${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`
-                                }
+                                value={data?.updatedBy ? `${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}` : ''}
                                 variant="standard"
                                 disabled
                             />

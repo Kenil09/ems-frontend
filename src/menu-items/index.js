@@ -59,13 +59,6 @@ let menuItems = {
                     type: 'item',
                     url: '/leave',
                     icon: icons.IconCalendarEvent
-                },
-                {
-                    id: 'dept-list',
-                    title: 'Department List',
-                    type: 'item',
-                    icon: icons.IconBrandChrome,
-                    url: '/department-list'
                 }
             ]
         }

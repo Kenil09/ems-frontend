@@ -1,32 +1,46 @@
 import { useEffect, useState } from 'react';
 // material-ui
 import { Box, Tooltip, IconButton, Button } from '@mui/material';
+import toast from 'react-hot-toast';
+import { useSelector, useDispatch } from 'react-redux';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import MUIDataTable from 'mui-datatables';
 import { IconEdit, IconPlus, IconTrash } from '@tabler/icons';
-import { useGetDesignationsQuery } from 'store/Services/designation';
 import DesignationModal from './DesignationModal';
-import dayjs from 'dayjs';
+import { deleteDesignation, fetchDesignations } from 'store/designationSlice';
+import FormatDate from 'views/utilities/FormatDate';
+import apiClient from 'service/service';
 
-const Designations = () => {
+const Department = () => {
+    const dispatch = useDispatch();
+    const data = useSelector((state) => state.designation.data);
     const [show, setShow] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
-    const [isEditMode, setIsEditMode] = useState();
+    const [isEditMode, setIsEditMode] = useState(false);
 
-    const { data, refetch } = useGetDesignationsQuery(undefined, {
-        pollingInterval: 60000
-    });
+    useEffect(() => {
+        dispatch(fetchDesignations());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const removeDepartment = async (id) => {
+        try {
+            const { data } = await apiClient().delete(`/designation/${id}`);
+            dispatch(deleteDesignation(data?.designation));
+            toast.success(data?.message);
+        } catch (error) {
+            console.log(error);
+            toast.error(error.data?.message);
+        }
+    };
 
     const handleEvent = () => {
         setShow(!show);
         setIsEditMode();
     };
 
-    useEffect(() => {
-        refetch();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    console.log(data);
 
     const columns = [
         {
@@ -41,12 +55,37 @@ const Designations = () => {
         },
         {
             name: 'name',
-            label: 'Designation Name'
+            label: 'Name'
+        },
+        {
+            name: 'createdBy',
+            label: 'Added By',
+            options: {
+                customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
+            }
         },
         {
             name: 'createdAt',
             label: 'Added Time',
-            customBodyRender: (value) => dayjs('DD-MMM-YYYY HH:mm A')
+            options: {
+                customBodyRender: (value) => FormatDate(value)
+            }
+        },
+        {
+            name: 'updatedBy',
+            label: 'Modified By',
+            options: {
+                customBodyRender: (value) => {
+                    return value ? `${value?.firstName} ${value?.lastName}` : '';
+                }
+            }
+        },
+        {
+            name: 'updatedAt',
+            label: 'Modified Time',
+            options: {
+                customBodyRender: (value) => FormatDate(value)
+            }
         },
         {
             name: 'Actions',
@@ -55,7 +94,7 @@ const Designations = () => {
                 onRowClick: false,
                 empty: true,
                 viewColumns: false,
-                customBodyRender: (value, tableMeta, updateValue) => (
+                customBodyRender: (value, tableMeta) => (
                     <Box>
                         <Tooltip title="Edit">
                             <IconButton
@@ -63,9 +102,9 @@ const Designations = () => {
                                 onClick={(event) => {
                                     event.stopPropagation();
                                     handleEvent();
-                                    setModalTitle('Update Designation Details');
-                                    const index = data.companies.findIndex((company) => company._id === tableMeta.rowData[0]);
-                                    setIsEditMode(data.companies[index]);
+                                    setModalTitle('Update Designation');
+                                    const index = data.findIndex((company) => company._id === tableMeta.rowData[0]);
+                                    setIsEditMode(data[index]);
                                 }}
                                 sx={{ marginRight: '12px' }}
                             >
@@ -77,9 +116,7 @@ const Designations = () => {
                                 color="secondary"
                                 onClick={(event) => {
                                     event.stopPropagation();
-                                    // deleteCompany(tableMeta.rowData[0]);
-                                    // setConfirmationOpen(true);
-                                    // setDeleteData(tableMeta.rowData[0]);
+                                    removeDepartment(tableMeta.rowData[0]);
                                 }}
                                 sx={{ color: 'error.main' }}
                             >
@@ -102,28 +139,34 @@ const Designations = () => {
     };
 
     return (
-        <MainCard title="Designations">
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
-                <Button
-                    onClick={() => {
-                        setModalTitle('Add Designation Details');
-                        handleEvent();
-                    }}
-                    variant="contained"
-                    // component={RouterLink}
-                    to="#"
-                    startIcon={<IconPlus />}
-                    color="secondary"
-                    size="large"
-                    disableElevation
-                >
-                    Add Designation
-                </Button>
-            </Box>
-            <MUIDataTable columns={columns} data={[]} options={options} />
-            <DesignationModal open={show} handleEvent={handleEvent} modalTitle={modalTitle} isEditMode={isEditMode} />
-        </MainCard>
+        <>
+            {!show ? (
+                <MainCard title="Departments">
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
+                        <Button
+                            onClick={() => {
+                                setModalTitle('Add Department');
+                                handleEvent();
+                            }}
+                            variant="contained"
+                            // component={RouterLink}
+                            to="#"
+                            startIcon={<IconPlus />}
+                            color="secondary"
+                            size="large"
+                            disableElevation
+                        >
+                            Add Designation
+                        </Button>
+                    </Box>
+
+                    <MUIDataTable columns={columns} data={data} options={options} />
+                </MainCard>
+            ) : (
+                <DesignationModal open={show} handleEvent={handleEvent} modalTitle={modalTitle} isEditMode={isEditMode} />
+            )}
+        </>
     );
 };
 
-export default Designations;
+export default Department;

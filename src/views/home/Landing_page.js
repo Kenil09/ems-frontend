@@ -22,7 +22,7 @@ function Landing_page() {
                             EM<span>PS</span>
                         </h2>
 
-                        <a href="#" className="btn btn-outline-info">
+                        <a href="/login" className="btn btn-outline-info">
                             Sign&nbsp;in
                         </a>
                     </nav>

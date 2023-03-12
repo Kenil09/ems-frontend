@@ -96,7 +96,7 @@ const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                                 <CustomFormLabel id="label-lead" required content="Department Lead" />
                             </Grid>
                             <Grid item xs={4}>
-                                <FormInput name="departmentLead" type="select" options={userOptions || []} variant="standard" />
+                                <FormInput name="departmentLead" type="select" options={userOptions || []} variant="standard" searchAble />
                             </Grid>
                         </Grid>
                         <Grid item xs={12} container direction="row">
@@ -104,7 +104,13 @@ const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                                 <CustomFormLabel id="label-name" content="Parent Department" />
                             </Grid>
                             <Grid item xs={4}>
-                                <FormInput name="parentDepartment" type="select" options={departmentOptions || []} variant="standard" />
+                                <FormInput
+                                    name="parentDepartment"
+                                    type="select"
+                                    options={departmentOptions || []}
+                                    variant="standard"
+                                    searchAble
+                                />
                             </Grid>
                         </Grid>
                         {isEditMode && <SystemFields data={isEditMode} />}

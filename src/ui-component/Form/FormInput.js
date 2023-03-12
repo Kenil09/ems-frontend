@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { FormControl, Select, TextField, MenuItem, InputLabel, FormHelperText, ListSubheader, InputAdornment } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormContext } from 'react-hook-form';
 import { Search } from '@mui/icons-material';
 import { useState, useMemo } from 'react';
@@ -125,10 +125,9 @@ function FormInput({
                     case 'date':
                         return (
                             <>
-                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         {...fieldRegister}
-                                        value={methods.watch(name)}
                                         label={label}
                                         onChange={(newValue) => {
                                             methods.setValue(name, dayjs(newValue).toISOString());

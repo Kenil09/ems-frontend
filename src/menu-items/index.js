@@ -46,6 +46,14 @@ let menuItems = {
                     breadcrumbs: false
                 },
                 {
+                    id: 'attendance',
+                    title: 'Attendance',
+                    type: 'item',
+                    url: '/attendance',
+                    icon: icons.IconCalendarTime,
+                    breadcrumbs: false
+                },
+                {
                     id: 'shift',
                     title: 'Shift Schedule',
                     type: 'item',

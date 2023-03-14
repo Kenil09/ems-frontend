@@ -1,27 +1,58 @@
 import { useEffect, useState } from 'react';
-
 // material-ui
-import { Grid } from '@mui/material';
-
+import { Box, Tooltip, IconButton, Button } from '@mui/material';
+import toast from 'react-hot-toast';
+import { useSelector, useDispatch } from 'react-redux';
 // project imports
-import TotalIncomeLightCard from './TotalIncomeLightCard';
-import { gridSpacing } from 'store/constant';
+import MainCard from 'ui-component/cards/MainCard';
+import MUIDataTable from 'mui-datatables';
+import { IconEdit, IconPlus, IconTrash } from '@tabler/icons';
+import EmployeeModal from './EmployeeModal';
+import { deleteDepartment, fetchDepartments } from 'store/departmentSlice';
+import { deleteUser, fetchUsers } from 'store/usersSlice';
+import { fetchDesignations } from 'store/designationSlice';
+import FormatDate from 'views/utilities/FormatDate';
+import apiClient from 'service/service';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
-const Shift = () => {
-    const [isLoading, setLoading] = useState(true);
-    useEffect(() => {
-        setLoading(false);
-    }, []);
+const Attendance = () => {
+    const dispatch = useDispatch();
+    const [show, setShow] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [isEditMode, setIsEditMode] = useState(false);
+    const handleEvent = () => {
+        setShow(!show);
+        setIsEditMode();
+    };
 
     return (
-        <Grid container spacing={gridSpacing}>
-            <Grid item xs={12}>
-                <TotalIncomeLightCard isLoading={isLoading} />
-            </Grid>
-        </Grid>
+        <>
+            {!show ? (
+                <MainCard title="Shift">
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
+                        <Button
+                            onClick={() => {
+                                setModalTitle('Add Employee');
+                                handleEvent();
+                            }}
+                            variant="contained"
+                            // component={RouterLink}
+                            to="#"
+                            startIcon={<IconPlus />}
+                            color="secondary"
+                            size="large"
+                            disableElevation
+                        >
+                            Add Custom Shift
+                        </Button>
+                    </Box>
+                </MainCard>
+            ) : (
+                <EmployeeModal handleEvent={handleEvent} modalTitle={modalTitle} isEditMode={isEditMode} />
+            )}
+        </>
     );
 };
 
-export default Shift;
+export default Attendance;

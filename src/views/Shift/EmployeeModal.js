@@ -84,11 +84,7 @@ const EmployeeModel = () => {
                                     </FormInputGrid> */}
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['TimePicker', 'TimePicker']}>
-                                            <TimePicker
-                                                label="Controlled picker"
-                                                value={value}
-                                                onChange={(newValue) => setValue(newValue)}
-                                            />
+                                            <TimePicker value={value} onChange={(newValue) => setValue(newValue)} />
                                         </DemoContainer>
                                     </LocalizationProvider>
                                 </FormComponentGrid>
@@ -103,11 +99,7 @@ const EmployeeModel = () => {
                                     </FormInputGrid> */}
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['TimePicker', 'TimePicker']}>
-                                            <TimePicker
-                                                label="Controlled picker"
-                                                value={value}
-                                                onChange={(newValue) => setValue(newValue)}
-                                            />
+                                            <TimePicker value={value} onChange={(newValue) => setValue(newValue)} />
                                         </DemoContainer>
                                     </LocalizationProvider>
                                 </FormComponentGrid>
@@ -130,11 +122,7 @@ const EmployeeModel = () => {
                                     </FormInputGrid> */}
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['TimePicker', 'TimePicker']}>
-                                            <TimePicker
-                                                label="Controlled picker"
-                                                value={value}
-                                                onChange={(newValue) => setValue(newValue)}
-                                            />
+                                            <TimePicker value={value} onChange={(newValue) => setValue(newValue)} />
                                         </DemoContainer>
                                     </LocalizationProvider>
                                     <FormLabelGrid>
@@ -146,11 +134,7 @@ const EmployeeModel = () => {
                                     </FormInputGrid> */}
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['TimePicker', 'TimePicker']}>
-                                            <TimePicker
-                                                label="Controlled picker"
-                                                value={value}
-                                                onChange={(newValue) => setValue(newValue)}
-                                            />
+                                            <TimePicker value={value} onChange={(newValue) => setValue(newValue)} />
                                         </DemoContainer>
                                     </LocalizationProvider>
                                     <FormLabelGrid>

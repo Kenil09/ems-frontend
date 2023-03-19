@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    user: null,
+    details: null,
     fetchState: 'idle' // idle, pending, error
 };
 
@@ -10,10 +10,10 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, { payload }) => {
-            state.user = payload;
+            state.details = payload;
         },
         removeUser: (state) => {
-            state.user = null;
+            state.details = null;
         }
     }
 });

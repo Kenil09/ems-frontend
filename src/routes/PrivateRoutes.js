@@ -21,7 +21,7 @@ const Designations = Loadable(lazy(() => import('views/Designations')));
 const Employees = Loadable(lazy(() => import('views/Employee')));
 
 // ==============================|| MAIN ROUTING ||============================== //
-const Roles = ['superAdmin', 'admin', 'manager', 'employee'];
+const Roles = ['admin', 'teamMember', 'teamIncharge', 'manager'];
 
 const MainRoutes = {
     path: '/',

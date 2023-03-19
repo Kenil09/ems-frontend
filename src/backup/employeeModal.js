@@ -76,7 +76,7 @@ const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
     });
 
     const onSubmit = (values) => {
-        console.log('val', values);
+        //('val', values);
         if (isEditMode) {
             updateDesignation({ id: isEditMode?._id, data: values });
         } else {

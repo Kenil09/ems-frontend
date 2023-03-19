@@ -34,22 +34,35 @@
     margin-left: 50px;
 }
 
+.display {
+    height: 100%;
+    width: 100%;
+}
+
 .content {
     font-size: 16px;
     color: #222;
     line-height: 1.8;
-    margin-top: 20px;
-    margin-bottom: 15px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .img2 {
-    margin-top: 20px;
+    /* margin-top: 20px;
     padding-right: 50px;
-    margin-right: 40px;
+    margin-right: 40px; */
+    display: block;
+    margin-top: auto;
+    margin-right: auto;
+    height: 100%;
+    width: 100%;
 }
 
 .img3 {
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    height: 100%;
+    width: 100%;
 }
 
 .div3 {
@@ -57,13 +70,16 @@
 }
 
 .img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     height: 30%;
     width: 30%;
-    margin-left: 25%;
 }
 
 .head {
-    margin-left: 18%;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 30px;
 }
 
@@ -80,9 +96,11 @@
 }
 
 .img1 {
-    height: 50%;
-    width: 70%;
-    margin-left: 15%;
+    height: 48%;
+    width: 48%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .first {
@@ -99,7 +117,7 @@
 }
 
 .btn {
-    background-color: #f9004d;
+    background-color: #00a2ff;
     color: white;
     text-decoration: none;
     border: 2px solid transparent;
@@ -126,10 +144,8 @@
     padding-left: 0;
 }
 
-.title h2 {
-    font-size: 45px;
-    width: 100%;
-    margin: 30px auto;
+.title {
+    color: #222;
     text-align: center;
 }
 
@@ -140,16 +156,6 @@
     margin-bottom: 30px;
 }
 
-/* .card {
-    height: 365px;
-    width: 335px;
-    padding: 20px 35px;
-    border-radius: 20px;
-    margin: 15px;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-} */
 .card {
     margin: 30px;
     padding: 20px 35px;
@@ -162,12 +168,16 @@
 .h5 {
     font-size: 23px;
     margin: 20px;
+    color: #222;
+    text-align: center;
 }
 
 .pra {
     font-size: 16px;
     line-height: 27px;
     margin-bottom: 25px;
+    color: #222;
+    text-align: center;
 }
 
 .manage {
@@ -178,12 +188,10 @@
 }
 
 .manage-text {
-    font-size: 16px;
-    line-height: 27px;
+    margin: 30px;
     margin-bottom: 25px;
     text-align: center;
-    margin-left: 100px;
-    margin-right: 50px;
+    color: #223;
 }
 
 .header-top {
@@ -212,7 +220,7 @@ nav {
     cursor: pointer;
 }
 
-span {
+.span {
     color: #f9004d;
 }
 
@@ -241,14 +249,10 @@ span {
     margin-bottom: 25px;
     margin-left: 80px;
 }
-/* .MuiInputLabel-root {
-    font-size: 17px !important;
-    padding-bottom: 17px !important;
-}
 
-.MuiInput-root {
-    height: 20px !important;
-} */
+.p {
+    margin: 40px;
+}
 
 .video1 {
     width: 300px;
@@ -257,8 +261,20 @@ span {
 
 .imgtext {
     margin-bottom: 10px;
+    height: 100%;
+    width: 100%;
 }
 
 .all {
     overflow: hidden;
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.heading {
+    color: #222;
+    margin-top: 50px;
+    margin-bottom: 20px;
 }

@@ -11,7 +11,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
         const { data } = await apiClient().get('/user');
         return data?.users;
     } catch (error) {
-        console.log(error);
+        //(error);
     }
 });
 

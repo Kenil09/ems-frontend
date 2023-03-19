@@ -169,7 +169,7 @@ const EmployeeModel = ({ handleEvent, modalTitle, isEditMode }) => {
             }
             handleEvent();
         } catch (error) {
-            console.log(error);
+            //(error);
             toast.error(error?.data?.message);
         }
     };

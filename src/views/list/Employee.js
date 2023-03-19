@@ -59,11 +59,11 @@ const Employee = () => {
                     alert(message, status);
                 } else {
                     setData(data);
-                    console.log(data);
+                    //(data);
                 }
             })
             .catch((err) => {
-                console.log(err);
+                //(err);
             });
     };
     const handleSubmite = () => {
@@ -82,7 +82,7 @@ const Employee = () => {
                 }
             })
             .catch((err) => {
-                console.log(err);
+                //(err);
             });
     };
     const handleEdit = () => {
@@ -101,7 +101,7 @@ const Employee = () => {
                 }
             })
             .catch((err) => {
-                console.log(err);
+                //(err);
             });
     };
     //handle Delete Function
@@ -120,11 +120,11 @@ const Employee = () => {
                 }
             })
             .catch((err) => {
-                console.log(err);
+                //(err);
             });
     };
     //call this function in useEffect
-    console.log(ViewShow, RowData);
+    //(ViewShow, RowData);
     useEffect(() => {
         GetEmployeeData();
     }, []);

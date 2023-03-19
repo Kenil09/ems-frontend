@@ -1,0 +1,34 @@
+.my-table {
+    width: 100%;
+    font-size: 14px;
+    border: 1px solid #f2f2f2;
+    margin-top: 15px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.my-table th,
+.my-table td {
+    text-align: center;
+    font-size: 15px;
+}
+.my-table thead th {
+    margin-left: 400px;
+}
+.my-table td {
+    padding: 15px;
+}
+.my-table tr {
+    border-bottom: 1px solid rgb(231, 224, 224);
+}
+.my-table thead tr {
+    background-color: #f2f2f2;
+}
+.my-table th {
+    color: #333;
+    padding: 15px;
+}
+
+.my-table tbody .leaves:hover {
+    background-color: #ddd;
+}

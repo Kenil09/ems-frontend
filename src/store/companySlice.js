@@ -17,7 +17,7 @@ export const fetchCompanies = createAsyncThunk('company/fetchCompany', async (co
         const { data } = await apiClient().get(url);
         return data?.companies;
     } catch (error) {
-        console.log(error);
+        //(error);
     }
 });
 

@@ -35,13 +35,13 @@ function RegisterOTP() {
         password: Yup.string('Enter the password').min(6, 'password length must be 6 or more').required('Password is required'),
         securityCode: Yup.string('Enter the securityCode').required('Enter OTP')
     });
-    console.log(email, 'email');
+    //(email, 'email');
     const defaultValues = {
         email: email || '',
         password: '',
         securityCode: ''
     };
-    console.log(defaultValues, 'defaultValues');
+    //(defaultValues, 'defaultValues');
     const methods = useForm({
         resolver: yupResolver(RegisterSchema),
         defaultValues
@@ -54,13 +54,13 @@ function RegisterOTP() {
 
     const Submit = async (values) => {
         const newPayload = { email: email, password: values.password, securityCode: values.securityCode };
-        console.log(values);
+        //(values);
         try {
             const data = await axios.post('http://localhost:3001/user/register', newPayload);
             toast.success('User registerd successfully');
             navigate('/');
         } catch (err) {
-            console.log(err);
+            //(err);
             toast.error(err?.response?.data?.message);
         }
     };

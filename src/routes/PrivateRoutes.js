@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import Leave from '../views/Leave/index';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -21,7 +22,7 @@ const Designations = Loadable(lazy(() => import('views/Designations')));
 const Employees = Loadable(lazy(() => import('views/Employee')));
 
 // ==============================|| MAIN ROUTING ||============================== //
-const Roles = ['superAdmin', 'admin', 'manager', 'employee'];
+const Roles = ['superAdmin', 'admin', 'manager', 'teamMember'];
 
 const MainRoutes = {
     path: '/',
@@ -50,6 +51,11 @@ const MainRoutes = {
         {
             path: '/employees',
             element: <Employees />,
+            role: Roles
+        },
+        {
+            path: '/leave',
+            element: <Leave />,
             role: Roles
         }
     ]

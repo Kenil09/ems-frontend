@@ -11,7 +11,7 @@ export const fetchDepartments = createAsyncThunk('company/fetchCompany', async (
         const { data } = await apiClient().get('/department');
         return data?.departments;
     } catch (error) {
-        console.log(error);
+        //(error);
     }
 });
 

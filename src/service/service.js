@@ -16,7 +16,7 @@ const apiClient = () => {
     instance.interceptors.response.use(
         (response) => response,
         (error) => {
-            console.log('Api error catched by axios interceptor', error);
+            //('Api error catched by axios interceptor', error);
             if (error.response.status === 403 && error.response.statusText === 'Forbidden') {
                 localStorage.clear();
                 window.location.href = `/login`;

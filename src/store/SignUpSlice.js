@@ -17,7 +17,7 @@ const SignUpSlice = createSlice({
             }
             if (payload.type === 'company') {
                 const { type, ...other } = payload;
-                console.log(other, 'other');
+                //(other, 'other');
                 state.SignUpCache.Company = other;
             }
         },

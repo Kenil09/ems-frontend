@@ -30,7 +30,7 @@ const Department = () => {
             dispatch(deleteDesignation(data?.designation));
             toast.success(data?.message);
         } catch (error) {
-            console.log(error);
+            //(error);
             toast.error(error.data?.message);
         }
     };
@@ -40,7 +40,7 @@ const Department = () => {
         setIsEditMode();
     };
 
-    console.log(data);
+    //(data);
 
     const columns = [
         {
@@ -134,7 +134,7 @@ const Department = () => {
         responsive: 'standard',
         selectableRows: 'none',
         onRowClick: (rowData) => {
-            console.log(rowData);
+            //(rowData);
         }
     };
 

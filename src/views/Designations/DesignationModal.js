@@ -51,16 +51,16 @@ const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                 dispatch(addDepartment(data.designation));
                 toast.success(data.message);
             }
-            console.log('got here');
+            //('got here');
 
             handleEvent();
         } catch (error) {
-            console.log(error);
+            //(error);
             toast.error(error?.data?.message);
         }
     };
 
-    console.log(isEditMode);
+    //(isEditMode);
 
     return (
         <MainCard title={modalTitle} backIcon handleBackEvent={handleEvent}>

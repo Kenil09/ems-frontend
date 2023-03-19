@@ -18,7 +18,8 @@ const Department = () => {
     const [show, setShow] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
-
+    const user = useSelector((state) => state.user.user);
+    //(user, 'user');
     useEffect(() => {
         dispatch(fetchDepartments());
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,7 +40,7 @@ const Department = () => {
         setIsEditMode();
     };
 
-    console.log(data);
+    //(data);
 
     const columns = [
         {
@@ -140,7 +141,7 @@ const Department = () => {
         responsive: 'standard',
         selectableRows: 'none',
         onRowClick: (rowData) => {
-            console.log(rowData);
+            //(rowData);
         }
     };
 

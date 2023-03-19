@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-
 // project imports
 import Loadable from 'ui-component/Loadable';
 import MinimalLayout from 'layout/MinimalLayout';
@@ -8,7 +7,7 @@ import MinimalLayout from 'layout/MinimalLayout';
 const AuthLogin3 = Loadable(lazy(() => import('views/pages/authentication/authentication3/Login3')));
 const AuthRegister3 = Loadable(lazy(() => import('views/pages/authentication/authentication3/Register3')));
 const Page404 = Loadable(lazy(() => import('views/404Page/Page404')));
-const LandPage = Loadable(lazy(() => import('views/home/Landing_page')));
+const LandingPage = Loadable(lazy(() => import('views/LandingPage/index')));
 const RegisterOTP = Loadable(lazy(() => import('views/pages/authentication/authentication3/RegisterOTP')));
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
@@ -30,8 +29,8 @@ const PublicRoutes = {
             element: <Page404 />
         },
         {
-            path: '/land-page',
-            element: <LandPage />
+            path: '/landingpage',
+            element: <LandingPage />
         },
         {
             path: '/registerOtp/:token',

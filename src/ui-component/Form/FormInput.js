@@ -2,6 +2,7 @@
 import { FormControl, Select, TextField, MenuItem, InputLabel, FormHelperText, ListSubheader, InputAdornment } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormContext } from 'react-hook-form';
 import { Search } from '@mui/icons-material';
 import { useState, useMemo } from 'react';
@@ -38,6 +39,7 @@ function FormInput({
     variant,
     searchAble,
     multiline,
+    defaultValue,
     fieldArray
 }) {
     const classes = useStyles();
@@ -86,6 +88,7 @@ function FormInput({
                                     labelId={`label-${name}`}
                                     error={Boolean(error)}
                                     MenuProps={{ PaperProps: { sx: { maxHeight: 300 } } }}
+                                    defaultValue={defaultValue}
                                 >
                                     {Boolean(searchAble) && (
                                         <ListSubheader>
@@ -125,19 +128,27 @@ function FormInput({
                     case 'date':
                         return (
                             <>
-                                <LocalizationProvider dateAdapter={AdapterMoment}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         {...fieldRegister}
-                                        value={methods.watch(name)}
+                                        //   value={methods.watch(name)}
                                         label={label}
                                         onChange={(newValue) => {
-                                            methods.setValue(name, dayjs(newValue).toISOString());
+                                            const isoString = dayjs(newValue).format('YYYY-MM-DD');
+                                            methods.setValue(name, isoString);
                                         }}
                                         color={color || 'secondary'}
                                         error={Boolean(error)}
+                                        //      dateFormat="MM-DD-YYYY"
                                         className={classes.customDatePicker}
                                         renderInput={(params) => (
-                                            <TextField variant="standard" {...params} error={Boolean(error)} helperText={error} />
+                                            <TextField
+                                                variant="standard"
+                                                {...params}
+                                                error={Boolean(error)}
+                                                helperText={error}
+                                                autoComplete="off"
+                                            />
                                         )}
                                     />
                                 </LocalizationProvider>
@@ -153,6 +164,7 @@ function FormInput({
                                 color={color || 'secondary'}
                                 size="medium"
                                 required={required}
+                                defaultValue={defaultValue}
                                 variant={variant || 'outlined'}
                                 error={Boolean(error)}
                                 helperText={error}

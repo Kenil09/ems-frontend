@@ -11,7 +11,7 @@ export const fetchDesignations = createAsyncThunk('designation/fetchDesignations
         const { data } = await apiClient().get('/designation');
         return data?.designations;
     } catch (error) {
-        console.log(error);
+        //(error);
     }
 });
 

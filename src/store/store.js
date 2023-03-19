@@ -9,6 +9,10 @@ import departmentReducer from './departmentSlice';
 import usersReducer from './usersSlice';
 import designationReducer from './designationSlice';
 import SignUpSlice from './SignUpSlice';
+import leaveSlice from './leaveSlice';
+import TypesLeaveSlice from './TypesLeaveSlice';
+import leavesSlice from './allLeaveSlice';
+import AllLeaveAccountSlice from './allLeaveAccount';
 import { api } from './Services/api';
 
 const persistConfig = {
@@ -20,11 +24,15 @@ const rootReducer = combineReducers({
     [api.reducerPath]: api.reducer,
     customization: customizationReducer,
     user: userReducer,
+    TypesLeave: TypesLeaveSlice,
     company: companyReducer,
     department: departmentReducer,
     users: usersReducer,
     designation: designationReducer,
-    SignUpUser: SignUpSlice
+    leave: leaveSlice,
+    SignUpUser: SignUpSlice,
+    leaves: leavesSlice,
+    AllLeaveAccount: AllLeaveAccountSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

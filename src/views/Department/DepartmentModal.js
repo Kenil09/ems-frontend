@@ -27,6 +27,7 @@ const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
         value: _id,
         label: `${firstName} ${lastName}`
     }));
+    //(userOptions, 'UserOptions');
     const departmentOptions = useSelector((state) => state.department.data)?.map(({ _id, name }) => ({ label: name, value: _id }));
 
     const methods = useForm({
@@ -61,16 +62,16 @@ const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                 dispatch(addDepartment(data.department));
                 toast.success(data.message);
             }
-            console.log('got here');
+            //('got here');
 
             handleEvent();
         } catch (error) {
-            console.log(error);
+            //(error);
             toast.error(error?.data?.message);
         }
     };
 
-    console.log(isEditMode);
+    //(isEditMode);
 
     return (
         <MainCard title={modalTitle} backIcon handleBackEvent={handleEvent}>

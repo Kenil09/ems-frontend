@@ -115,7 +115,7 @@ const Company = () => {
         responsive: 'standard',
         selectableRows: 'none',
         onRowClick: (rowData) => {
-            console.log(rowData);
+            //(rowData);
         }
     };
 

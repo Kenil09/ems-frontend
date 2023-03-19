@@ -35,14 +35,14 @@ export const SignupModel = ({ open, handleClose }) => {
                 userDetails: payload.User,
                 companyDetails: payload.Company
             };
-            console.log(newPayload, 'newpayload');
+            //(newPayload, 'newpayload');
             const data = await axios.post('http://localhost:3001/company/', newPayload);
             handleClose();
             toast.success('Email is sent on Register EmailID');
-            console.log('successfully');
-            console.log(data);
+            //('successfully');
+            //(data);
         } catch (Err) {
-            console.log(Err);
+            //(Err);
         }
     };
     const handleEvent = () => {

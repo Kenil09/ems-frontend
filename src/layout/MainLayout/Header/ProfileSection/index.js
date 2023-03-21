@@ -40,11 +40,15 @@ import User1 from 'assets/images/users/user-round.svg';
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 import { useDispatch } from 'react-redux';
 import { removeUser } from 'store/userSlice';
+import DisplayRoles from 'utils/DisplayRoles';
+import Profile from 'ui-component/Profile';
+import AlphabetAvatar from 'ui-component/Profile/AlphabetAvatar';
 
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.details);
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
     const navigate = useNavigate();
@@ -116,18 +120,31 @@ const ProfileSection = () => {
                     }
                 }}
                 icon={
-                    <Avatar
-                        src={User1}
-                        sx={{
-                            ...theme.typography.mediumAvatar,
-                            margin: '8px 0 8px 8px !important',
-                            cursor: 'pointer'
-                        }}
-                        ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        color="inherit"
-                    />
+                    user?.profilePicture ? (
+                        <Profile
+                            src={user?.profilePicture}
+                            sx={{
+                                ...theme.typography.mediumAvatar,
+                                margin: '8px 0 8px 8px !important',
+                                cursor: 'pointer'
+                            }}
+                            aria-controls={open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            color="inherit"
+                        />
+                    ) : (
+                        <AlphabetAvatar
+                            name={`${user?.firstName} ${user?.lastName}`.toUpperCase()}
+                            sx={{
+                                ...theme.typography.mediumAvatar,
+                                margin: '8px 0 8px 8px !important',
+                                cursor: 'pointer'
+                            }}
+                            aria-controls={open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            color="inherit"
+                        />
+                    )
                 }
                 label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
                 variant="outlined"
@@ -160,17 +177,19 @@ const ProfileSection = () => {
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
-                                    <Box sx={{ p: 2 }}>
+                                    <Box sx={{ p: 2, paddingBottom: '0px' }}>
                                         <Stack>
                                             <Stack direction="row" spacing={0.5} alignItems="center">
                                                 <Typography variant="h4">Good Morning,</Typography>
                                                 <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                    Johne Doe
+                                                    {`${user?.firstName} ${user?.lastName}`}
                                                 </Typography>
                                             </Stack>
-                                            <Typography variant="subtitle2">Project Admin</Typography>
+                                            <Typography variant="subtitle2" sx={{ pb: 1, pt: 1 }}>
+                                                {DisplayRoles[user?.role] || 'employee'}
+                                            </Typography>
                                         </Stack>
-                                        <OutlinedInput
+                                        {/* <OutlinedInput
                                             sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
                                             id="input-search-profile"
                                             value={value}
@@ -185,14 +204,14 @@ const ProfileSection = () => {
                                             inputProps={{
                                                 'aria-label': 'weight'
                                             }}
-                                        />
+                                        /> */}
                                         <Divider />
                                     </Box>
                                     <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}>
-                                        <Box sx={{ p: 2 }}>
-                                            <UpgradePlanCard />
-                                            <Divider />
-                                            <Card
+                                        <Box sx={{ p: 2, paddingTop: '0px' }}>
+                                            {/* <UpgradePlanCard /> */}
+                                            {/* <Divider /> */}
+                                            {/* <Card
                                                 sx={{
                                                     bgcolor: theme.palette.primary.light,
                                                     my: 2
@@ -233,8 +252,8 @@ const ProfileSection = () => {
                                                         </Grid>
                                                     </Grid>
                                                 </CardContent>
-                                            </Card>
-                                            <Divider />
+                                            </Card> */}
+                                            {/* <Divider /> */}
                                             <List
                                                 component="nav"
                                                 sx={{
@@ -251,7 +270,7 @@ const ProfileSection = () => {
                                                     }
                                                 }}
                                             >
-                                                <ListItemButton
+                                                {/* <ListItemButton
                                                     sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                     selected={selectedIndex === 0}
                                                     onClick={(event) => handleListItemClick(event, 0, '/user/account-profile/profile1')}
@@ -260,7 +279,7 @@ const ProfileSection = () => {
                                                         <IconSettings stroke={1.5} size="1.3rem" />
                                                     </ListItemIcon>
                                                     <ListItemText primary={<Typography variant="body2">Account Settings</Typography>} />
-                                                </ListItemButton>
+                                                </ListItemButton> */}
                                                 <ListItemButton
                                                     sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                     selected={selectedIndex === 1}
@@ -273,9 +292,9 @@ const ProfileSection = () => {
                                                         primary={
                                                             <Grid container spacing={1} justifyContent="space-between">
                                                                 <Grid item>
-                                                                    <Typography variant="body2">Social Profile</Typography>
+                                                                    <Typography variant="body2">Profile</Typography>
                                                                 </Grid>
-                                                                <Grid item>
+                                                                {/* <Grid item>
                                                                     <Chip
                                                                         label="02"
                                                                         size="small"
@@ -284,7 +303,7 @@ const ProfileSection = () => {
                                                                             color: theme.palette.background.default
                                                                         }}
                                                                     />
-                                                                </Grid>
+                                                                </Grid> */}
                                                             </Grid>
                                                         }
                                                     />

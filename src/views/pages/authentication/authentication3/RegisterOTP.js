@@ -10,19 +10,20 @@ import ReactInputVerificationCode from 'react-input-verification-code';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 // @mui
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
-import { Stack, IconButton, InputAdornment, Typography, Grid } from '@mui/material';
+import { Stack, IconButton, InputAdornment, Typography, Grid, TextField } from '@mui/material';
 import { FormProvider } from 'react-hook-form';
 import FormInput from 'ui-component/Form/FormInput';
 import { LoadingButton } from '@mui/lab';
 
-import Iconify from 'ui-component/Iconify';
-
 function RegisterOTP() {
     const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
     const { token } = useParams();
     let email;
     const navigate = useNavigate();
@@ -49,8 +50,11 @@ function RegisterOTP() {
     const {
         handleSubmit,
         setValue,
+        register,
         formState: { isSubmitting, errors }
     } = methods;
+
+    console.log(methods?.getValues(), 'methods');
 
     const Submit = async (values) => {
         const newPayload = { email: email, password: values.password, securityCode: values.securityCode };
@@ -79,7 +83,27 @@ function RegisterOTP() {
                                         <form onSubmit={methods.handleSubmit(Submit)}>
                                             <Stack spacing={4}>
                                                 <FormInput name="email" label="Email" type={'text'} defaultValue={email} disabled />
-                                                <FormInput name="password" label="Password" type={'password'} />
+                                                <TextField
+                                                    name="password"
+                                                    label="Password"
+                                                    variant="outlined"
+                                                    type={showPassword ? 'text' : 'password'} // <-- This is where the magic happens
+                                                    InputProps={{
+                                                        // <-- This is where the toggle button is added.
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label="toggle password visibility"
+                                                                    onClick={handleClickShowPassword}
+                                                                    onMouseDown={handleMouseDownPassword}
+                                                                >
+                                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                    {...register('password')}
+                                                />{' '}
                                                 <div className="custom-styles">
                                                     <ReactInputVerificationCode
                                                         length={6}

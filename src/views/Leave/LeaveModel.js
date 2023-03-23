@@ -121,6 +121,7 @@ export const LeaveModel = ({ handleEvent, modalTitle, open, setOpen, viewLeave, 
                                     defaultValues={viewLeave?.Reason}
                                     disabled={viewLeave?.Reason ? true : false}
                                     variant="standard"
+                                    multiline
                                 />
                             </Grid>
                         </Grid>

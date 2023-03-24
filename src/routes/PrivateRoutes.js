@@ -24,7 +24,7 @@ const Shift = Loadable(lazy(() => import('views/Shift')));
 ///const LandingPage = Loadable(lazy(() => import('views/LandingPage')));
 const Profile = Loadable(lazy(() => import('views/Profile')));
 // ==============================|| MAIN ROUTING ||============================== //
-const Roles = ['superAdmin', 'admin', 'manager', 'employee'];
+const Roles = ['manager', 'admin', 'teamIncharge', 'teamMember'];
 
 const MainRoutes = {
     path: '/',
@@ -65,11 +65,6 @@ const MainRoutes = {
             element: <Shift />,
             role: Roles
         },
-        // {
-        //     path: '/landingpage',
-        //     element: <LandingPage />,
-        //     role: Roles
-        // },
         {
             path: '/profile',
             element: <Profile />,

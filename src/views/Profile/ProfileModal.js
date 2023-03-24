@@ -111,8 +111,7 @@ const ProfileModal = ({ isLoading }) => {
                 <CardWrapper border={false} sx={{ p: '25px', marginBottom: '10px' }} content={false}>
                     <Stack direction="row" spacing={3}>
                         <IconButton color="primary" aria-label="upload picture" component="label">
-                            {/* <input hidden accept="image/*" type="file" /> */}
-
+                            <input hidden accept="image/*" type="file" />
                             <Avatar style={{ width: '100px', height: '100px' }}>{user.firstName}</Avatar>
                         </IconButton>
                         <Typography variant="h3">

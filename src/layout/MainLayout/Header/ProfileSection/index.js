@@ -40,11 +40,15 @@ import User1 from 'assets/images/users/user-round.svg';
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 import { useDispatch } from 'react-redux';
 import { removeUser } from 'store/userSlice';
+import DisplayRoles from 'utils/DisplayRoles';
+import Profile from 'ui-component/Profile';
+import AlphabetAvatar from 'ui-component/Profile/AlphabetAvatar';
 
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.details);
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
     const navigate = useNavigate();
@@ -131,18 +135,31 @@ const ProfileSection = () => {
                     }
                 }}
                 icon={
-                    <Avatar
-                        src={User1}
-                        sx={{
-                            ...theme.typography.mediumAvatar,
-                            margin: '8px 0 8px 8px !important',
-                            cursor: 'pointer'
-                        }}
-                        ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        color="inherit"
-                    />
+                    user?.profilePicture ? (
+                        <Profile
+                            src={user?.profilePicture}
+                            sx={{
+                                ...theme.typography.mediumAvatar,
+                                margin: '8px 0 8px 8px !important',
+                                cursor: 'pointer'
+                            }}
+                            aria-controls={open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            color="inherit"
+                        />
+                    ) : (
+                        <AlphabetAvatar
+                            name={`${user?.firstName} ${user?.lastName}`.toUpperCase()}
+                            sx={{
+                                ...theme.typography.mediumAvatar,
+                                margin: '8px 0 8px 8px !important',
+                                cursor: 'pointer'
+                            }}
+                            aria-controls={open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            color="inherit"
+                        />
+                    )
                 }
                 label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
                 variant="outlined"
@@ -175,7 +192,7 @@ const ProfileSection = () => {
                         <Paper>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
-                                    <Box sx={{ p: 2 }}>
+                                    <Box sx={{ p: 2, paddingBottom: '0px' }}>
                                         <Stack>
                                             <Stack direction="row" spacing={0.5} alignItems="center">
                                                 <Typography variant="h4">{greeting},</Typography>
@@ -205,7 +222,7 @@ const ProfileSection = () => {
                                                     }
                                                 }}
                                             >
-                                                <ListItemButton
+                                                {/* <ListItemButton
                                                     sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                     selected={selectedIndex === 0}
                                                     onClick={(event) => handleListItemClick(event, 0, '/profile')}

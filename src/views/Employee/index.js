@@ -13,6 +13,8 @@ import { deleteUser, fetchUsers } from 'store/usersSlice';
 import { fetchDesignations } from 'store/designationSlice';
 import FormatDate from 'views/utilities/FormatDate';
 import apiClient from 'service/service';
+import Profile from 'ui-component/Profile';
+import AlphabetAvatar from 'ui-component/Profile/AlphabetAvatar';
 
 const Employee = () => {
     const dispatch = useDispatch();
@@ -44,6 +46,18 @@ const Employee = () => {
     };
 
     const columns = [
+        {
+            name: 'profilePicture',
+            label: 'Profile',
+            options: {
+                customBodyRender: (value, tableMeta) =>
+                    value ? (
+                        <Profile src={value} alt="profile" />
+                    ) : (
+                        <AlphabetAvatar name={`${tableMeta?.rowData[2]} ${tableMeta?.rowData[3]}`} />
+                    )
+            }
+        },
         {
             name: '_id',
             label: 'id',

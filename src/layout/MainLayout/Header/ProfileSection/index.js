@@ -58,7 +58,6 @@ const ProfileSection = () => {
     const [notification, setNotification] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [open, setOpen] = useState(false);
-    const user = useSelector((state) => state.user.user);
     const currentDate = new Date();
     const hours = currentDate.getHours();
 
@@ -197,10 +196,10 @@ const ProfileSection = () => {
                                             <Stack direction="row" spacing={0.5} alignItems="center">
                                                 <Typography variant="h4">{greeting},</Typography>
                                                 <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                                                    {user.nickName}
+                                                    {user?.nickName}
                                                 </Typography>
                                             </Stack>
-                                            <Typography variant="subtitle2">Project {user.role}</Typography>
+                                            <Typography variant="subtitle2">Project {user?.role}</Typography>
                                         </Stack>
 
                                         <Divider />
@@ -222,7 +221,7 @@ const ProfileSection = () => {
                                                     }
                                                 }}
                                             >
-                                                {/* <ListItemButton
+                                                <ListItemButton
                                                     sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                     selected={selectedIndex === 0}
                                                     onClick={(event) => handleListItemClick(event, 0, '/profile')}
@@ -232,7 +231,6 @@ const ProfileSection = () => {
                                                     </ListItemIcon>
                                                     <ListItemText primary={<Typography variant="body2">Profile</Typography>} />
                                                 </ListItemButton>
-
                                                 <ListItemButton
                                                     sx={{ borderRadius: `${customization.borderRadius}px` }}
                                                     selected={selectedIndex === 4}

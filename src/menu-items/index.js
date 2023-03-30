@@ -7,11 +7,24 @@ import {
     IconBuilding,
     IconUser,
     IconCalendarTime,
-    IconCalendarEvent
+    IconCalendarEvent,
+    IconListDetails
 } from '@tabler/icons';
+import { EventAvailable } from '@mui/icons-material';
 
 // constant
-const icons = { IconBrandChrome, IconHelp, IconBuildingSkyscraper, IconUsers, IconBuilding, IconUser, IconCalendarTime, IconCalendarEvent };
+const icons = {
+    IconBrandChrome,
+    IconHelp,
+    IconBuildingSkyscraper,
+    IconUsers,
+    IconBuilding,
+    IconUser,
+    IconCalendarTime,
+    IconCalendarEvent,
+    IconListDetails,
+    IconEventAvaialble: EventAvailable
+};
 
 // ==============================|| MENU ITEMS ||============================== //
 
@@ -49,7 +62,7 @@ let menuItems = {
                     id: 'shift',
                     title: 'Shift Schedule',
                     type: 'item',
-                    url: '/shift',
+                    url: '/shifts',
                     icon: icons.IconCalendarTime,
                     breadcrumbs: false
                 },
@@ -59,6 +72,20 @@ let menuItems = {
                     type: 'item',
                     url: '/leave',
                     icon: icons.IconCalendarEvent
+                },
+                {
+                    id: 'tasks',
+                    title: 'Tasks',
+                    type: 'item',
+                    url: '/tasks',
+                    icon: icons.IconListDetails
+                },
+                {
+                    id: 'attendence',
+                    title: 'Attendence',
+                    type: 'item',
+                    url: '/attendences',
+                    icon: icons.IconEventAvaialble
                 }
             ]
         }

@@ -1,6 +1,18 @@
 /* eslint-disable react/prop-types */
-import { FormControl, Select, TextField, MenuItem, InputLabel, FormHelperText, ListSubheader, InputAdornment } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import {
+    FormControl,
+    Select,
+    TextField,
+    MenuItem,
+    InputLabel,
+    FormHelperText,
+    ListSubheader,
+    InputAdornment,
+    Checkbox,
+    FormControlLabel
+} from '@mui/material';
+import { DatePicker, LocalizationProvider, TimeField } from '@mui/x-date-pickers';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormContext } from 'react-hook-form';
 import { Search } from '@mui/icons-material';
@@ -38,10 +50,14 @@ function FormInput({
     variant,
     searchAble,
     multiline,
-    fieldArray
+    fieldArray,
+    placeholder,
+    className,
+    multiple
 }) {
     const classes = useStyles();
     const methods = useFormContext();
+    const { setError, clearErrors } = methods;
     const [searchText, setSearchText] = useState('');
     const displayedOptions = useMemo(() => {
         if (searchText !== '') {
@@ -65,6 +81,19 @@ function FormInput({
     };
     const error = Boolean(fieldArray) ? getFieldError() : methods.formState.errors[name]?.message;
 
+    if (type === 'checkBox') {
+        return (
+            <FormControlLabel
+                {...fieldRegister}
+                onClick={(event) => {
+                    methods.setValue(name, event.target.checked);
+                }}
+                className={className || ''}
+                control={<Checkbox checked={methods.watch(name)} color="secondary" />}
+            />
+        );
+    }
+
     return (
         <FormControl fullWidth>
             {(() => {
@@ -82,6 +111,7 @@ function FormInput({
                                     value={methods.watch(name)}
                                     label={label}
                                     color={color || 'secondary'}
+                                    multiple={multiple ? multiple : false}
                                     variant={variant || 'outlined'}
                                     labelId={`label-${name}`}
                                     error={Boolean(error)}
@@ -122,6 +152,42 @@ function FormInput({
                             </>
                         );
 
+                    case 'time':
+                        const timeString = methods.watch(name);
+                        const getValue = (val) => {
+                            if (dayjs.isDayjs(val)) {
+                                return val;
+                            } else {
+                                const dateString = `${dayjs().toISOString().split('T')[0]} ${val}`;
+                                return val ? dayjs(dateString, 'YYYY-MM-DD HH:mm') : null;
+                            }
+                        };
+                        const value = getValue(timeString);
+                        return (
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DemoContainer components={['TimeField']}>
+                                    <TimeField
+                                        {...fieldRegister}
+                                        label={label}
+                                        value={value}
+                                        size="medium"
+                                        onError={(error, val) => {
+                                            if (error === null) {
+                                                clearErrors(name);
+                                            } else {
+                                                setError(name, { message: 'Please enter time in format HH:mm', type: 'pattern' });
+                                            }
+                                        }}
+                                        fullWidth
+                                        onChange={(newValue) => methods.setValue(name, newValue)}
+                                        helperText={error}
+                                        format="HH:mm"
+                                        variant="standard"
+                                    />
+                                </DemoContainer>
+                            </LocalizationProvider>
+                        );
+
                     case 'date':
                         return (
                             <>
@@ -129,6 +195,7 @@ function FormInput({
                                     <DatePicker
                                         {...fieldRegister}
                                         label={label}
+                                        value={dayjs(methods.watch(name))}
                                         onChange={(newValue) => {
                                             methods.setValue(name, dayjs(newValue).toISOString());
                                         }}
@@ -151,6 +218,7 @@ function FormInput({
                                 disabled={disabled}
                                 color={color || 'secondary'}
                                 size="medium"
+                                placeholder={placeholder ? placeholder : ''}
                                 required={required}
                                 variant={variant || 'outlined'}
                                 error={Boolean(error)}

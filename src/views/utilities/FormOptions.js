@@ -32,6 +32,5 @@ export const getDepartmentOptions = (data) => {
 };
 
 export const getUserOptions = (data) => {
-    console.log(data);
     return data?.map(({ _id, firstName, lastName }) => ({ label: `${firstName} ${lastName}`, value: _id }));
 };

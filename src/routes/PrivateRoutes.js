@@ -19,6 +19,9 @@ const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 const Departments = Loadable(lazy(() => import('views/Department')));
 const Designations = Loadable(lazy(() => import('views/Designations')));
 const Employees = Loadable(lazy(() => import('views/Employee')));
+const Tasks = Loadable(lazy(() => import('views/Task')));
+const Shifts = Loadable(lazy(() => import('views/Shift')));
+const Attendences = Loadable(lazy(() => import('views/Attendence')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 const Roles = ['admin', 'teamMember', 'teamIncharge', 'manager'];
@@ -50,6 +53,21 @@ const MainRoutes = {
         {
             path: '/employees',
             element: <Employees />,
+            role: Roles
+        },
+        {
+            path: '/tasks',
+            element: <Tasks />,
+            role: Roles
+        },
+        {
+            path: '/shifts',
+            element: <Shifts />,
+            role: Roles
+        },
+        {
+            path: '/attendences',
+            element: <Attendences />,
             role: Roles
         }
     ]

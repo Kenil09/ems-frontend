@@ -1,8 +1,8 @@
-import { Grid, Box, Button, TextField, FormControl } from '@mui/material';
+import { Grid, Box, Button } from '@mui/material';
 import * as yup from 'yup';
 import MainCard from 'ui-component/cards/MainCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import toast from 'react-hot-toast';
 import FormInput from 'ui-component/Form/FormInput';
@@ -80,7 +80,6 @@ const EmployeeModel = ({ handleEvent, modalTitle, isEditMode }) => {
     const userOptions = getUserOptions(useSelector(({ users }) => users.data));
     const departmentOptions = getDepartmentOptions(useSelector(({ department }) => department.data));
     const designationOptions = getDesignationOptions(useSelector(({ designation }) => designation.data));
-
     const methods = useForm({
         resolver: yupResolver(validationSchema),
         defaultValues: {

@@ -1,0 +1,187 @@
+import { Select, Grid, Tab, FormControl, MenuItem, Typography, Button, Tabs, Box } from '@mui/material';
+import { IconPlus } from '@tabler/icons';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import MainCard from 'ui-component/cards/MainCard';
+import Profile from 'ui-component/Profile';
+import TaskModal from './TaskModal';
+import UserSelect from 'ui-component/Form/UserSelect';
+import apiClient from 'service/service';
+import toast from 'react-hot-toast';
+import FormatDate from 'views/utilities/FormatDate';
+import MUIDataTable from 'mui-datatables';
+import getTaskAttchements from 'utils/getTaskAttchements';
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`
+    };
+}
+
+const Task = () => {
+    const { user } = useSelector(({ user }) => user.details);
+    const [show, setShow] = useState(false);
+    const [taskUser, setTaskUser] = useState('');
+    const [modalTitle, setModalTitle] = useState('');
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [userTaskdata, setUserTaskdata] = useState([]);
+
+    const handleEvent = () => {
+        setShow(!show);
+        setIsEditMode();
+    };
+
+    const getUserTaskdata = async (val) => {
+        try {
+            const { data } = await apiClient().get(`/task/${val}`);
+            setUserTaskdata(data?.tasks);
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
+        }
+    };
+
+    useEffect(() => {
+        getTaskAttchements();
+        if (taskUser) {
+            getUserTaskdata(taskUser);
+        }
+    }, [taskUser]);
+
+    const [tabValue, setTabValue] = useState(0);
+
+    const handleTabChange = (event, newValue) => {
+        setTabValue(newValue);
+    };
+
+    const columns = [
+        {
+            name: '_id',
+            label: 'id',
+            options: {
+                display: false,
+                viewColumns: false,
+                filter: false,
+                sort: false
+            }
+        },
+
+        {
+            name: 'title',
+            label: 'Title'
+        },
+        {
+            name: 'assignee',
+            label: 'Assignee',
+            options: {
+                customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
+            }
+        },
+        {
+            name: 'reporter',
+            label: 'Reporter',
+            options: {
+                customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
+            }
+        },
+        {
+            name: 'dueDate',
+            label: 'Due Date',
+            options: {
+                customBodyRender: (value) => FormatDate(value)
+            }
+        }
+    ];
+
+    const options = {
+        filterType: 'dropdown',
+        responsive: 'standard',
+        selectableRows: 'none',
+        onRowClick: (rowData) => {
+            const data = userTaskdata.find((task) => task?._id === rowData[0]);
+            setModalTitle('Task View');
+            handleEvent();
+            setIsEditMode(data);
+        }
+    };
+
+    return (
+        <>
+            {!show ? (
+                <MainCard title="Tasks">
+                    <Grid display="flex" justifyContent="space-between" container borderRadius="10px">
+                        <Grid item xs={3}>
+                            <UserSelect user={taskUser} setUser={setTaskUser} profileSize={3} searchAble={true} />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Button
+                                onClick={() => {
+                                    setModalTitle('Add Task');
+                                    handleEvent();
+                                }}
+                                variant="contained"
+                                // component={RouterLink}
+                                to="#"
+                                startIcon={<IconPlus />}
+                                color="secondary"
+                                size="large"
+                                disableElevation
+                            >
+                                Add Task
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid container marginTop={2}>
+                        <Tabs
+                            value={tabValue}
+                            onChange={handleTabChange}
+                            aria-label="task tabs"
+                            textColor="secondary"
+                            indicatorColor="secondary"
+                        >
+                            <Tab label="Assigned Task" {...a11yProps(0)} />
+                            <Tab label="Submitted Task" {...a11yProps(1)} />
+                        </Tabs>
+                    </Grid>
+                    <TabPanel value={tabValue} index={0}>
+                        <MUIDataTable data={userTaskdata.filter(({ state }) => state === 'assigned')} columns={columns} options={options} />
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={1}>
+                        <MUIDataTable data={userTaskdata.filter(({ state }) => state === 'review')} columns={columns} options={options} />
+                    </TabPanel>
+                </MainCard>
+            ) : (
+                <TaskModal
+                    handleEvent={handleEvent}
+                    modalTitle={modalTitle}
+                    isEditMode={isEditMode}
+                    selectedUser={taskUser}
+                    getTaskData={getUserTaskdata}
+                />
+            )}
+        </>
+    );
+};
+
+export default Task;

@@ -162,7 +162,7 @@ const Employee = () => {
                                     event.stopPropagation();
                                     handleEvent();
                                     setModalTitle('Update Employee');
-                                    const index = data.findIndex((company) => company._id === tableMeta.rowData[0]);
+                                    const index = data.findIndex((user) => user._id === tableMeta.rowData[1]);
                                     setIsEditMode(data[index]);
                                 }}
                                 sx={{ marginRight: '12px' }}
@@ -175,7 +175,7 @@ const Employee = () => {
                                 color="secondary"
                                 onClick={(event) => {
                                     event.stopPropagation();
-                                    removeEmployee(tableMeta.rowData[0]);
+                                    removeEmployee(tableMeta.rowData[1]);
                                 }}
                                 sx={{ color: 'error.main' }}
                             >

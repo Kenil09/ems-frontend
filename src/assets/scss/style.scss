@@ -141,3 +141,184 @@
         color: red
     }
 }
+
+.doc-dropzone {
+    border: 2px dashed #673AB7;//#06122B;
+    border-radius: 20px;
+    padding: 20px;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.doc-dropzone:hover {
+    border: 2px solid #673AB7;
+}
+
+.dropzone-button-grid {
+    margin: 10px;
+    display: flex;
+}
+
+.dropzone-file-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    
+    .dropzone-file-name {
+        display: flex;
+        margin: 0px 10px;
+        align-items: center;
+    }
+}
+
+.pdf_page {
+    max-height: 150px;
+}
+
+.week-table-cell {
+    border: 1px solid rgba(224, 224, 224, 1);
+}
+
+.week-header-padding {
+    padding: 6px;
+}
+
+.week-checkBox {
+    margin: 0;
+} 
+
+.fc-theme-standard {
+    .fc-scrollgrid {
+      border: 0;
+    }
+  }
+
+.fc-col-header,
+.fc-scrollgrid-sync-table {
+border-collapse: separate !important;
+border-spacing: 10px !important;
+}
+
+  .fc-theme-standard {
+    td,
+    th {
+      border: 0;
+    }
+  }
+
+  .fc-scrollgrid-sync-inner {
+    text-align: center;
+    cursor: pointer;
+
+    .fc-col-header-cell-cushion {
+      color: #8c8c8c;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+
+  .fc-daygrid-day-frame {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    background: #fff;
+    box-shadow: 0px 4px 12px rgba(6, 18, 43, 0.08);
+    border-radius: 12px;
+    padding: 8px;
+
+    &:hover {
+      background: #fff;
+    }
+
+    &::after {
+      content: initial;
+    }
+
+    &::before {
+      content: initial;
+    }
+
+    .fc-daygrid-day-top {
+      // flex-direction: initial;
+      justify-content: center;
+
+      .fc-daygrid-day-number {
+        color: black;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 24px;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+
+    .fc-daygrid-day-events {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex-direction: row-reverse;
+      justify-content: center;
+
+      &::after {
+        content: initial;
+      }
+
+      &::before {
+        content: initial;
+      }
+
+      .fc-daygrid-event-harness {
+        display: flex;
+        align-items: center;
+
+        &::after {
+          content: initial;
+        }
+
+        &::before {
+          content: initial;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 32px;
+       }
+
+       .fc-h-event {
+        background-color: transparent;
+        border: transparent;
+
+        .fc-event-main {
+          color: #673AB7;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          display: flex;
+          justify-content: center;
+          gap: 5px;
+
+        }
+      }
+      .fc-daygrid-day-bottom {
+        display: none;
+      }
+    }
+    .fc-daygrid-day-bg {
+        display: none;
+      }
+    }
+}
+
+.fc-bg-event {
+    border-radius: 10px;
+    opacity: 0.7 !important;
+}

@@ -13,6 +13,8 @@ import { deleteUser, fetchUsers } from 'store/usersSlice';
 import { fetchDesignations } from 'store/designationSlice';
 import FormatDate from 'views/utilities/FormatDate';
 import apiClient from 'service/service';
+import Profile from 'ui-component/Profile';
+import AlphabetAvatar from 'ui-component/Profile/AlphabetAvatar';
 
 const Employee = () => {
     const dispatch = useDispatch();
@@ -44,6 +46,18 @@ const Employee = () => {
     };
 
     const columns = [
+        {
+            name: 'profilePicture',
+            label: 'Profile',
+            options: {
+                customBodyRender: (value, tableMeta) =>
+                    value ? (
+                        <Profile src={value} alt="profile" />
+                    ) : (
+                        <AlphabetAvatar name={`${tableMeta?.rowData[2]} ${tableMeta?.rowData[3]}`} />
+                    )
+            }
+        },
         {
             name: '_id',
             label: 'id',
@@ -95,43 +109,43 @@ const Employee = () => {
                 customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
             }
         },
-        {
-            name: 'joiningDate',
-            label: 'Joining Date',
-            options: {
-                customBodyRender: (value) => FormatDate(value)
-            }
-        },
-        {
-            name: 'createdBy',
-            label: 'Added By',
-            options: {
-                customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
-            }
-        },
-        {
-            name: 'createdAt',
-            label: 'Added Time',
-            options: {
-                customBodyRender: (value) => FormatDate(value)
-            }
-        },
-        {
-            name: 'updatedBy',
-            label: 'Modified By',
-            options: {
-                customBodyRender: (value) => {
-                    return value ? `${value?.firstName} ${value?.lastName}` : '';
-                }
-            }
-        },
-        {
-            name: 'updatedAt',
-            label: 'Modified Time',
-            options: {
-                customBodyRender: (value) => FormatDate(value)
-            }
-        },
+        // {
+        //     name: 'joiningDate',
+        //     label: 'Joining Date',
+        //     options: {
+        //         customBodyRender: (value) => FormatDate(value)
+        //     }
+        // },
+        // {
+        //     name: 'createdBy',
+        //     label: 'Added By',
+        //     options: {
+        //         customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
+        //     }
+        // },
+        // {
+        //     name: 'createdAt',
+        //     label: 'Added Time',
+        //     options: {
+        //         customBodyRender: (value) => FormatDate(value)
+        //     }
+        // },
+        // {
+        //     name: 'updatedBy',
+        //     label: 'Modified By',
+        //     options: {
+        //         customBodyRender: (value) => {
+        //             return value ? `${value?.firstName} ${value?.lastName}` : '';
+        //         }
+        //     }
+        // },
+        // {
+        //     name: 'updatedAt',
+        //     label: 'Modified Time',
+        //     options: {
+        //         customBodyRender: (value) => FormatDate(value)
+        //     }
+        // },
         {
             name: 'Actions',
             label: 'Actions',

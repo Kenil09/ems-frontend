@@ -33,7 +33,7 @@ const PublicRoutes = {
             element: <LandingPage />
         },
         {
-            path: '/registerOtp/:token',
+            path: '/register/:token',
             element: <RegisterOTP />
         }
     ]

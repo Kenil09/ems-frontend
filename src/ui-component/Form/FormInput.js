@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { FormControl, Select, TextField, MenuItem, InputLabel, FormHelperText, ListSubheader, InputAdornment } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormContext } from 'react-hook-form';
 import { Search } from '@mui/icons-material';
@@ -150,6 +149,7 @@ function FormInput({
                                                 autoComplete="off"
                                             />
                                         )}
+                                        disabled={disabled}
                                     />
                                 </LocalizationProvider>
                             </>

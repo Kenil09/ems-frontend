@@ -49,7 +49,7 @@ const LeavesItem = [
 ];
 const Index = () => {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.user);
+    const user = useSelector((state) => state.user.details);
     const [leaveDetails, setleaveDetails] = useState({});
     const TypesLeave = useSelector((state) => state.TypesLeave.data);
     const leaves = useSelector((state) => state.leave.data);
@@ -59,7 +59,7 @@ const Index = () => {
     //(TypesLeave, 'TypesLeave');
 
     const AllUser = useSelector((state) => state.users.data);
-    const loggedInUser = useSelector((state) => state.user.user);
+    const loggedInUser = useSelector((state) => state.user.details);
     const AllLeaves = useSelector((state) => state.leaves.data);
     const AllLeaveAccount = useSelector((state) => state.AllLeaveAccount.data);
     const [leaveType, setLeaveType] = useState(-1);
@@ -194,7 +194,7 @@ const Index = () => {
                                                     marginLeft: '20px'
                                                 }}
                                             >
-                                                <h5>Available : {TypesLeave[id]?.total}</h5>
+                                                <h5>Available : {TypesLeave[id]?.total - TypesLeave[id]?.taken}</h5>
                                                 <pre>
                                                     <h5>Booked : {TypesLeave[id]?.taken}</h5>
                                                 </pre>

@@ -74,7 +74,7 @@ function RegisterOTP() {
                 <Grid item>
                     <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
                         <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
-                            <AuthCardWrapper sx={{ innerWidth: 200 }}>
+                            <AuthCardWrapper sx={{ innerWidth: 100 }}>
                                 <Typography variant="h1" style={{ textAlign: 'center', color: '#673ab7' }} gutterBottom>
                                     Register Yourself Here
                                 </Typography>
@@ -125,6 +125,7 @@ function RegisterOTP() {
                                                         size="large"
                                                         type="submit"
                                                         variant="contained"
+                                                        color="secondary"
                                                         loading={isSubmitting}
                                                     >
                                                         Register
@@ -134,6 +135,7 @@ function RegisterOTP() {
                                                         fullWidth
                                                         size="large"
                                                         type="submit"
+                                                        color="secondary"
                                                         variant="contained"
                                                         loading={isSubmitting}
                                                     >

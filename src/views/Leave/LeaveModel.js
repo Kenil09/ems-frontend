@@ -26,7 +26,7 @@ const validationSchema = yup
     .required();
 export const LeaveModel = ({ handleEvent, modalTitle, open, setOpen, viewLeave, isEditMode }) => {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.user);
+    const user = useSelector((state) => state.user.details);
     const LeaveOptions = [
         { value: 'casualLeave', label: 'Casual Leave' },
         { value: 'earnedLeave', label: 'Earned Leave' },

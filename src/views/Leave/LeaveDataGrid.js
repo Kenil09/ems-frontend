@@ -28,7 +28,7 @@ export function addDays(date) {
 export const LeaveDataGrid = ({ leaves, show, setShow, setleaveDetails }) => {
     const [leaveType, setLeaveType] = useState('allLeaves');
     const AllUser = useSelector((state) => state.users.data);
-    const loggedInUser = useSelector((state) => state.user.user);
+    const loggedInUser = useSelector((state) => state.user.details);
     const AllLeaves = useSelector((state) => state.leaves.data);
 
     const handleChange = (event) => {

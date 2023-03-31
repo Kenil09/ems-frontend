@@ -26,7 +26,7 @@ function isDateGreaterThanToday(dateStr) {
 export const ViewLeaveModel = ({ viewLeave, handleEvent }) => {
     //(viewLeave, 'viewLeave');
     const [open, setOpen] = React.useState(false);
-    const user = useSelector((state) => state.user.user);
+    const user = useSelector((state) => state.user.details);
     const [cancellationMessage, setCancellationMessage] = React.useState('');
     const dispatch = useDispatch();
 

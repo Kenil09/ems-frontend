@@ -18,7 +18,7 @@ const Department = () => {
     const [show, setShow] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
-    const user = useSelector((state) => state.user.user);
+    const user = useSelector((state) => state.user.details);
     //(user, 'user');
     useEffect(() => {
         dispatch(fetchDepartments());

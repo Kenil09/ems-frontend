@@ -20,7 +20,8 @@ import FormInput from 'ui-component/Form/FormInput';
 import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 import { GenderOptions, MaritalStatusOptions } from 'views/utilities/FormOptions';
 import { useSelector, useDispatch } from 'react-redux';
-
+import Profile from 'ui-component/Profile';
+// D:\react\ems-frontend\src\ui-component\Profile\index.js
 // import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 // styles
@@ -63,7 +64,6 @@ const ProfileModal = ({ isLoading }) => {
     const [hideButton, setHideButton] = useState(true);
     const [disabled, setDisabled] = useState(true);
     const user = useSelector((state) => state.user.details);
-    console.log(user, 'user');
     const navigate = useNavigate();
     const handleShowButton = () => {
         setShowButton(true);
@@ -80,15 +80,13 @@ const ProfileModal = ({ isLoading }) => {
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('files', file);
+        console.log(formData, 'formData');
         axios
             .post(`http://localhost:3001/user/updateProfilePicture/${user._id}`, formData)
             .then((response) => {
                 // handle the response from the server
                 console.log(response.data);
-                // set the uploaded image as the avatar image
-                const avatar = document.getElementById('avatar');
-                avatar.style.backgroundImage = `url(${response.data.url})`;
             })
             .catch((error) => {
                 console.error(error);
@@ -130,14 +128,8 @@ const ProfileModal = ({ isLoading }) => {
                 <CardWrapper border={false} sx={{ p: '25px' }} content={false}>
                     <Stack direction="row" spacing={3}>
                         <IconButton color="primary" aria-label="upload picture" component="label" style={{ marginTop: '-10px' }}>
+                            <Profile src={user?.profilePicture} alt="profile" />
                             <input hidden accept="image/*" type="file" onChange={handleFileUpload} />
-                            <Avatar
-                                id="avatar"
-                                src={`http://ems-task.s3.amazonaws.com/profile/${user._id}/${user.profilePicture}`}
-                                style={{ width: '100px', height: '100px', fontSize: '35px' }}
-                            >
-                                {user.firstName.charAt(0)}
-                            </Avatar>
                         </IconButton>
                         <Typography variant="h3">
                             {user.firstName}

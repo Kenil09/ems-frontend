@@ -16,15 +16,17 @@ import CustomFormLabel from 'ui-component/Form/CustomFormLabel';
 import { FormComponentGrid, FormRowGrid, FormLabelGrid, FormInputGrid } from 'ui-component/Grid/Form/CustomGrid';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import FormInput from 'ui-component/Form/FormInput';
 import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 import { GenderOptions, MaritalStatusOptions } from 'views/utilities/FormOptions';
 import { useSelector, useDispatch } from 'react-redux';
+import { setUser } from 'store/userSlice';
 import Profile from 'ui-component/Profile';
-// D:\react\ems-frontend\src\ui-component\Profile\index.js
-// import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import apiClient from 'service/service';
 
-// styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     overflow: 'hidden',
     position: 'relative',
@@ -51,18 +53,19 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 // ==============================|| Profile Page ||============================== //
+const validationSchema = yup.object({
+    firstName: yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('firstName is required'),
+    lastName: yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('lastName is required'),
+    nickName: yup.string().max(50, 'Too Long!'),
+    email: yup.string('Enter the email').email('Please enter valid email').required('Email is required')
+});
 
 const ProfileModal = ({ isLoading }) => {
-    // const [isEditMode, setIsEditMode] = useState(false);
-
-    // const handleEvent = () => {
-    //     setShow(!show);
-    //     // setIsEditMode();
-    // };
-
     const [showButton, setShowButton] = useState(false);
     const [hideButton, setHideButton] = useState(true);
     const [disabled, setDisabled] = useState(true);
+
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.user.details);
     const navigate = useNavigate();
     const handleShowButton = () => {
@@ -70,6 +73,7 @@ const ProfileModal = ({ isLoading }) => {
         setHideButton(false);
         setDisabled(false);
     };
+    useEffect(() => {}, []);
 
     const handleHideButton = () => {
         setHideButton(true);
@@ -77,41 +81,43 @@ const ProfileModal = ({ isLoading }) => {
         setDisabled(true);
     };
 
-    const handleFileUpload = (event) => {
-        const file = event.target.files[0];
-        const formData = new FormData();
-        formData.append('files', file);
-        console.log(formData, 'formData');
-        axios
-            .post(`http://localhost:3001/user/updateProfilePicture/${user._id}`, formData)
-            .then((response) => {
-                // handle the response from the server
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+    const handleFileUpload = async (event) => {
+        try {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append('files', file);
+            const { data } = await axios.post(`http://localhost:3001/user/updateProfilePicture/${user._id}`, formData);
+            // console.log(data.message, 'message');
+            dispatch(setUser(data.user));
+            toast.success(data.message);
+            navigate(-1);
+        } catch (err) {
+            toast.error('Internal server error');
+            console.error(err);
+        }
     };
-    // const [show, setShow] = useState(false);
-    const theme = useTheme();
-    const methods = useForm({
-        // resolver: yupResolver(validationSchema),
-        defaultValues: {
-            firstName: '',
-            lastName: '',
-            nickName: '',
-            email: '',
-            birthDate: '',
-            gender: '',
-            maritalStatus: ''
-        },
-        mode: 'onChange'
-    });
-    const { setValue } = methods;
 
+    const methods = useForm({
+        resolver: yupResolver(validationSchema)
+    });
+    // const [show, setShow] = useState(false);
+    const onSubmit = async (payload) => {
+        try {
+            const { firstName, lastName, nickName, email } = payload;
+            const newPayload = { firstName, lastName, nickName, email };
+            const UserDetails = await apiClient().put(`/user/${user._id}`, newPayload);
+            toast.success(UserDetails.data.message);
+            dispatch(setUser(UserDetails.data.user));
+            // console.log(UserDetails, 'user');
+        } catch (err) {
+            console.log(err, 'error');
+        }
+    };
+    const theme = useTheme();
+    const { setValue } = methods;
     useEffect(() => {
         if (user) {
-            const options = ['firstName', 'lastName', 'nickName', 'email', 'birthDate', 'gender', 'maritalStatus'];
+            const options = ['firstName', 'lastName', 'nickName', 'email'];
             Object.keys(user).forEach((key) => {
                 if (options.includes(key)) {
                     setValue(key, user[key]);
@@ -151,7 +157,7 @@ const ProfileModal = ({ isLoading }) => {
                     </Stack>
                 </CardWrapper>
                 <FormProvider {...methods}>
-                    <form>
+                    <form onSubmit={methods.handleSubmit(onSubmit)}>
                         <Grid container direction="column" sx={{ p: '25px' }} spacing={5}>
                             <FormRowGrid>
                                 <FormComponentGrid>
@@ -162,6 +168,8 @@ const ProfileModal = ({ isLoading }) => {
                                         <FormInput name="firstName" type="firstName" variant="standard" disabled={disabled} />
                                     </FormInputGrid>
                                 </FormComponentGrid>
+                            </FormRowGrid>
+                            <FormRowGrid>
                                 <FormComponentGrid>
                                     <FormLabelGrid>
                                         <CustomFormLabel id="label-last-name" required content="Last Name" />
@@ -181,6 +189,9 @@ const ProfileModal = ({ isLoading }) => {
                                         <FormInput name="nickName" type="nickName" variant="standard" disabled={disabled} />
                                     </FormInputGrid>
                                 </FormComponentGrid>
+                            </FormRowGrid>
+
+                            <FormRowGrid>
                                 <FormComponentGrid>
                                     <FormLabelGrid>
                                         <CustomFormLabel id="label-email-name" required content="Email" />
@@ -190,46 +201,10 @@ const ProfileModal = ({ isLoading }) => {
                                     </FormInputGrid>
                                 </FormComponentGrid>
                             </FormRowGrid>
-
-                            <FormRowGrid>
-                                <FormComponentGrid>
-                                    <FormLabelGrid>
-                                        <CustomFormLabel id="label-birthdate" content="Date of birth" />
-                                    </FormLabelGrid>
-                                    <FormInputGrid>
-                                        <FormInput name="birthDate" type="date" disabled={disabled} />
-                                    </FormInputGrid>
-                                </FormComponentGrid>
-                            </FormRowGrid>
-
-                            <FormRowGrid>
-                                <FormComponentGrid>
-                                    <FormLabelGrid>
-                                        <CustomFormLabel id="label-gender" content="Gender" />
-                                    </FormLabelGrid>
-                                    <FormInputGrid>
-                                        <FormInput
-                                            name="gender"
-                                            type="select"
-                                            options={GenderOptions}
-                                            variant="standard"
-                                            disabled={disabled}
-                                        />
-                                    </FormInputGrid>
-                                </FormComponentGrid>
-                                <FormComponentGrid>
-                                    <FormLabelGrid>
-                                        <CustomFormLabel id="label-marital-status" content="Marital Status" />
-                                    </FormLabelGrid>
-                                    <FormInputGrid>
-                                        <FormInput name="maritalStatus" type="select" options={MaritalStatusOptions} variant="standard" />
-                                    </FormInputGrid>
-                                </FormComponentGrid>
-                            </FormRowGrid>
                         </Grid>
                         <Box style={{ marginTop: '30px', display: 'flex', justifyContent: 'flex-start' }}>
                             {showButton && (
-                                <Button type="submit" variant="contained" color="secondary" onClick={handleHideButton}>
+                                <Button type="submit" variant="contained" color="secondary">
                                     Save
                                 </Button>
                             )}

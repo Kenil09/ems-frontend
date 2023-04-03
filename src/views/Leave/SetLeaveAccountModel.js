@@ -53,20 +53,20 @@ export const SetLeaveAccountModel = ({ open, user, setOpen }) => {
         register,
         formState: { isSubmitting, errors }
     } = methods;
-    console.log(user, 'user');
+    // //(user, 'user');
     const Submit = async (values) => {
         try {
             const { casualLeave, earnedLeave, leaveWithoutPay, sabbaticalLeave, sickLeave } = values;
-            // console.log(values);
+            // // //(values);
             let id = user.company._id;
             const newPayload = { companyId: id, casualLeave, earnedLeave, leaveWithoutPay, sabbaticalLeave, sickLeave };
-            console.log(newPayload, 'newPayload');
+            // //(newPayload, 'newPayload');
             const data = await apiClient().post('/leave/setLeaves', newPayload);
             toast.success(data.data.message);
             setOpen(false);
         } catch (err) {
             toast.error(err?.response?.data?.message);
-            console.log(err);
+            // //(err);
         }
     };
 

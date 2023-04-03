@@ -74,7 +74,7 @@ const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                     <Grid container spacing={5}>
                         <FormRowGrid>
                             <FormLabelGrid>
-                                <CustomFormLabel id="label-name" required content="Department Name" />
+                                <CustomFormLabel id="label-name" required content="Designation Name" />
                             </FormLabelGrid>
                             <FormComponentGrid>
                                 <FormInput name="name" type="name" variant="standard" />

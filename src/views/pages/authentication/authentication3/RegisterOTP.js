@@ -54,7 +54,7 @@ function RegisterOTP() {
         formState: { isSubmitting, errors }
     } = methods;
 
-    console.log(methods?.getValues(), 'methods');
+    // //(methods?.getValues(), 'methods');
 
     const Submit = async (values) => {
         const newPayload = { email: email, password: values.password, securityCode: values.securityCode };
@@ -75,13 +75,17 @@ function RegisterOTP() {
                     <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
                         <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                             <AuthCardWrapper sx={{ innerWidth: 100 }}>
-                                <Typography variant="h1" style={{ textAlign: 'center', color: '#673ab7' }} gutterBottom>
+                                <Typography
+                                    variant="h1"
+                                    style={{ textAlign: 'center', color: '#673ab7', marginBottom: '25px' }}
+                                    gutterBottom
+                                >
                                     Register Yourself Here
                                 </Typography>
                                 <Grid item xs={12}>
                                     <FormProvider {...methods}>
                                         <form onSubmit={methods.handleSubmit(Submit)}>
-                                            <Stack spacing={4}>
+                                            <Stack spacing={3}>
                                                 <FormInput name="email" label="Email" type={'text'} defaultValue={email} disabled />
                                                 <TextField
                                                     name="password"

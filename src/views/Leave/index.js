@@ -64,8 +64,6 @@ const Index = () => {
     const AllLeaveAccount = useSelector((state) => state.AllLeaveAccount.data);
     const [leaveType, setLeaveType] = useState(-1);
 
-    console.log(AllLeaves, 'leaves');
-    console.log(AllLeaveAccount, 'TypesLeave');
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
     useEffect(() => {
@@ -98,11 +96,11 @@ const Index = () => {
         if (leaveType === -1) {
             dispatch(fetchTypeLeaves(user._id));
             dispatch(fetchLeaves(user._id));
-            console.log('calling');
+            // //('calling');
         } else {
             dispatch(addLeave(combinedData[leaveType]?.leaves));
             dispatch(AddLeaveAccount(combinedData[leaveType]?.leaveTypes));
-            console.log('putting');
+            // //('putting');
         }
     }, [show]);
     //(combinedData, 'combinedData');
@@ -111,16 +109,16 @@ const Index = () => {
         setIsEditMode();
         setleaveDetails({});
     };
-    console.log(leaveType, 'leaveIndex');
+    // //(leaveType, 'leaveIndex');
 
     const handleChange = (leaveIndex) => {
         if (leaveIndex.target.value === -1) {
-            console.log('call');
+            // //('call');
             dispatch(fetchTypeLeaves(user._id));
             dispatch(fetchLeaves(user._id));
             setLeaveType(-1);
         } else {
-            console.log('put');
+            // //('put');
 
             let menuItemName = combinedData[leaveIndex.target.value]?.firstName + ' ' + combinedData[leaveIndex.target.value]?.lastName;
             setLeaveType(leaveIndex.target.value);

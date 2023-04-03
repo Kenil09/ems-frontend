@@ -13,6 +13,8 @@ import FullCalendar from '@fullcalendar/react';
 import daygridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayjs from 'dayjs';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import LiveClockUpdate from './LiveClockUpdate';
 
 function renderEventContent(eventInfo) {
     return (
@@ -42,11 +44,13 @@ function renderEventContent(eventInfo) {
 
 const Attendence = () => {
     const calendarRef = useRef(null);
+    const currentUser = useSelector(({ user }) => user.details);
     const [show, setShow] = useState(false);
     const [user, setUser] = useState('');
     const [backGroudEvents, setBackGroudEvents] = useState([]);
     const [currentMonth, setCurrentMonth] = useState(0);
     const [selectedDate, setSelectedDate] = useState(null);
+    const [clockIn, setClockIn] = useState(false);
 
     useEffect(() => {
         const year = dayjs().year();
@@ -55,7 +59,13 @@ const Attendence = () => {
         }
     }, [user, currentMonth]);
 
-    const getMonthAttendences = async (month, year, user) => {
+    useEffect(() => {
+        if (currentUser?.role !== 'admin') {
+            setUser(currentUser?._id);
+        }
+    }, []);
+
+    const getMonthAttendences = async (month, year = dayjs().year(), user) => {
         try {
             const { data } = await apiClient().post('/attendence/getMonthAttendence', {
                 month,
@@ -76,18 +86,57 @@ const Attendence = () => {
     };
 
     const handleDateSelect = (event) => {
-        setSelectedDate(event.date);
+        const date = dayjs(event.date).add(dayjs().utcOffset(), 'minutes');
+        setSelectedDate(date);
         setShow(true);
     };
 
     const handleMonthChange = (event) => {
         setCurrentMonth(new Date(event.view.currentStart).getMonth() + 1);
     };
+
+    const getUserClockInStatus = async (id) => {
+        try {
+            const { data } = await apiClient().get(`/attendence/userAvailableStatus/${id}`);
+            data?.checkIn ? setClockIn(true) : setClockIn(false);
+        } catch (error) {
+            toast.error('Internal server error');
+        }
+    };
+
+    useEffect(() => {
+        getUserClockInStatus(currentUser?._id);
+    }, [currentUser]);
+
+    const onClockInOut = async () => {
+        try {
+            if (clockIn) {
+                const { data } = await apiClient().get('/attendence/checkout');
+                toast.success(data?.message);
+                setClockIn(false);
+            } else {
+                const { data } = await apiClient().get('/attendence/checkin');
+                toast.success(data?.message);
+                setClockIn(true);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <MainCard title="Attendence">
-            <Grid display="flex" justifyContent="space-between" container borderRadius="10px">
+            <Grid display="flex" justifyContent="space-between" container borderRadius="10px" marginBottom={2}>
                 <Grid item xs={3}>
-                    <UserSelect user={user} setUser={setUser} profileSize={3} searchAble={true} />
+                    {currentUser?.role === 'admin' && <UserSelect user={user} setUser={setUser} profileSize={3} searchAble={true} />}
+                </Grid>
+                <Grid item xs={1.8}>
+                    <Button color={clockIn ? 'error' : 'secondary'} variant="contained" size="medium" onClick={() => onClockInOut()}>
+                        <Typography fontSize={'1rem'}>
+                            {clockIn ? 'Check-Out' : 'Check-In'} <br /> <LiveClockUpdate />
+                        </Typography>
+                        <AccessAlarmIcon />
+                    </Button>
                 </Grid>
             </Grid>
             <Grid style={{ width: '100%', height: '70%' }}>
@@ -115,7 +164,13 @@ const Attendence = () => {
             </Grid>
             <Drawer anchor="right" open={show} onClose={handleEvent(false)}>
                 <Grid sx={{ width: window.innerWidth / 2 }} container>
-                    <AttendenceModal date={selectedDate} closeModal={setShow} />
+                    <AttendenceModal
+                        date={selectedDate}
+                        user={user}
+                        closeModal={setShow}
+                        currentMonth={currentMonth}
+                        getMonthAttendences={getMonthAttendences}
+                    />
                 </Grid>
             </Drawer>
         </MainCard>

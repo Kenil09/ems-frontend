@@ -30,11 +30,11 @@ const MainRoutes = {
     path: '/',
     element: <MainLayout />,
     children: [
-        {
-            path: '/',
-            element: <DashboardDefault />,
-            role: Roles
-        },
+        // {
+        //     path: '/',
+        //     element: <DashboardDefault />,
+        //     role: Roles
+        // },
         {
             path: 'sample-page',
             element: <SamplePage />,

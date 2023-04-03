@@ -19,13 +19,15 @@ import AlphabetAvatar from 'ui-component/Profile/AlphabetAvatar';
 const Employee = () => {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.users.data);
+    const currentUser = useSelector(({ user }) => user.details);
+
     const [show, setShow] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
         dispatch(fetchDepartments());
-        dispatch(fetchUsers());
+        dispatch(fetchUsers(currentUser?.company?._id));
         dispatch(fetchDesignations());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

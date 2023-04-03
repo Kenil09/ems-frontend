@@ -6,9 +6,10 @@ const initialState = {
     fetchState: 'idle'
 };
 
-export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async (companyId) => {
     try {
-        const { data } = await apiClient().get('/user');
+        const url = companyId ? `/user?companyId=${companyId}` : `/user`;
+        const { data } = await apiClient().get(url);
         return data?.users;
     } catch (error) {
         console.log(error);

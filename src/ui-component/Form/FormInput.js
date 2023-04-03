@@ -53,7 +53,8 @@ function FormInput({
     fieldArray,
     placeholder,
     className,
-    multiple
+    multiple,
+    formControlWidth
 }) {
     const classes = useStyles();
     const methods = useFormContext();
@@ -95,7 +96,7 @@ function FormInput({
     }
 
     return (
-        <FormControl fullWidth>
+        <FormControl fullWidth={Boolean(!formControlWidth)}>
             {(() => {
                 switch (type) {
                     case 'select':
@@ -182,7 +183,7 @@ function FormInput({
                                         onChange={(newValue) => methods.setValue(name, newValue)}
                                         helperText={error}
                                         format="HH:mm"
-                                        variant="standard"
+                                        variant={variant}
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>

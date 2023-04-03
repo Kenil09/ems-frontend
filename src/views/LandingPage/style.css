@@ -1,0 +1,280 @@
+.right {
+    margin-top: 30px;
+    margin-left: 50px;
+}
+
+.left {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.list {
+    list-style: none;
+}
+
+.list .list-item:before {
+    content: '\00BB \0020';
+    color: #03a9f5;
+}
+
+.list-item {
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 30px;
+    font-size: 16px;
+}
+
+.learn-more {
+    color: #03a9f5;
+    border-bottom: 2px solid #03a9f5;
+    padding-bottom: 3px;
+    font-family: var(--zf-secondary-medium);
+    font-size: 17px;
+    text-decoration: none;
+    margin-left: 50px;
+}
+
+.display {
+    height: 100%;
+    width: 100%;
+}
+
+.content {
+    font-size: 16px;
+    color: #222;
+    line-height: 1.8;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.img2 {
+    /* margin-top: 20px;
+    padding-right: 50px;
+    margin-right: 40px; */
+    display: block;
+    margin-top: auto;
+    margin-right: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.img3 {
+    /* margin-top: 20px; */
+    height: 100%;
+    width: 100%;
+}
+
+.div3 {
+    padding-left: 15px;
+}
+
+.img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 30%;
+    width: 30%;
+}
+
+.head {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+.data {
+    font-size: 16px;
+    color: #222;
+    line-height: 1.8;
+    margin-top: 20px;
+    margin-bottom: 6%;
+}
+
+.div {
+    margin-top: 4%;
+}
+
+.img1 {
+    height: 48%;
+    width: 48%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.first {
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.head1 {
+    margin-left: 200px;
+}
+
+.head2 {
+    margin-left: 180px;
+}
+
+.btn {
+    background-color: #00a2ff;
+    color: white;
+    text-decoration: none;
+    border: 2px solid transparent;
+    font-weight: bold;
+    padding: 13px 30px;
+    border-radius: 30px;
+    transition: 0.4s;
+    margin-left: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.btn:hover {
+    background-color: transparent;
+    border: 2px solid #f9004d;
+    cursor: pointer;
+}
+
+.service {
+    width: 100%;
+    padding-top: 100px;
+    padding-bottom: 50px;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.title {
+    color: #222;
+    text-align: center;
+}
+
+.box {
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.card {
+    margin: 30px;
+    padding: 20px 35px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.h5 {
+    font-size: 23px;
+    margin: 20px;
+    color: #222;
+    text-align: center;
+}
+
+.pra {
+    font-size: 16px;
+    line-height: 27px;
+    margin-bottom: 25px;
+    color: #222;
+    text-align: center;
+}
+
+.manage {
+    font-size: 16px;
+    line-height: 27px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.manage-text {
+    margin: 30px;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #223;
+}
+
+.header-top {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.hero {
+    width: 100%;
+    background-color: #3c59eb;
+    background-size: cover;
+    background-position: center;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px;
+}
+
+.logo {
+    color: white;
+    font-size: 35px;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.span {
+    color: #f9004d;
+}
+
+.a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.a:hover {
+    color: #f9004d;
+    transition: 0.4s;
+}
+
+.text {
+    color: white;
+    margin-left: 30px;
+}
+
+.txt {
+    color: #ffbe00;
+}
+
+.video {
+    margin-bottom: 25px;
+    margin-left: 80px;
+}
+
+.p {
+    margin: 40px;
+}
+
+.video1 {
+    width: 300px;
+    height: 400px;
+}
+
+.imgtext {
+    margin-bottom: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+.all {
+    overflow: hidden;
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.heading {
+    color: #222;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}

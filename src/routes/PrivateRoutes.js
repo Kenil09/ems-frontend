@@ -53,7 +53,7 @@ const MainRoutes = {
             role: Roles
         },
         {
-            path: '/employees',
+            path: '/',
             element: <Employees />,
             role: Roles
         },

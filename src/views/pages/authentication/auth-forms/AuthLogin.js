@@ -71,7 +71,7 @@ const FirebaseLogin = ({ ...others }) => {
             localStorage.setItem('accessToken', data.token);
             const user = jwtDecode(data?.token);
             dispatch(setUser(user));
-            navigate('/employees');
+            navigate('/');
         } catch (error) {
             // show error here in alert
             toast.error(error.response.data.message);

@@ -9,6 +9,7 @@ const AuthLogin3 = Loadable(lazy(() => import('views/pages/authentication/authen
 const AuthRegister3 = Loadable(lazy(() => import('views/pages/authentication/authentication3/Register3')));
 const Page404 = Loadable(lazy(() => import('views/404Page/Page404')));
 const LandingPage = Loadable(lazy(() => import('views/LandingPage/index')));
+const RegisterOTP = Loadable(lazy(() => import('views/pages/authentication/authentication3/RegisterOTP')));
 
 // ==============================|| AUTHENTICATION ROUTING ||============================== //
 
@@ -31,6 +32,10 @@ const PublicRoutes = {
         {
             path: '/landingpage',
             element: <LandingPage />
+        },
+        {
+            path: '/register/:token',
+            element: <RegisterOTP />
         }
     ]
 };

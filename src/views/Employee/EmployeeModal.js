@@ -158,7 +158,8 @@ const EmployeeModel = ({ handleEvent, modalTitle, isEditMode }) => {
     const onSubmit = async (values) => {
         try {
             if (isEditMode) {
-                const { data } = await apiClient().put(`/user/${isEditMode?._id}`, values);
+                const { data } = await apiClient().put(`/user/employee/${isEditMode?._id}`, values);
+                console.log(data);
                 dispatch(updateUser(data.user));
                 toast.success(data.message);
             } else {

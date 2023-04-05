@@ -112,43 +112,6 @@ const Employee = () => {
             }
         },
         {
-            name: 'joiningDate',
-            label: 'Joining Date',
-            options: {
-                customBodyRender: (value) => FormatDate(value)
-            }
-        },
-        {
-            name: 'createdBy',
-            label: 'Added By',
-            options: {
-                customBodyRender: (value) => (value ? `${value?.firstName} ${value?.lastName}` : '')
-            }
-        },
-        {
-            name: 'createdAt',
-            label: 'Added Time',
-            options: {
-                customBodyRender: (value) => FormatDate(value)
-            }
-        },
-        {
-            name: 'updatedBy',
-            label: 'Modified By',
-            options: {
-                customBodyRender: (value) => {
-                    return value ? `${value?.firstName} ${value?.lastName}` : '';
-                }
-            }
-        },
-        {
-            name: 'updatedAt',
-            label: 'Modified Time',
-            options: {
-                customBodyRender: (value) => FormatDate(value)
-            }
-        },
-        {
             name: 'Actions',
             label: 'Actions',
             options: {

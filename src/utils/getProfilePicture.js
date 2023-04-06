@@ -1,4 +1,6 @@
-import { S3Client, GetObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { store } from 'store/store';
+import { startLoader, endLoader } from 'store/loaderSlice';
 
 const s3 = new S3Client({
     region: process.env.REACT_APP_AWS_REGION,
@@ -9,6 +11,7 @@ const s3 = new S3Client({
 });
 
 const getProfilePicture = async (bucketName, objectKey) => {
+    store.dispatch(startLoader());
     const params = {
         Bucket: bucketName,
         Key: objectKey
@@ -18,7 +21,7 @@ const getProfilePicture = async (bucketName, objectKey) => {
     const imageBuffer = await Body.transformToByteArray(); // get the buffer from the Body property
     const imageBlob = new Blob([imageBuffer], { type: 'image/jpeg' });
     const imageUrl = URL.createObjectURL(imageBlob);
-
+    store.dispatch(endLoader());
     return imageUrl;
 };
 

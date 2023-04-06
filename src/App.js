@@ -12,6 +12,7 @@ import themes from 'themes';
 
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
+import { CircularLoader } from 'ui-component/Loader/CircularLoader';
 
 // ==============================|| APP ||============================== //
 
@@ -39,6 +40,7 @@ const App = () => {
                         />
                     )}
                 </Toaster>
+                <CircularLoader />
             </ThemeProvider>
         </StyledEngineProvider>
     );

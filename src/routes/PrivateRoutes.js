@@ -17,7 +17,7 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 // page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 const Departments = Loadable(lazy(() => import('views/Department')));
-const Designations = Loadable(lazy(() => import('views/Designations')));
+const Designations = Loadable(lazy(() => import('views/Designation')));
 const Employees = Loadable(lazy(() => import('views/Employee')));
 const Tasks = Loadable(lazy(() => import('views/Task')));
 const Shifts = Loadable(lazy(() => import('views/Shift')));

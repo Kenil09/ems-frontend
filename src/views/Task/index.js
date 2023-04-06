@@ -1,17 +1,17 @@
-import { Select, Grid, Tab, FormControl, MenuItem, Typography, Button, Tabs, Box } from '@mui/material';
+import { Grid, Tab, Button, Tabs, Box, Typography } from '@mui/material';
 import { IconPlus } from '@tabler/icons';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import MainCard from 'ui-component/cards/MainCard';
-import Profile from 'ui-component/Profile';
 import TaskModal from './TaskModal';
 import UserSelect from 'ui-component/Form/UserSelect';
 import apiClient from 'service/service';
 import toast from 'react-hot-toast';
 import FormatDate from 'views/utilities/FormatDate';
 import MUIDataTable from 'mui-datatables';
-import getTaskAttchements from 'utils/getTaskAttchements';
+import { fetchUsers } from 'store/usersSlice';
+import { startLoader, endLoader } from 'store/loaderSlice';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -41,7 +41,8 @@ function a11yProps(index) {
 }
 
 const Task = () => {
-    const { user } = useSelector(({ user }) => user.details);
+    const dispatch = useDispatch();
+    const currentUser = useSelector(({ user }) => user.details);
     const [show, setShow] = useState(false);
     const [taskUser, setTaskUser] = useState('');
     const [modalTitle, setModalTitle] = useState('');
@@ -53,17 +54,31 @@ const Task = () => {
         setIsEditMode();
     };
 
+    const startFetching = () => {
+        dispatch(startLoader());
+    };
+
+    const endFetching = () => {
+        dispatch(endLoader());
+    };
+
+    useEffect(() => {
+        dispatch(fetchUsers(currentUser?.company?._id));
+    }, []);
+
     const getUserTaskdata = async (val) => {
         try {
+            startFetching();
             const { data } = await apiClient().get(`/task/${val}`);
             setUserTaskdata(data?.tasks);
+            endFetching();
         } catch (error) {
             toast.error(error?.response?.data?.message);
         }
     };
 
     useEffect(() => {
-        getTaskAttchements();
+        // getTaskAttchements();
         if (taskUser) {
             getUserTaskdata(taskUser);
         }

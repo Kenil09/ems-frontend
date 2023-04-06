@@ -1,14 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../service/service';
+import { startLoader, endLoader } from './loaderSlice';
 
 const initialState = {
     data: [],
     fetchState: 'idle'
 };
 
-export const fetchShifts = createAsyncThunk('shift/fetchShifts', async (companyId) => {
+export const fetchShifts = createAsyncThunk('shift/fetchShifts', async (companyId, { dispatch }) => {
     try {
+        dispatch(startLoader());
         const { data } = await apiClient().get(`/shift/${companyId}`);
+        dispatch(endLoader());
         return data?.shifts;
     } catch (error) {
         console.log(error);

@@ -1,4 +1,6 @@
 import { S3Client, ListObjectsV2Command, GetObjectCommand } from '@aws-sdk/client-s3';
+import { store } from '../store/store';
+import { startLoader, endLoader } from 'store/loaderSlice';
 
 const s3 = new S3Client({
     region: process.env.REACT_APP_AWS_REGION,
@@ -9,15 +11,16 @@ const s3 = new S3Client({
 });
 
 const getTaskAttchements = async (taskId, type) => {
-    console.log('this is running');
+    console.log('this is running', typeof taskId, taskId, type);
+    store.dispatch(startLoader());
     const params = {
         Bucket: process.env.REACT_APP_BUCKET,
         Prefix: `tasks/${taskId}/${type}`
     };
     const command = new ListObjectsV2Command(params);
-    const { Contents } = await s3.send(command);
-    if (Contents.length) {
-        const attachements = Contents.map(({ Key }) => ({
+    const list = await s3.send(command);
+    if (list.KeyCount) {
+        const attachements = list.Contents.map(({ Key }) => ({
             Bucket: process.env.REACT_APP_BUCKET,
             Key
         }));
@@ -32,7 +35,11 @@ const getTaskAttchements = async (taskId, type) => {
                 return { type: fileType, name: attachment.Key, buffer: fileBuffer, blob: fileBlob };
             })
         );
+        store.dispatch(endLoader());
         return data;
+    } else {
+        store.dispatch(endLoader());
+        return [];
     }
 };
 

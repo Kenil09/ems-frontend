@@ -1,14 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../service/service';
+import { startLoader, endLoader } from './loaderSlice';
 
 const initialState = {
     data: [],
     fetchState: 'idle'
 };
-export const fetchLeaves = createAsyncThunk('leave/fetchLeaves', async (id) => {
+export const fetchLeaves = createAsyncThunk('leave/fetchLeaves', async (id, { dispatch }) => {
     try {
+        dispatch(startLoader());
         const url = `/leave/${id}`;
         const { data } = await apiClient().get(url);
+        dispatch(endLoader());
         return data?.leaves;
     } catch (error) {
         //(error);

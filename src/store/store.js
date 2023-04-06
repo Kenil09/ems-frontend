@@ -14,6 +14,7 @@ import leaveSlice from './leaveSlice';
 import TypesLeaveSlice from './TypesLeaveSlice';
 import leavesSlice from './allLeaveSlice';
 import AllLeaveAccountSlice from './allLeaveAccount';
+import loaderReducer from './loaderSlice';
 import { api } from './Services/api';
 
 const persistConfig = {
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
     SignUpUser: SignUpSlice,
     leaves: leavesSlice,
     AllLeaveAccount: AllLeaveAccountSlice,
-    TypesLeave: TypesLeaveSlice
+    TypesLeave: TypesLeaveSlice,
+    loader: loaderReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

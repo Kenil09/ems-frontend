@@ -44,6 +44,8 @@
         "react-router": "6.3.0",
         "react-router-dom": "6.3.0",
         "react-scripts": "^5.0.1",
+        "react-spinner-material": "^1.4.0",
+        "react-spinners": "^0.13.8",
         "redux": "^4.2.0",
         "redux-persist": "^6.0.0",
         "yup": "^0.32.11"

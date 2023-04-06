@@ -1,14 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '../service/service';
+import { startLoader, endLoader } from './loaderSlice';
 
 const initialState = {
     data: [],
     fetchState: 'idle'
 };
 
-export const fetchDepartments = createAsyncThunk('company/fetchCompany', async () => {
+export const fetchDepartments = createAsyncThunk('department/fetchDepartments', async (params, { dispatch }) => {
     try {
+        dispatch(startLoader());
         const { data } = await apiClient().get('/department');
+        dispatch(endLoader());
         return data?.departments;
     } catch (error) {
         console.log(error);

@@ -12,12 +12,14 @@ import { deleteDesignation, fetchDesignations } from 'store/designationSlice';
 import FormatDate from 'views/utilities/FormatDate';
 import apiClient from 'service/service';
 
-const Department = () => {
+const Designation = () => {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.designation.data);
     const [show, setShow] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
+
+    useSelector((state) => console.log(state));
 
     useEffect(() => {
         dispatch(fetchDesignations());
@@ -169,4 +171,4 @@ const Department = () => {
     );
 };
 
-export default Department;
+export default Designation;

@@ -37,7 +37,8 @@ const initialValues = {
 };
 
 const formatEntry = (date, manual) => {
-    return manual ? dayjs(date).subtract(dayjs(date).utcOffset(), 'minutes').format('HH:mm') : dayjs(date).format('HH:mm');
+    // return manual ? dayjs(date).subtract(dayjs(date).utcOffset(), 'minutes').format('HH:mm') : dayjs(date).format('HH:mm');
+    return dayjs(date).format('HH:mm');
 };
 
 const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttendences }) => {
@@ -50,6 +51,8 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
         defaultValues: initialValues,
         mode: 'onChange'
     });
+
+    const { reset, setError } = methods;
 
     const getUserEntries = async () => {
         try {
@@ -72,22 +75,38 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
         const filterTimeString = (s) => {
             return s[2] + s[3] + s[5] + s[7] + s[8];
         };
+        const selectedDate = { month: date.month(), year: date.year(), date: date.date() };
         return Object.assign(
             ...Object.keys(timeObj).map((key) => {
                 const time = filterTimeString(timeObj[key]).split(':');
-                let attendedDate = dayjs(date).add(time[0], 'hours').add(time[1], 'minutes');
-                return { [key]: attendedDate.toISOString() };
+                let attendedDate = new Date(selectedDate.year, selectedDate.month, selectedDate.date, time[0], time[1], 0, 0).toISOString();
+                // let attendedDate = dayjs(date).add(time[0], 'hours').add(time[1], 'minutes');
+                return { [key]: attendedDate };
             })
         );
     };
 
+    const checkValidDate = ({ checkIn, checkOut }) => {
+        const start = new Date(checkIn);
+        const end = new Date(checkOut);
+        if (end < start) {
+            setError('checkOut', { type: 'custom', message: 'Check out time should be greater than check in time' });
+            return false;
+        }
+        return true;
+    };
+
     const onSubmit = async (values) => {
         const formattedValues = toDate(values);
+        if (!checkValidDate(formattedValues)) {
+            return;
+        }
         try {
             const { data } = await apiClient().post('/attendence/addEntry', { ...formattedValues, user });
             setShowAdd(false);
             getUserEntries();
             getMonthAttendences(currentMonth, dayjs().year(), user);
+            reset(initialValues);
             toast.success(data?.message);
         } catch (error) {
             toast.error(error?.response?.data?.message);
@@ -133,7 +152,14 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
                             </div>
                         </div>
                         <div className="entry-button-div">
-                            <Button variant="text" color="secondary" onClick={() => setShowAdd(false)}>
+                            <Button
+                                variant="text"
+                                color="secondary"
+                                onClick={() => {
+                                    setShowAdd(false);
+                                    reset(initialValues);
+                                }}
+                            >
                                 cancel
                             </Button>
                             <Button variant="contained" type="submit" color="secondary">

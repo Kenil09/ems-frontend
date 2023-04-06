@@ -170,6 +170,7 @@ function FormInput({
                                     <TimeField
                                         {...fieldRegister}
                                         label={label}
+                                        color={Boolean(error) ? 'error' : 'secondary'}
                                         value={value}
                                         size="medium"
                                         onError={(error, val) => {

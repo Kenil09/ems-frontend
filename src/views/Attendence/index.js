@@ -135,7 +135,7 @@ const Attendence = () => {
                         <Typography fontSize={'1rem'}>
                             {clockIn ? 'Check-Out' : 'Check-In'} <br /> <LiveClockUpdate />
                         </Typography>
-                        <AccessAlarmIcon />
+                        <AccessAlarmIcon style={{ marginLeft: '5px' }} />
                     </Button>
                 </Grid>
             </Grid>

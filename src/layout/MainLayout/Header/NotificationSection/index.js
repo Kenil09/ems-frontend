@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import {
     Avatar,
+    Badge,
     Box,
     Button,
     ButtonBase,
@@ -31,6 +32,9 @@ import NotificationList from './NotificationList';
 
 // assets
 import { IconBell } from '@tabler/icons';
+import { useNavigate } from 'react-router-dom';
+import apiClient from 'service/service';
+import socket from 'utils/socket';
 
 // notification status options
 const status = [
@@ -55,18 +59,35 @@ const status = [
 // ==============================|| NOTIFICATION ||============================== //
 
 const NotificationSection = () => {
+    const navigate = useNavigate();
     const theme = useTheme();
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
+    const [notificationCount, setNotificationCount] = useState(0);
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = useRef(null);
 
+    const getNotificationCount = async () => {
+        try {
+            const { data } = await apiClient().get('/notification/count');
+            setNotificationCount(data?.notifications);
+        } catch (error) {
+            console.log('notification count', error);
+        }
+    };
+
+    useEffect(() => {
+        getNotificationCount();
+        socket.on('fetchNotification', (data) => getNotificationCount());
+    }, []);
+
     const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
+        navigate('/notification');
+        // setOpen((prevOpen) => !prevOpen);
     };
 
     const handleClose = (event) => {
@@ -99,29 +120,31 @@ const NotificationSection = () => {
                     }
                 }}
             >
-                <ButtonBase sx={{ borderRadius: '12px' }}>
-                    <Avatar
-                        variant="rounded"
-                        sx={{
-                            ...theme.typography.commonAvatar,
-                            ...theme.typography.mediumAvatar,
-                            transition: 'all .2s ease-in-out',
-                            background: theme.palette.secondary.light,
-                            color: theme.palette.secondary.dark,
-                            '&[aria-controls="menu-list-grow"],&:hover': {
-                                background: theme.palette.secondary.dark,
-                                color: theme.palette.secondary.light
-                            }
-                        }}
-                        ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        onClick={handleToggle}
-                        color="inherit"
-                    >
-                        <IconBell stroke={1.5} size="1.3rem" />
-                    </Avatar>
-                </ButtonBase>
+                <Badge badgeContent={notificationCount} color="secondary">
+                    <ButtonBase sx={{ borderRadius: '12px' }}>
+                        <Avatar
+                            variant="rounded"
+                            sx={{
+                                ...theme.typography.commonAvatar,
+                                ...theme.typography.mediumAvatar,
+                                transition: 'all .2s ease-in-out',
+                                background: theme.palette.secondary.light,
+                                color: theme.palette.secondary.dark,
+                                '&[aria-controls="menu-list-grow"],&:hover': {
+                                    background: theme.palette.secondary.dark,
+                                    color: theme.palette.secondary.light
+                                }
+                            }}
+                            ref={anchorRef}
+                            aria-controls={open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            onClick={handleToggle}
+                            color="inherit"
+                        >
+                            <IconBell stroke={1.5} size="1.3rem" />
+                        </Avatar>
+                    </ButtonBase>
+                </Badge>
             </Box>
             <Popper
                 placement={matchesXs ? 'bottom' : 'bottom-end'}

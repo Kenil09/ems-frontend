@@ -1,14 +1,16 @@
 import { Add, Image, Article } from '@mui/icons-material';
 import { Stack } from '@mui/material';
-import { Grid } from '@mui/material';
 import { Button } from '@mui/material';
 import { IconButton } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Modal, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { startLoader, endLoader } from 'store/loaderSlice';
 import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
 import apiClient from 'service/service';
+import { taskReviewNotfication } from 'utils/notification';
 
 const style = {
     position: 'absolute',
@@ -28,37 +30,6 @@ const style = {
     outline: 'none'
 };
 
-const thumbsContainer = {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 16
-};
-
-const thumb = {
-    display: 'inline-flex',
-    borderRadius: 2,
-    border: '1px solid #eaeaea',
-    marginBottom: 8,
-    marginRight: 8,
-    width: 100,
-    height: 100,
-    padding: 4,
-    boxSizing: 'border-box'
-};
-
-const thumbInner = {
-    display: 'flex',
-    minWidth: 0,
-    overflow: 'hidden'
-};
-
-const img = {
-    display: 'block',
-    width: 'auto',
-    height: '100%'
-};
-
 const fileSize = (bytes) => {
     const k = 1000;
     const sizes = ['bytes', 'kb', 'mb', 'gb', 'tb', 'pb', 'eb', 'zb', 'yb'];
@@ -67,6 +38,7 @@ const fileSize = (bytes) => {
 };
 
 const FiledropZone = ({ open, handleClose, files, setFiles, type, taskId, handleEditClose, getTaskData, selectedUser }) => {
+    const dispatch = useDispatch();
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
             'image/*': ['.jpeg', '.png', '.jpg'],
@@ -92,8 +64,9 @@ const FiledropZone = ({ open, handleClose, files, setFiles, type, taskId, handle
             if (!files.length) {
                 toast.error('Please insert files');
             } else {
+                dispatch(startLoader());
                 const { data } = await apiClient().post(
-                    `task//submitTask/${taskId}`,
+                    `task/submitTask/${taskId}`,
                     { files },
                     {
                         headers: {
@@ -101,12 +74,15 @@ const FiledropZone = ({ open, handleClose, files, setFiles, type, taskId, handle
                         }
                     }
                 );
+                await taskReviewNotfication(data?.task);
+                dispatch(endLoader());
                 toast.success(data?.message);
                 handleClose();
                 handleEditClose();
                 getTaskData(selectedUser);
             }
         } catch (error) {
+            dispatch(endLoader());
             toast.error(error.response?.data?.message);
         }
     };

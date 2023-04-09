@@ -24,6 +24,7 @@ const Shifts = Loadable(lazy(() => import('views/Shift')));
 const Attendences = Loadable(lazy(() => import('views/Attendence')));
 const Leave = Loadable(lazy(() => import('views/Leave')));
 const Profile = Loadable(lazy(() => import('views/Profile')));
+const Notification = Loadable(lazy(() => import('views/Notification')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 const Roles = ['admin', 'teamMember', 'teamIncharge', 'manager'];
@@ -80,6 +81,11 @@ const MainRoutes = {
         {
             path: '/profile',
             element: <Profile />,
+            role: Roles
+        },
+        {
+            path: '/notification',
+            element: <Notification />,
             role: Roles
         }
     ]

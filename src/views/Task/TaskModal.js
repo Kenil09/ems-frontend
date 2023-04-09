@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormComponentGrid, FormInputGrid, FormLabelGrid, FormRowGrid } from 'ui-component/Grid/Form/CustomGrid';
-import { Button, FormControl, Grid, Select, TextField, Typography } from '@mui/material';
+import { Button, FormControl, Grid, Rating, Select, TextField, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CustomFormHeader from 'ui-component/header/CustomFormHeader';
@@ -17,6 +17,9 @@ import dayjs from 'dayjs';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import toast from 'react-hot-toast';
 import getTaskAttchements from 'utils/getTaskAttchements';
+import Comment from './Comment';
+import { endLoader, startLoader } from 'store/loaderSlice';
+import { taskAddNotification, taskCompleteNotification, taskReOpenNotification } from 'utils/notification';
 
 const validationSchema = yup
     .object({
@@ -33,15 +36,17 @@ const initialValues = {
     description: '',
     assignee: '',
     reporter: '',
-    dueDate: ''
+    dueDate: null
 };
 
 const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskData }) => {
+    const dispatch = useDispatch();
     const currentUser = useSelector(({ user }) => user.details);
     const [openDropZone, setOpenDropZone] = useState(false);
     const [numPages, setNumPages] = useState(null);
     const [attchments, setAttachments] = useState([]);
     const [files, setFiles] = useState([]);
+    const [rating, setRating] = useState(0);
     const [submissionFiles, setSubmissionFiles] = useState([]);
     const [dropzoneType, setDropZoneType] = useState('');
     const handleOpenDropZone = () => setOpenDropZone(true);
@@ -58,20 +63,21 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
         if (!isEditMode) {
             setValue('reporter', currentUser?._id);
             setValue('assignee', selectedUser);
-            setDropZoneType('create');
+            setDropZoneType('add');
         } else {
             setValue('reporter', isEditMode?.reporter?._id);
             setValue('assignee', isEditMode?.assignee?._id);
             setValue('title', isEditMode?.title);
             setValue('description', isEditMode?.description);
             setValue('dueDate', isEditMode?.dueDate);
-            console.log('this is running');
+            console.log('this is running', isEditMode);
             getFiles(isEditMode?._id);
             setDropZoneType('edit');
         }
     }, []);
 
     const getFiles = async (id) => {
+        dispatch(startLoader());
         const s3Files = await getTaskAttchements(id, 'attachments');
         if (s3Files.length) {
             setFiles(s3Files);
@@ -83,11 +89,58 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                 setSubmissionFiles(s3Submisssion);
             }
         }
+        dispatch(endLoader());
+    };
+
+    const ratingPermission = () => {
+        if (isEditMode && isEditMode?.state !== 'assigned') {
+            if (currentUser?.role === 'admin' || currentUser?._id === isEditMode?.repoter?._id) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const handleCompleteTask = async () => {
+        if (rating === 0) {
+            toast.error('Rating is required');
+            return;
+        }
+        dispatch(startLoader());
+        try {
+            const { data } = await apiClient().post(`/task/completeTask/${isEditMode?._id}`, {
+                rating
+            });
+            await taskCompleteNotification(data?.task);
+            handleEvent();
+            toast.success(data?.message);
+            dispatch(endLoader());
+        } catch (error) {
+            dispatch(endLoader());
+            handleEvent();
+            toast.error(error?.response?.data?.message);
+        }
+    };
+
+    const handleReOpen = async () => {
+        dispatch(startLoader());
+        try {
+            const { data } = await apiClient().get(`/task/reassign/${isEditMode?._id}`);
+            handleEvent();
+            await taskReOpenNotification(data?.task);
+            toast.success(data?.message);
+            dispatch(endLoader());
+        } catch (error) {
+            dispatch(endLoader());
+            handleEvent();
+            toast.error(error?.response?.data?.message);
+        }
     };
 
     console.log('su', submissionFiles);
 
     const onSubmit = async (values) => {
+        dispatch(startLoader());
         if (!isEditMode) {
             try {
                 if (attchments.length) {
@@ -99,6 +152,8 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                         'Content-Type': 'multipart/form-data'
                     }
                 });
+                dispatch(endLoader());
+                await taskAddNotification(data?.task);
                 handleEvent();
                 toast.success(data?.message);
             } catch (error) {
@@ -111,10 +166,14 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                handleEvent();
                 toast.success(data?.message);
+                dispatch(endLoader());
+
                 handleEvent();
             } catch (error) {
+                console.log('err', error);
+                dispatch(endLoader());
+
                 handleEvent();
                 toast.error(error?.response?.data?.message);
             }
@@ -163,6 +222,10 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
         });
     };
 
+    const handleRatingChange = (event, newValue) => {
+        setRating(newValue);
+    };
+
     return (
         <MainCard title={modalTitle} backIcon handleBackEvent={handleEvent}>
             <FormProvider {...methods}>
@@ -174,6 +237,7 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                                     <TextField
                                         {...methods.register('title')}
                                         placeholder="Add title here"
+                                        color="secondary"
                                         error={Boolean(formState?.title?.message)}
                                         helperText={formState?.title?.message}
                                     />
@@ -186,6 +250,7 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                                         {...methods.register('description')}
                                         multiline={true}
                                         rows={4}
+                                        color="secondary"
                                         placeholder="Add description here"
                                         error={Boolean(formState?.description?.message)}
                                         helperText={formState?.description?.message}
@@ -202,13 +267,13 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                                             onChange={(newValue) => {
                                                 methods.setValue('dueDate', dayjs(newValue).toISOString());
                                             }}
-                                            disablePast
-                                            color={'secondary'}
+                                            disablePast={!isEditMode}
                                             error={Boolean(formState.dueDate?.message)}
                                             renderInput={(params) => (
                                                 <TextField
                                                     variant="standard"
                                                     {...params}
+                                                    color="secondary"
                                                     error={Boolean(formState.dueDate?.message)}
                                                     helperText={formState.dueDate?.message}
                                                 />
@@ -231,11 +296,14 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                                 <Grid item xs={12} marginBottom="10px">
                                     <CustomFormHeader content="Details" />
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <hr style={{ marginRight: '10px' }} />
+                                </Grid>
                                 <Grid item xs={12} container direction="row" alignItems="center" marginBottom={'10px'}>
                                     <Grid item xs={4}>
                                         <Typography>Assignee</Typography>
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={7}>
                                         <UserSelect
                                             user={watch('assignee')}
                                             setUser={(val) => {
@@ -246,29 +314,51 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                                         />
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={12} container direction="row" alignItems="center">
-                                    <Grid item xs={4}>
-                                        <Typography>Reporter</Typography>
+                                {
+                                    <Grid item xs={12} container direction="row" alignItems="center">
+                                        <Grid item xs={4}>
+                                            <Typography>Reporter</Typography>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <UserSelect
+                                                user={watch('reporter')}
+                                                setUser={(val) => {
+                                                    setValue('reporter', val);
+                                                }}
+                                                disableCurrentUser={true}
+                                                searchAble={true}
+                                            />
+                                        </Grid>
                                     </Grid>
-                                    <Grid item xs={6}>
-                                        <UserSelect
-                                            user={watch('reporter')}
-                                            setUser={(val) => {
-                                                setValue('reporter', val);
-                                            }}
-                                            disableCurrentUser={true}
-                                            searchAble={true}
-                                        />
-                                    </Grid>
-                                </Grid>
+                                }
+                                {ratingPermission() && (
+                                    <>
+                                        <Grid item xs={12} container direction="row" alignItems="center" marginTop="10px">
+                                            <Grid item xs={4}>
+                                                <Typography>Rating</Typography>
+                                            </Grid>
+                                            <Grid item xs={7}>
+                                                <Rating
+                                                    name="rating"
+                                                    disabled={isEditMode?.state === 'completed'}
+                                                    value={isEditMode?.rating ? isEditMode?.rating : rating}
+                                                    onChange={handleRatingChange}
+                                                    precision={0.5}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </>
+                                )}
                             </Grid>
                         </Grid>
                         <Grid item xs={12} container spacing={2}>
                             <Grid item xs={6} display="flex" flexDirection={'row'}>
-                                <Button type="submit" color="secondary" size="large" variant="contained">
-                                    Save
-                                </Button>
-                                {isEditMode && currentUser?._id === isEditMode?.assignee?._id && (
+                                {!isEditMode && (
+                                    <Button type="submit" color="secondary" size="large" variant="contained">
+                                        Save
+                                    </Button>
+                                )}
+                                {isEditMode && currentUser?._id === isEditMode?.assignee?._id && isEditMode.state === 'assigned' && (
                                     <Button
                                         color="secondary"
                                         sx={{ marginLeft: 2 }}
@@ -282,9 +372,26 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                                         Send For Review
                                     </Button>
                                 )}
-                                {isEditMode && currentUser?._id === isEditMode?.reporter?._id && (
-                                    <Button color="secondary" sx={{ marginLeft: 2 }} size="large" variant="contained">
+                                {ratingPermission() && isEditMode.state === 'review' && (
+                                    <Button
+                                        color="secondary"
+                                        sx={{ marginLeft: 2 }}
+                                        size="large"
+                                        variant="contained"
+                                        onClick={() => handleCompleteTask()}
+                                    >
                                         Complete Task
+                                    </Button>
+                                )}
+                                {ratingPermission() && isEditMode.state === 'completed' && (
+                                    <Button
+                                        color="secondary"
+                                        sx={{ marginLeft: 2 }}
+                                        size="large"
+                                        variant="contained"
+                                        onClick={() => handleReOpen()}
+                                    >
+                                        Re-Open Task
                                     </Button>
                                 )}
                                 {!isEditMode && (
@@ -302,6 +409,7 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                                 )}
                             </Grid>
                         </Grid>
+
                         {isEditMode && files.length ? (
                             <>
                                 <Grid item xs={12}>
@@ -418,6 +526,11 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                                     </Button>
                                 </Grid>
                             </>
+                        ) : null}
+                        {isEditMode ? (
+                            <Grid item xs={12} container spacing={2}>
+                                <Comment task={isEditMode?._id} />
+                            </Grid>
                         ) : null}
                     </Grid>
                 </form>

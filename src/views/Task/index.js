@@ -12,6 +12,7 @@ import FormatDate from 'views/utilities/FormatDate';
 import MUIDataTable from 'mui-datatables';
 import { fetchUsers } from 'store/usersSlice';
 import { startLoader, endLoader } from 'store/loaderSlice';
+import dayjs from 'dayjs';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -44,7 +45,7 @@ const Task = () => {
     const dispatch = useDispatch();
     const currentUser = useSelector(({ user }) => user.details);
     const [show, setShow] = useState(false);
-    const [taskUser, setTaskUser] = useState('');
+    const [taskUser, setTaskUser] = useState(currentUser?._id);
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
     const [userTaskdata, setUserTaskdata] = useState([]);
@@ -101,6 +102,10 @@ const Task = () => {
                 sort: false
             }
         },
+        {
+            name: 'state',
+            label: 'State'
+        },
 
         {
             name: 'title',
@@ -126,6 +131,15 @@ const Task = () => {
             options: {
                 customBodyRender: (value) => FormatDate(value)
             }
+        },
+        {
+            name: 'completedDate',
+            label: 'Completion Date',
+            options: {
+                customBodyRender: (value) => {
+                    return value ? FormatDate(value) : '';
+                }
+            }
         }
     ];
 
@@ -147,7 +161,7 @@ const Task = () => {
                 <MainCard title="Tasks">
                     <Grid display="flex" justifyContent="space-between" container borderRadius="10px">
                         <Grid item xs={3}>
-                            <UserSelect user={taskUser} setUser={setTaskUser} profileSize={3} searchAble={true} />
+                            <UserSelect user={taskUser} disableCurrentUser setUser={setTaskUser} profileSize={3} searchAble={true} />
                         </Grid>
                         <Grid item xs={2}>
                             <Button
@@ -177,6 +191,7 @@ const Task = () => {
                         >
                             <Tab label="Assigned Task" {...a11yProps(0)} />
                             <Tab label="Submitted Task" {...a11yProps(1)} />
+                            <Tab label="Completed Task" {...a11yProps(2)} />
                         </Tabs>
                     </Grid>
                     <TabPanel value={tabValue} index={0}>
@@ -184,6 +199,13 @@ const Task = () => {
                     </TabPanel>
                     <TabPanel value={tabValue} index={1}>
                         <MUIDataTable data={userTaskdata.filter(({ state }) => state === 'review')} columns={columns} options={options} />
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={2}>
+                        <MUIDataTable
+                            data={userTaskdata.filter(({ state }) => state === 'completed')}
+                            columns={columns}
+                            options={options}
+                        />
                     </TabPanel>
                 </MainCard>
             ) : (

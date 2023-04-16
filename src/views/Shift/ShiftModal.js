@@ -58,9 +58,27 @@ const defaultValues = {
     type: 'custom'
 };
 
+const filterDepartmentOption = (departments, shifts) => {
+    const usedDepartments = shifts
+        .filter(({ type }) => type !== 'general')
+        .map(({ applicableDepartments }) => {
+            return applicableDepartments.map(({ _id }) => _id);
+        })
+        .flat();
+    const availableDepartments = departments.filter(({ _id }) => {
+        if (usedDepartments.includes(_id)) {
+            return false;
+        }
+        return true;
+    });
+    return availableDepartments;
+};
+
 const ShiftModal = ({ handleEvent, modalTitle, isEditMode }) => {
     const departments = useSelector(({ department }) => department.data);
-    const departmentOptions = getDepartmentOptions(departments);
+    const shifts = useSelector(({ shift }) => shift.data);
+    const availableDepartments = filterDepartmentOption(departments, shifts);
+    const departmentOptions = getDepartmentOptions(availableDepartments);
     const dispatch = useDispatch();
     const methods = useForm({
         resolver: yupResolver(validationSchema),
@@ -68,7 +86,7 @@ const ShiftModal = ({ handleEvent, modalTitle, isEditMode }) => {
         mode: 'onChange'
     });
 
-    const { setValue } = methods;
+    const { setValue, setError } = methods;
 
     useEffect(() => {
         if (isEditMode) {
@@ -87,10 +105,35 @@ const ShiftModal = ({ handleEvent, modalTitle, isEditMode }) => {
         return s[2] + s[3] + s[5] + s[7] + s[8];
     };
 
+    const getTime = (value) => {
+        const time = value.split(':');
+        return { hour: time[0], minute: time[1] };
+    };
+
+    const validDate = (startTime, endTime) => {
+        console.log(startTime, endTime, 'he');
+        const start = getTime(startTime);
+        const end = getTime(endTime);
+
+        if (parseInt(start.hour) > parseInt(end.hour)) {
+            return false;
+        } else if (start.hour === end.hour) {
+            if (start.minute < end.minute) {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    };
+
     const onSubmit = async (values) => {
         delete values.type;
         values.startTime = isEditMode ? values.startTime : filterTimeString(values.startTime);
         values.endTime = isEditMode ? values.endTime : filterTimeString(values.endTime);
+        if (!validDate(values.startTime, values.endTime)) {
+            setError('endTime', { type: 'custom', message: 'End time should be greater than start time' });
+            return;
+        }
         if (isEditMode && isEditMode?.type === 'general') delete values.applicableDepartments;
         try {
             if (isEditMode) {

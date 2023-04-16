@@ -44,7 +44,7 @@ let menuItems = {
                 },
                 {
                     id: 'department',
-                    title: 'Departmens',
+                    title: 'Departments',
                     type: 'item',
                     url: '/departments',
                     icon: icons.IconBuilding,

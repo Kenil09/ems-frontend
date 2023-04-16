@@ -116,7 +116,6 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
     const formHeight = window.innerWidth / 2 - 40;
 
     const deleteEntry = async (id) => {
-        console.log('got her', id);
         try {
             const { data } = await apiClient().delete(`/attendence/deleteEntry/${id}`);
             getUserEntries();

@@ -47,7 +47,7 @@ const Notification = () => {
         <MainCard title="Notifications">
             <Grid container spacing={1}>
                 {notifications.map((notification) => (
-                    <Grid item xs={8} display="flex" flexDirection="row" alignItems="center">
+                    <Grid item xs={8} display="flex" flexDirection="row" alignItems="center" borderBottom="1px solid #ddd">
                         <Grid item xs={10}>
                             <Typography fontSize="1rem">{notification?.message}</Typography>
                         </Grid>

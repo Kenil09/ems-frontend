@@ -11,10 +11,13 @@ import DepartmentModal from './DepartmentModal';
 import { deleteDepartment, fetchDepartments } from 'store/departmentSlice';
 import FormatDate from 'views/utilities/FormatDate';
 import apiClient from 'service/service';
+import { departmentPermission } from 'utils/permissions';
+import { currentUser } from 'store/userSlice';
 
 const Department = () => {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.department.data);
+    const user = useSelector(currentUser);
     const [show, setShow] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
@@ -100,6 +103,7 @@ const Department = () => {
                 onRowClick: false,
                 empty: true,
                 viewColumns: false,
+                display: departmentPermission(user),
                 customBodyRender: (value, tableMeta) => (
                     <Box>
                         <Tooltip title="Edit">
@@ -148,24 +152,25 @@ const Department = () => {
         <>
             {!show ? (
                 <MainCard title="Departments">
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
-                        <Button
-                            onClick={() => {
-                                setModalTitle('Add Department');
-                                handleEvent();
-                            }}
-                            variant="contained"
-                            // component={RouterLink}
-                            to="#"
-                            startIcon={<IconPlus />}
-                            color="secondary"
-                            size="large"
-                            disableElevation
-                        >
-                            Add Department
-                        </Button>
-                    </Box>
-
+                    {departmentPermission(user) && (
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
+                            <Button
+                                onClick={() => {
+                                    setModalTitle('Add Department');
+                                    handleEvent();
+                                }}
+                                variant="contained"
+                                // component={RouterLink}
+                                to="#"
+                                startIcon={<IconPlus />}
+                                color="secondary"
+                                size="large"
+                                disableElevation
+                            >
+                                Add Department
+                            </Button>
+                        </Box>
+                    )}
                     <MUIDataTable columns={columns} data={data} options={options} />
                 </MainCard>
             ) : (

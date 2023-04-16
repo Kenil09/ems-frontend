@@ -67,6 +67,7 @@ export const UserStep = ({ type, setActiveStep }) => {
                             helperText={formik.touched.firstName && formik.errors.firstName}
                             label="FirstName"
                             variant="outlined"
+                            color="secondary"
                         />
                     </FormControl>
                 </Grid>
@@ -81,6 +82,7 @@ export const UserStep = ({ type, setActiveStep }) => {
                             helperText={formik.touched.lastName && formik.errors.lastName}
                             label="LastName"
                             variant="outlined"
+                            color="secondary"
                         />
                     </FormControl>
                 </Grid>
@@ -91,6 +93,7 @@ export const UserStep = ({ type, setActiveStep }) => {
                             id="email"
                             type="text"
                             name="email"
+                            color="secondary"
                             defaultValue={SignUpCache?.User?.email}
                             onChange={formik.handleChange}
                             error={formik.touched.email && Boolean(formik.errors.email)}

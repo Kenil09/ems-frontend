@@ -23,6 +23,7 @@ const validationSchema = yup
 
 const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
     const dispatch = useDispatch();
+    const currentUser = useSelector(({ user }) => user.details);
     const userOptions = useSelector((state) => state.users.data)?.map(({ _id, firstName, lastName }) => ({
         value: _id,
         label: `${firstName} ${lastName}`
@@ -42,7 +43,7 @@ const DepartmentModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
 
     useEffect(() => {
         dispatch(fetchDepartments());
-        dispatch(fetchUsers());
+        dispatch(fetchUsers(currentUser?.company?._id));
         if (isEditMode) {
             setValue('name', isEditMode.name);
             setValue('departmentLead', isEditMode.departmentLead?._id);

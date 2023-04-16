@@ -71,6 +71,13 @@ const Employee = () => {
             }
         },
         {
+            name: 'department',
+            label: 'Department',
+            options: {
+                customBodyRender: (value) => value?.name
+            }
+        },
+        {
             name: 'firstName',
             label: 'First Name'
         },
@@ -86,13 +93,7 @@ const Employee = () => {
             name: 'email',
             label: 'Email Address'
         },
-        {
-            name: 'department',
-            label: 'Department',
-            options: {
-                customBodyRender: (value) => value?.name
-            }
-        },
+
         {
             name: 'designation',
             label: 'Designation',

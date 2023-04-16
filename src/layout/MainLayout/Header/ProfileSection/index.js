@@ -49,6 +49,7 @@ import AlphabetAvatar from 'ui-component/Profile/AlphabetAvatar';
 const ProfileSection = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.details);
+    const [profileSource, setProfileSource] = useState(user?.profilePicture);
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
     const navigate = useNavigate();
@@ -69,6 +70,10 @@ const ProfileSection = () => {
         }
         setOpen(false);
     };
+
+    useEffect(() => {
+        setProfileSource(user?.profilePicture);
+    }, [user]);
 
     const handleListItemClick = (event, index, route = '') => {
         setSelectedIndex(index);
@@ -120,9 +125,9 @@ const ProfileSection = () => {
                     }
                 }}
                 icon={
-                    user?.profilePicture ? (
+                    user?.profilePicture && profileSource ? (
                         <Profile
-                            src={user?.profilePicture}
+                            src={profileSource}
                             sx={{
                                 ...theme.typography.mediumAvatar,
                                 margin: '8px 0 8px 8px !important',

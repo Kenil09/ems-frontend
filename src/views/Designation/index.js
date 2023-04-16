@@ -11,15 +11,16 @@ import DesignationModal from './DesignationModal';
 import { deleteDesignation, fetchDesignations } from 'store/designationSlice';
 import FormatDate from 'views/utilities/FormatDate';
 import apiClient from 'service/service';
+import { designationPermission } from 'utils/permissions';
+import { currentUser } from 'store/userSlice';
 
 const Designation = () => {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.designation.data);
+    const user = useSelector(currentUser);
     const [show, setShow] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [isEditMode, setIsEditMode] = useState(false);
-
-    useSelector((state) => console.log(state));
 
     useEffect(() => {
         dispatch(fetchDesignations());
@@ -96,6 +97,7 @@ const Designation = () => {
                 onRowClick: false,
                 empty: true,
                 viewColumns: false,
+                display: designationPermission(user),
                 customBodyRender: (value, tableMeta) => (
                     <Box>
                         <Tooltip title="Edit">
@@ -144,23 +146,25 @@ const Designation = () => {
         <>
             {!show ? (
                 <MainCard title="Departments">
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
-                        <Button
-                            onClick={() => {
-                                setModalTitle('Add Department');
-                                handleEvent();
-                            }}
-                            variant="contained"
-                            // component={RouterLink}
-                            to="#"
-                            startIcon={<IconPlus />}
-                            color="secondary"
-                            size="large"
-                            disableElevation
-                        >
-                            Add Designation
-                        </Button>
-                    </Box>
+                    {designationPermission(user) && (
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
+                            <Button
+                                onClick={() => {
+                                    setModalTitle('Add Department');
+                                    handleEvent();
+                                }}
+                                variant="contained"
+                                // component={RouterLink}
+                                to="#"
+                                startIcon={<IconPlus />}
+                                color="secondary"
+                                size="large"
+                                disableElevation
+                            >
+                                Add Designation
+                            </Button>
+                        </Box>
+                    )}
 
                     <MUIDataTable columns={columns} data={data} options={options} />
                 </MainCard>

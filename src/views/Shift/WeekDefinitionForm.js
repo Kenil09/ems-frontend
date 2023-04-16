@@ -46,9 +46,9 @@ const WeekDefinitionForm = () => {
             </TableHead>
 
             <TableBody>
-                {days.map((day) => (
+                {days.map((day, index) => (
                     <>
-                        <TableRow key={day}>
+                        <TableRow key={index}>
                             <TableCell align="center" padding="none" className="week-table-cell">
                                 {day}
                             </TableCell>

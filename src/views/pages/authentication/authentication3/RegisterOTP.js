@@ -28,8 +28,8 @@ const RegisterOTP = () => {
     let email;
     const navigate = useNavigate();
     if (token) {
-        // const userData = jwtDecode(token);
-        email = token;
+        const userData = jwtDecode(token);
+        email = userData.email;
     }
     const RegisterSchema = Yup.object()
         .shape({

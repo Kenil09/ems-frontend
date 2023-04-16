@@ -22,6 +22,7 @@ const validationSchema = yup
 
 const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
     const dispatch = useDispatch();
+    const currentUser = useSelector(({ user }) => user.details);
 
     const methods = useForm({
         resolver: yupResolver(validationSchema),
@@ -34,7 +35,7 @@ const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
 
     useEffect(() => {
         dispatch(fetchDepartments());
-        dispatch(fetchUsers());
+        dispatch(fetchUsers(currentUser?.company?._id));
         if (isEditMode) {
             setValue('name', isEditMode.name);
         }
@@ -71,11 +72,13 @@ const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
                     <Grid container spacing={5}>
                         <FormRowGrid>
-                            <FormLabelGrid>
-                                <CustomFormLabel id="label-name" required content="Department Name" />
-                            </FormLabelGrid>
                             <FormComponentGrid>
-                                <FormInput name="name" type="name" variant="standard" />
+                                <FormLabelGrid>
+                                    <CustomFormLabel id="label-name" required content="Designation Name" />
+                                </FormLabelGrid>
+                                <Grid item xs={6} marginLeft={2}>
+                                    <FormInput name="name" type="name" variant="standard" placeholder="Enter designation name" />
+                                </Grid>
                             </FormComponentGrid>
                         </FormRowGrid>
 

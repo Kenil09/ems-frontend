@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 // material-ui
-import { Box, Tooltip, IconButton, Button } from '@mui/material';
+import { Box, Tooltip, IconButton, Button, Typography } from '@mui/material';
 import toast from 'react-hot-toast';
 import { useSelector, useDispatch } from 'react-redux';
 // project imports
@@ -12,6 +12,7 @@ import { fetchDepartments } from 'store/departmentSlice';
 import FormatDate from 'views/utilities/FormatDate';
 import apiClient from 'service/service';
 import ShiftModal from './ShiftModal';
+import { shiftPermission } from 'utils/permissions';
 
 const Shift = () => {
     const dispatch = useDispatch();
@@ -68,6 +69,13 @@ const Shift = () => {
             label: 'Shift Type'
         },
         {
+            name: 'applicableDepartments',
+            label: 'Applicable Departments',
+            options: {
+                customBodyRender: (value) => <Typography>{value.map(({ name }) => name).toString()}</Typography>
+            }
+        },
+        {
             name: 'createdBy',
             label: 'Added By',
             options: {
@@ -94,7 +102,8 @@ const Shift = () => {
             name: 'updatedAt',
             label: 'Modified Time',
             options: {
-                customBodyRender: (value) => FormatDate(value)
+                customBodyRender: (value) => FormatDate(value),
+                disable: true
             }
         },
         {
@@ -104,6 +113,7 @@ const Shift = () => {
                 onRowClick: false,
                 empty: true,
                 viewColumns: false,
+                display: shiftPermission(currentUser),
                 customBodyRender: (value, tableMeta) => (
                     <Box>
                         <Tooltip title="Edit">
@@ -154,23 +164,25 @@ const Shift = () => {
         <>
             {!show ? (
                 <MainCard title="Shifts">
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
-                        <Button
-                            onClick={() => {
-                                setModalTitle('Add Shift');
-                                handleEvent();
-                            }}
-                            variant="contained"
-                            // component={RouterLink}
-                            to="#"
-                            startIcon={<IconPlus />}
-                            color="secondary"
-                            size="large"
-                            disableElevation
-                        >
-                            Add Shift
-                        </Button>
-                    </Box>
+                    {shiftPermission(currentUser) && (
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
+                            <Button
+                                onClick={() => {
+                                    setModalTitle('Add Shift');
+                                    handleEvent();
+                                }}
+                                variant="contained"
+                                // component={RouterLink}
+                                to="#"
+                                startIcon={<IconPlus />}
+                                color="secondary"
+                                size="large"
+                                disableElevation
+                            >
+                                Add Shift
+                            </Button>
+                        </Box>
+                    )}
 
                     <MUIDataTable columns={columns} data={data} options={options} />
                 </MainCard>

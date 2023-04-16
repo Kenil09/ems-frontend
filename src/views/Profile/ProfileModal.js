@@ -73,7 +73,6 @@ const ProfileModal = ({ isLoading }) => {
         setHideButton(false);
         setDisabled(false);
     };
-    useEffect(() => {}, []);
 
     const handleHideButton = () => {
         setHideButton(true);
@@ -86,14 +85,12 @@ const ProfileModal = ({ isLoading }) => {
             const file = event.target.files[0];
             const formData = new FormData();
             formData.append('files', file);
-            const { data } = await axios.post(`http://localhost:3001/user/updateProfilePicture/${user._id}`, formData);
-            // console.log(data.message, 'message');
+            const { data } = await apiClient().post(`/user/updateProfilePicture/${user._id}`, formData);
             dispatch(setUser(data.user));
             toast.success(data.message);
-            navigate(-1);
+            window.location.reload();
         } catch (err) {
             toast.error('Internal server error');
-            console.error(err);
         }
     };
 
@@ -110,7 +107,7 @@ const ProfileModal = ({ isLoading }) => {
             dispatch(setUser(UserDetails.data.user));
             // console.log(UserDetails, 'user');
         } catch (err) {
-            console.log(err, 'error');
+            toast.error(err.response?.data?.message);
         }
     };
     const theme = useTheme();
@@ -134,7 +131,7 @@ const ProfileModal = ({ isLoading }) => {
                 <CardWrapper border={false} sx={{ p: '25px' }} content={false}>
                     <Stack direction="row" spacing={3}>
                         <IconButton color="primary" aria-label="upload picture" component="label" style={{ marginTop: '-10px' }}>
-                            <Profile src={user?.profilePicture} alt="profile" />
+                            <Profile src={user?.profilePicture} alt="profile" sx={{ width: '70px', height: '70px' }} />
                             <input hidden accept="image/*" type="file" onChange={handleFileUpload} />
                         </IconButton>
                         <Typography variant="h3">

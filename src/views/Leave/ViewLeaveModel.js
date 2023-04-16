@@ -79,80 +79,117 @@ export const ViewLeaveModel = ({ viewLeave, handleEvent }) => {
                     {/* <form onSubmit={methods.handleSubmit(onSubmit)}> */}
                     <Grid container spacing={2}>
                         {viewLeave?.firstName && (
-                            <Grid item xs={12} container direction="row">
-                                <Grid item xs={3}>
-                                    <h5>Name</h5>
+                            <>
+                                <Grid item xs={12} container direction="row">
+                                    <Grid item xs={3}>
+                                        <Typography variant="h4" fontWeight={'normal'}>
+                                            Name
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={9}>
+                                        <Typography variant="h4" fontWeight={'normal'}>
+                                            :&nbsp;&nbsp;&nbsp;&nbsp; {viewLeave?.firstName} {viewLeave?.lastName}
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={9}>
-                                    <h6>
-                                        :&nbsp; {viewLeave?.firstName} {viewLeave?.lastName}
-                                    </h6>
-                                </Grid>
-                            </Grid>
+                            </>
                         )}
                         {viewLeave?.email && (
-                            <Grid item xs={12} container direction="row">
-                                <Grid item xs={3}>
-                                    <h5>Email</h5>
+                            <>
+                                <Grid item xs={12} container direction="row">
+                                    <Grid item xs={3}>
+                                        <Typography variant="h4" fontWeight={'normal'}>
+                                            Email
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={9}>
+                                        <Typography variant="h4" fontWeight={'normal'}>
+                                            :&nbsp;&nbsp;&nbsp;&nbsp; {viewLeave?.email}
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={9}>
-                                    <h6>:&nbsp; {viewLeave?.email}</h6>
-                                </Grid>
-                            </Grid>
+                            </>
                         )}
-
                         <Grid item xs={12} container direction="row">
                             <Grid item xs={3}>
-                                <h5>Leave type </h5>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    Leave type{' '}
+                                </Typography>
                             </Grid>
                             <Grid item xs={9}>
-                                <h6>:&nbsp; {formateLeave(viewLeave?.LeaveType)}</h6>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    :&nbsp;&nbsp;&nbsp;&nbsp; {formateLeave(viewLeave?.LeaveType)}
+                                </Typography>
                             </Grid>
                         </Grid>
-
+                        <br></br>{' '}
                         <Grid item xs={12} container direction="row">
                             <Grid item xs={3}>
-                                <h5>From Date </h5>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    From Date{' '}
+                                </Typography>
                             </Grid>
                             <Grid item xs={9}>
-                                <h6>:&nbsp; {addDays(viewLeave?.FromDate).toISOString().split('T')[0]}</h6>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    :&nbsp;&nbsp;&nbsp;&nbsp; {addDays(viewLeave?.FromDate).toISOString().split('T')[0]}
+                                </Typography>
                             </Grid>
                         </Grid>
+                        <br></br>{' '}
                         <Grid item xs={12} container direction="row">
                             <Grid item xs={3}>
-                                <h5>To Date </h5>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    To Date{' '}
+                                </Typography>
                             </Grid>
                             <Grid item xs={9}>
-                                <h6>:&nbsp; {addDays(viewLeave?.ToDate).toISOString().split('T')[0]}</h6>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    :&nbsp;&nbsp;&nbsp;&nbsp; {addDays(viewLeave?.ToDate).toISOString().split('T')[0]}
+                                </Typography>
                             </Grid>
                         </Grid>
-
+                        <br></br>{' '}
                         <Grid item xs={12} container direction="row">
                             <Grid item xs={3}>
-                                <h5>Reason </h5>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    Reason{' '}
+                                </Typography>
                             </Grid>
                             <Grid item xs={9}>
-                                <h6>:&nbsp; {viewLeave?.Reason}</h6>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    :&nbsp;&nbsp;&nbsp;&nbsp; {viewLeave?.Reason}
+                                </Typography>
                             </Grid>
                         </Grid>
+                        <br></br>{' '}
                         <Grid item xs={12} container direction="row">
                             <Grid item xs={3}>
-                                <h5>Date of Request</h5>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    Date of Request
+                                </Typography>
                             </Grid>
                             <Grid item xs={9}>
-                                <h6>:&nbsp; {new Date(viewLeave?.createdAt).toISOString().split('T')[0]}</h6>
+                                <Typography variant="h4" fontWeight={'normal'}>
+                                    :&nbsp;&nbsp;&nbsp;&nbsp; {new Date(viewLeave?.createdAt).toISOString().split('T')[0]}
+                                </Typography>
                             </Grid>
                         </Grid>
-
                         {viewLeave?.CancelledMessage && (
-                            <Grid item xs={12} container direction="row">
-                                <Grid item xs={3}>
-                                    <h5>Cancelled Message</h5>
+                            <>
+                                <Grid item xs={12} container direction="row">
+                                    <Grid item xs={3}>
+                                        <Typography variant="h4" fontWeight={'normal'}>
+                                            Cancelled Message
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={9}>
+                                        <Typography style={{ color: 'red' }} fontWeight="bold" variant="h4">
+                                            :&nbsp;&nbsp;&nbsp;&nbsp; {viewLeave?.CancelledMessage}
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={9}>
-                                    <h6 style={{ color: 'red' }}>:&nbsp; {viewLeave?.CancelledMessage}</h6>
-                                </Grid>
-                            </Grid>
+                                <br />
+                            </>
                         )}
                     </Grid>
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Box, Button } from '@mui/material';
+import { Grid, Box, Button, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -176,7 +176,12 @@ const Index = () => {
                                                 backgroundColor: (theme) => (theme.palette.mode === 'dark' ? '#1A2027' : '#fff')
                                             }}
                                         >
-                                            <h5 style={{ textAlign: 'center', paddingTop: '20px' }}>{name}</h5>
+                                            <Typography
+                                                style={{ textAlign: 'center', paddingTop: '20px', fontWeight: 'normal' }}
+                                                variant="h3"
+                                            >
+                                                {name}
+                                            </Typography>
                                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
                                                 <img
                                                     src={require(`../../assets/images/icons/${src}`)}
@@ -192,9 +197,13 @@ const Index = () => {
                                                     marginLeft: '20px'
                                                 }}
                                             >
-                                                <h5>Available : {TypesLeave[id]?.total - TypesLeave[id]?.taken}</h5>
+                                                <Typography variant="h4" fontWeight={'lighter'}>
+                                                    Available : {TypesLeave[id]?.total - TypesLeave[id]?.taken}
+                                                </Typography>
                                                 <pre>
-                                                    <h5>Booked : {TypesLeave[id]?.taken}</h5>
+                                                    <Typography variant="h4" fontWeight={'lighter'}>
+                                                        Booked : {TypesLeave[id]?.taken}
+                                                    </Typography>
                                                 </pre>
                                             </div>
                                         </Paper>

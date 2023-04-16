@@ -5,6 +5,7 @@
     margin-top: 15px;
     background-color: white;
     border-radius: 10px;
+    border-collapse: collapse;
 }
 
 .my-table th,

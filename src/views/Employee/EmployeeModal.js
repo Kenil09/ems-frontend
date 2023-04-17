@@ -283,7 +283,7 @@ const EmployeeModel = ({ handleEvent, modalTitle, isEditMode }) => {
                                     <CustomFormLabel id="label-dateOfJoining" content="Date of Joining" />
                                 </FormLabelGrid>
                                 <FormInputGrid>
-                                    <FormInput name="joiningDate" type="date" disablePast variant="standard" />
+                                    <FormInput name="joiningDate" type="date" disablePast variant="standard" disableFuture={false} />
                                 </FormInputGrid>
                             </FormComponentGrid>
                         </FormRowGrid>

@@ -145,7 +145,7 @@ const Designation = () => {
     return (
         <>
             {!show ? (
-                <MainCard title="Departments">
+                <MainCard title="Designations">
                     {designationPermission(user) && (
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
                             <Button

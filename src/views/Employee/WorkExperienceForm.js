@@ -48,6 +48,7 @@ const WorkExperienceForm = () => {
                                     key={feild.id}
                                     name={`workExperience.${index}.fromDate`}
                                     type="date"
+                                    disableFuture
                                     variant="standard"
                                     fieldArray
                                 />
@@ -58,6 +59,7 @@ const WorkExperienceForm = () => {
                                     name={`workExperience.${index}.toDate`}
                                     type="date"
                                     variant="standard"
+                                    disableFuture
                                     fieldArray
                                 />
                             </TableCell>

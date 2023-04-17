@@ -54,7 +54,9 @@ function FormInput({
     placeholder,
     className,
     multiple,
-    formControlWidth
+    formControlWidth,
+    disableFuture,
+    disablePast
 }) {
     const classes = useStyles();
     const methods = useFormContext();
@@ -202,6 +204,8 @@ function FormInput({
                                             methods.setValue(name, dayjs(newValue).toISOString());
                                         }}
                                         color={color || 'secondary'}
+                                        disableFuture={Boolean(disableFuture)}
+                                        disablePast={Boolean(disablePast)}
                                         error={Boolean(error)}
                                         className={classes.customDatePicker}
                                         renderInput={(params) => (

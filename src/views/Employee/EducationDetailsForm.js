@@ -47,6 +47,7 @@ const EducationDetails = () => {
                                     key={feild.id}
                                     name={`educationDetails.${index}.dateOfCompletion`}
                                     type="date"
+                                    disableFuture
                                     variant="standard"
                                     fieldArray
                                 />

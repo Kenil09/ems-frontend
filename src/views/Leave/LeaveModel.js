@@ -91,6 +91,7 @@ export const LeaveModel = ({ handleEvent, modalTitle, open, setOpen, viewLeave, 
                                     defaultValues={viewLeave?.FromDate}
                                     disabled={viewLeave?.FromDate ? true : false}
                                     type="date"
+                                    disablePast
                                     variant="standard"
                                 />
                             </Grid>
@@ -103,6 +104,7 @@ export const LeaveModel = ({ handleEvent, modalTitle, open, setOpen, viewLeave, 
                                 <FormInput
                                     name="toDate"
                                     type="date"
+                                    disablePast
                                     defaultValues={viewLeave?.ToDate}
                                     disabled={viewLeave?.ToDate ? true : false}
                                     variant="standard"

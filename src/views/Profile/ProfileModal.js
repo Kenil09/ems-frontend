@@ -105,6 +105,7 @@ const ProfileModal = ({ isLoading }) => {
             const UserDetails = await apiClient().put(`/user/${user._id}`, newPayload);
             toast.success(UserDetails.data.message);
             dispatch(setUser(UserDetails.data.user));
+            handleHideButton();
             // console.log(UserDetails, 'user');
         } catch (err) {
             toast.error(err.response?.data?.message);

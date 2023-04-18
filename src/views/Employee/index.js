@@ -38,7 +38,7 @@ const Employee = () => {
             dispatch(deleteUser(data?.user));
             toast.success(data?.message);
         } catch (error) {
-            toast.error(error.data?.message);
+            toast.error(error?.response?.data?.message);
         }
     };
 

@@ -1,5 +1,5 @@
-import { Grid, Tab, Button, Tabs, Box, Typography } from '@mui/material';
-import { IconPlus } from '@tabler/icons';
+import { Grid, Tab, Button, Tabs, Box, Typography, Tooltip, IconButton } from '@mui/material';
+import { IconPlus, IconTrash } from '@tabler/icons';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,7 +12,6 @@ import FormatDate from 'views/utilities/FormatDate';
 import MUIDataTable from 'mui-datatables';
 import { fetchUsers } from 'store/usersSlice';
 import { startLoader, endLoader } from 'store/loaderSlice';
-import dayjs from 'dayjs';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -72,9 +71,23 @@ const Task = () => {
             startFetching();
             const { data } = await apiClient().get(`/task/${val}`);
             setUserTaskdata(data?.tasks);
-            endFetching();
         } catch (error) {
             toast.error(error?.response?.data?.message);
+        } finally {
+            endFetching();
+        }
+    };
+
+    const deleteTask = async (id) => {
+        try {
+            startFetching();
+            const { data } = await apiClient().delete(`/task/${id}`);
+            getUserTaskdata(taskUser);
+            toast.success(data?.message);
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
+        } finally {
+            endFetching();
         }
     };
 
@@ -126,6 +139,13 @@ const Task = () => {
             }
         },
         {
+            name: 'createdAt',
+            label: 'Assigned Date',
+            options: {
+                customBodyRender: (value) => FormatDate(value)
+            }
+        },
+        {
             name: 'dueDate',
             label: 'Due Date',
             options: {
@@ -139,6 +159,31 @@ const Task = () => {
                 customBodyRender: (value) => {
                     return value ? FormatDate(value) : '';
                 }
+            }
+        },
+        {
+            name: 'Actions',
+            label: 'Actions',
+            options: {
+                onRowClick: false,
+                empty: true,
+                viewColumns: false,
+                customBodyRender: (value, tableMeta) => (
+                    <Box>
+                        <Tooltip title="Delete">
+                            <IconButton
+                                color="secondary"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    deleteTask(tableMeta.rowData[0]);
+                                }}
+                                sx={{ color: 'error.main' }}
+                            >
+                                <IconTrash />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                )
             }
         }
     ];

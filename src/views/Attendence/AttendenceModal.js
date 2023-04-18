@@ -1,5 +1,5 @@
 import { Close, Add, Delete } from '@mui/icons-material';
-import { Button, Grid, IconButton, Typography, Paper, Stack } from '@mui/material';
+import { Button, Grid, IconButton, Typography, Paper, Stack, Alert } from '@mui/material';
 import dayjs from 'dayjs';
 import apiClient from 'service/service';
 import toast from 'react-hot-toast';
@@ -41,10 +41,18 @@ const formatEntry = (date, manual) => {
     return dayjs(date).format('HH:mm');
 };
 
+const isTodayOrFutureDate = (date) => {
+    // date should be dayjs object assuming
+    return dayjs(date).isAfter(dayjs().startOf('day'));
+};
+
 const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttendences }) => {
     const [entries, setEntries] = useState([]);
     const [showAdd, setShowAdd] = useState(false);
     const currentUser = useSelector(({ user }) => user.details);
+    const isTodayOrFuture = isTodayOrFutureDate(date);
+
+    console.log('date', isTodayOrFuture);
 
     const methods = useForm({
         resolver: yupResolver(validationSchema),
@@ -170,7 +178,7 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
             )}
             {!entries.length ? (
                 <>
-                    {isAdmin(currentUser) && (
+                    {isAdmin(currentUser) && !isTodayOrFuture ? (
                         <Grid item xs={12} sx={{ margin: '5px 0px' }} display="flex">
                             <Button
                                 startIcon={<Add />}
@@ -182,6 +190,12 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
                             >
                                 Add Entry
                             </Button>
+                        </Grid>
+                    ) : (
+                        <Grid xs={12} sx={{ display: 'flex', justifyContent: 'center' }} marginTop={1}>
+                            <Alert variant="filled" severity="warning" sx={{ width: 'fit-content', padding: '15px', fontSize: '1rem' }}>
+                                Future or todays manual attendence entries are not allowed
+                            </Alert>
                         </Grid>
                     )}
                 </>
@@ -210,7 +224,8 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
                             )}
                         </Grid>
                     ))}
-                    {isAdmin(currentUser) && (
+                    {console.log('cure', isAdmin(currentUser), isTodayOrFuture)}
+                    {isAdmin(currentUser) && !isTodayOrFuture ? (
                         <Grid item xs={12}>
                             <Button
                                 startIcon={<Add />}
@@ -222,6 +237,12 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
                             >
                                 Add Entry
                             </Button>
+                        </Grid>
+                    ) : (
+                        <Grid item xs={12}>
+                            <Alert variant="filled" icon={false} severity="warning">
+                                Future or todays manual attendence entries are not allowed
+                            </Alert>
                         </Grid>
                     )}
                 </Grid>

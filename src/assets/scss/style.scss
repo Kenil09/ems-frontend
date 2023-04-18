@@ -182,6 +182,30 @@
     max-height: 150px;
 }
 
+.document_pdfView_container .react-pdf__Document {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.document_pdfView_container .react-pdf__Page {
+    max-width: calc(100% - 2em);
+    box-shadow: 0 30px 40px 0 rgb(16 36 94 / 20%);
+    margin: 1em;
+}
+
+.document_pdfView_container .react-pdf__Page canvas {
+    max-width: 100%;
+    height: auto !important;
+    max-height: auto !important;
+}
+
+.document_pdfView_container .react-pdf__message {
+    padding: 20px;
+    color: white;
+}
+  
+
 .week-table-cell {
     border: 1px solid rgba(224, 224, 224, 1);
 }

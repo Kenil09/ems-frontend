@@ -150,7 +150,7 @@ const Designation = () => {
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
                             <Button
                                 onClick={() => {
-                                    setModalTitle('Add Department');
+                                    setModalTitle('Add Designation');
                                     handleEvent();
                                 }}
                                 variant="contained"

@@ -72,7 +72,7 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
     };
 
     const isAdmin = (user) => {
-        return user?.role === 'admin' ? true : false;
+        return ['admin', 'manager'].includes(user?.role) ? true : false;
     };
 
     useEffect(() => {
@@ -179,22 +179,31 @@ const AttendenceModal = ({ date, user, closeModal, currentMonth, getMonthAttende
             {!entries.length ? (
                 <>
                     {isAdmin(currentUser) && !isTodayOrFuture ? (
-                        <Grid item xs={12} sx={{ margin: '5px 0px' }} display="flex">
-                            <Button
-                                startIcon={<Add />}
-                                fullWidth
-                                onClick={() => setShowAdd(true)}
-                                variant="outlined"
-                                color="secondary"
-                                sx={{ padding: '12px 0px', margin: '0px 20px' }}
-                            >
-                                Add Entry
-                            </Button>
-                        </Grid>
+                        <>
+                            <Grid item xs={12} sx={{ margin: '5px 0px' }} display="flex">
+                                <Button
+                                    startIcon={<Add />}
+                                    fullWidth
+                                    onClick={() => setShowAdd(true)}
+                                    variant="outlined"
+                                    color="secondary"
+                                    sx={{ padding: '12px 0px', margin: '0px 20px' }}
+                                >
+                                    Add Entry
+                                </Button>
+                            </Grid>
+                            <Grid xs={12} sx={{ display: 'flex', justifyContent: 'center' }} marginTop={1}>
+                                <Alert variant="filled" severity="warning" sx={{ width: 'fit-content', padding: '15px', fontSize: '1rem' }}>
+                                    There is no entry of date {dayjs(date).format('DD/MM/YYYY')} recorded.
+                                </Alert>
+                            </Grid>
+                        </>
                     ) : (
                         <Grid xs={12} sx={{ display: 'flex', justifyContent: 'center' }} marginTop={1}>
                             <Alert variant="filled" severity="warning" sx={{ width: 'fit-content', padding: '15px', fontSize: '1rem' }}>
-                                Future or todays manual attendence entries are not allowed
+                                {isAdmin(currentUser)
+                                    ? 'Future or todays manual attendence entries are not allowed'
+                                    : "You don't have suffcient permission to add manual entry"}
                             </Alert>
                         </Grid>
                     )}

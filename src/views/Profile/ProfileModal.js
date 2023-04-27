@@ -83,7 +83,6 @@ const ProfileModal = ({ isLoading }) => {
     const handleFileUpload = async (event) => {
         try {
             const file = event.target.files[0];
-            console.log('file', file);
             const formData = new FormData();
             formData.append('files', file);
             const { data } = await apiClient().post(`/user/updateProfilePicture/${user._id}`, formData, {

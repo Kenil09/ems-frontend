@@ -15,6 +15,7 @@ import FormatDate from 'views/utilities/FormatDate';
 import apiClient from 'service/service';
 import Profile from 'ui-component/Profile';
 import AlphabetAvatar from 'ui-component/Profile/AlphabetAvatar';
+import { userPermission } from 'utils/permissions';
 
 const Employee = () => {
     const dispatch = useDispatch();
@@ -156,6 +157,7 @@ const Employee = () => {
                 onRowClick: false,
                 empty: true,
                 viewColumns: false,
+                display: userPermission(currentUser),
                 customBodyRender: (value, tableMeta) => (
                     <Box>
                         <Tooltip title="Edit">
@@ -204,23 +206,25 @@ const Employee = () => {
         <>
             {!show ? (
                 <MainCard title="Users">
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
-                        <Button
-                            onClick={() => {
-                                setModalTitle('Add Employee');
-                                handleEvent();
-                            }}
-                            variant="contained"
-                            // component={RouterLink}
-                            to="#"
-                            startIcon={<IconPlus />}
-                            color="secondary"
-                            size="large"
-                            disableElevation
-                        >
-                            Invite User
-                        </Button>
-                    </Box>
+                    {userPermission(currentUser) && (
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '24px' }}>
+                            <Button
+                                onClick={() => {
+                                    setModalTitle('Add Employee');
+                                    handleEvent();
+                                }}
+                                variant="contained"
+                                // component={RouterLink}
+                                to="#"
+                                startIcon={<IconPlus />}
+                                color="secondary"
+                                size="large"
+                                disableElevation
+                            >
+                                Invite User
+                            </Button>
+                        </Box>
+                    )}
 
                     <MUIDataTable columns={columns} data={data} options={options} />
                 </MainCard>

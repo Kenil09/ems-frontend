@@ -26,7 +26,7 @@ export const departmentPermission = (user) => {
 };
 
 export const userPermission = (user) => {
-    return managerPermission(user);
+    return adminPermission(user);
 };
 
 export const designationPermission = (user) => {

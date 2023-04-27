@@ -1,7 +1,7 @@
 import { Grid, Button, Drawer, Typography } from '@mui/material';
 import { IconPlus } from '@tabler/icons';
 import { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import MainCard from 'ui-component/cards/MainCard';
 import Profile from 'ui-component/Profile';
@@ -15,6 +15,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayjs from 'dayjs';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import LiveClockUpdate from './LiveClockUpdate';
+import { taskPermission } from 'utils/permissions';
+import { fetchUsers } from 'store/usersSlice';
 
 function renderEventContent(eventInfo) {
     return (
@@ -43,6 +45,7 @@ function renderEventContent(eventInfo) {
 }
 
 const Attendence = () => {
+    const dispatch = useDispatch();
     const calendarRef = useRef(null);
     const currentUser = useSelector(({ user }) => user.details);
     const [show, setShow] = useState(false);
@@ -57,6 +60,7 @@ const Attendence = () => {
         if (user && currentMonth > 0) {
             getMonthAttendences(currentMonth, year, user);
         }
+        dispatch(fetchUsers(currentUser?.company?._id));
     }, [user, currentMonth]);
 
     useEffect(() => {
@@ -128,7 +132,7 @@ const Attendence = () => {
         <MainCard title="Attendence">
             <Grid display="flex" justifyContent="space-between" container borderRadius="10px" marginBottom={2}>
                 <Grid item xs={3}>
-                    {currentUser?.role === 'admin' && <UserSelect user={user} setUser={setUser} profileSize={3} searchAble={true} />}
+                    {taskPermission(currentUser) && <UserSelect user={user} setUser={setUser} profileSize={3} searchAble={true} />}
                 </Grid>
                 <Grid item xs={1.8}>
                     <Button color={clockIn ? 'error' : 'secondary'} variant="contained" size="medium" onClick={() => onClockInOut()}>

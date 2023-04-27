@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
 import './leaveTable.css';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -111,7 +111,7 @@ export const LeaveDataGrid = ({ leaves, show, setShow, setleaveDetails }) => {
                 ) : (
                     <tr>
                         <td>
-                            <h6 style={{ textAlign: 'right' }}>No Leaves Found</h6>
+                            <Typography>No Leaves Found</Typography>
                         </td>
                     </tr>
                 )}

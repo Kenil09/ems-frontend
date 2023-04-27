@@ -9,7 +9,21 @@ const containsText = (text, searchText) => text.toLowerCase().indexOf(searchText
 
 const UserSelect = ({ user, setUser, searchAble, disableCurrentUser, profileSize = 1 }) => {
     const currentUser = useSelector(({ user }) => user.details);
-    const users = useSelector(({ users }) => users.data).filter(({ company }) => company?._id === currentUser?.company?._id);
+    const usersData = useSelector(({ users }) => users.data).filter(({ company }) => company?._id === currentUser?.company?._id);
+    const users = usersData.filter((user) => {
+        if (currentUser?._id === user?._id) {
+            return true;
+        }
+        if (currentUser?.role === 'teamMember') {
+            return currentUser?._id === user?._id;
+        } else if (currentUser?.role === 'teamIncharge') {
+            return currentUser?._id === user?.reportingManager?._id;
+        } else if (currentUser?.role === 'manager') {
+            return currentUser?.department?._id === user?.department?._id;
+        } else if (currentUser?.role === 'admin') {
+            return true;
+        }
+    });
     const userOptions = getUserOptions(users);
     const [searchText, setSearchText] = useState('');
     const displayedOptions = useMemo(() => {

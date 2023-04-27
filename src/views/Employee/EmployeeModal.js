@@ -32,12 +32,42 @@ const validationSchema = yup
         lastName: yup.string('Enter the last name').required('Last name is required'),
         email: yup.string('Enter the email').required('Email is required'),
         nickName: yup.string().nullable().notRequired(),
-        department: yup.string('Enter the department').nullable().notRequired(),
+        department: yup
+            .string('Enter the department')
+            .nullable()
+            .notRequired()
+            .when('role', {
+                is: 'teamMember',
+                then: yup.string('Enter the department').required()
+            })
+            .when('role', {
+                is: 'teamIncharge',
+                then: yup.string('Enter the department').required()
+            })
+            .when('role', {
+                is: 'manager',
+                then: yup.string('Enter the department').required()
+            }),
         role: yup
             .string('Enter the role')
             .oneOf(['admin', 'teamMember', 'teamIncharge', 'manager'], 'Role is required')
             .required('Role is required'),
-        designation: yup.string('Enter the designation').nullable().notRequired(),
+        designation: yup
+            .string('Enter the designation')
+            .nullable()
+            .notRequired()
+            .when('role', {
+                is: 'teamMember',
+                then: yup.string('Enter the department').required()
+            })
+            .when('role', {
+                is: 'teamIncharge',
+                then: yup.string('Enter the department').required()
+            })
+            .when('role', {
+                is: 'manager',
+                then: yup.string('Enter the department').required()
+            }),
         location: yup.string().nullable().notRequired(),
         employeeType: yup
             .string()
@@ -45,7 +75,17 @@ const validationSchema = yup
             .nullable()
             .notRequired(),
         joiningDate: yup.string().nullable().notRequired(),
-        reportingManager: yup.string().notRequired(),
+        reportingManager: yup
+            .string()
+            .notRequired()
+            .when('role', {
+                is: 'teamMember',
+                then: yup.string('Enter the Reporting Manager').required('Reporting manager is required')
+            })
+            .when('role', {
+                is: 'teamIncharge',
+                then: yup.string('Enter the Reporting Manager').required('Reporting manager is required')
+            }),
         birthDate: yup.string().nullable().notRequired(),
         gender: yup.string(),
         maritalStatus: yup.string(),

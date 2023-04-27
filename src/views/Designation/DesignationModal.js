@@ -13,6 +13,7 @@ import apiClient from 'service/service';
 import SystemFields from 'views/utilities/SystemFields';
 import CustomFormLabel from 'ui-component/Form/CustomFormLabel';
 import { FormRowGrid, FormComponentGrid, FormInputGrid, FormLabelGrid } from 'ui-component/Grid/Form/CustomGrid';
+import { addDesignation, updateDesignation } from 'store/designationSlice';
 
 const validationSchema = yup
     .object({
@@ -45,11 +46,11 @@ const DesignationModal = ({ open, handleEvent, modalTitle, isEditMode }) => {
         try {
             if (isEditMode) {
                 const { data } = await apiClient().put(`/designation/${isEditMode?._id}`, values);
-                dispatch(updateDepartment(data.designation));
+                dispatch(updateDesignation(data.designation));
                 toast.success(data.message);
             } else {
                 const { data } = await apiClient().post('/designation', values);
-                dispatch(addDepartment(data.designation));
+                dispatch(addDesignation(data.designation));
                 toast.success(data.message);
             }
             console.log('got here');

@@ -2,6 +2,7 @@
     "name": "employee-management-system",
     "version": "3.2.0",
     "private": true,
+    "homepage": "http://localhost:3000/landingpage",
     "dependencies": {
         "@aws-sdk/client-s3": "^3.294.0",
         "@emotion/cache": "^11.9.3",

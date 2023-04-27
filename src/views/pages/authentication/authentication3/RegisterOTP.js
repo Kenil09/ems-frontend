@@ -23,7 +23,7 @@ import { LoadingButton } from '@mui/lab';
 const RegisterOTP = () => {
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
-    const handleMouseDownPassword = () => setShowPassword(!showPassword);
+    // const handleMouseDownPassword = () => setShowPassword(!showPassword);
     const { token } = useParams();
     let email;
     const navigate = useNavigate();
@@ -104,7 +104,7 @@ const RegisterOTP = () => {
                                                                 <IconButton
                                                                     aria-label="toggle password visibility"
                                                                     onClick={handleClickShowPassword}
-                                                                    onMouseDown={handleMouseDownPassword}
+                                                                    // onMouseDown={handleMouseDownPassword}
                                                                 >
                                                                     {showPassword ? <Visibility /> : <VisibilityOff />}
                                                                 </IconButton>

@@ -63,6 +63,7 @@ export const SetLeaveAccountModel = ({ open, user, setOpen }) => {
             // //(newPayload, 'newPayload');
             const data = await apiClient().post('/leave/setLeaves', newPayload);
             toast.success(data.data.message);
+            window.location.reload();
             setOpen(false);
         } catch (err) {
             toast.error(err?.response?.data?.message);

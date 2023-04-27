@@ -1,5 +1,5 @@
 import { Grid, Tab, Button, Tabs, Box, Typography, Tooltip, IconButton } from '@mui/material';
-import { IconPlus, IconTrash } from '@tabler/icons';
+import { IconEdit, IconPlus, IconTrash } from '@tabler/icons';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -169,7 +169,22 @@ const Task = () => {
                 empty: true,
                 viewColumns: false,
                 customBodyRender: (value, tableMeta) => (
-                    <Box>
+                    <Box display="flex">
+                        <Tooltip title="Edit">
+                            <IconButton
+                                color="secondary"
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    handleEvent();
+                                    setModalTitle('Task View');
+                                    const data = userTaskdata.find((task) => task?._id === rowData[0]);
+                                    setIsEditMode(data);
+                                }}
+                                sx={{ marginRight: '12px' }}
+                            >
+                                <IconEdit />
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip title="Delete">
                             <IconButton
                                 color="secondary"

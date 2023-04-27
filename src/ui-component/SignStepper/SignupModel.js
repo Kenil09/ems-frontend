@@ -38,7 +38,8 @@ export const SignupModel = ({ open, handleClose }) => {
             //(newPayload, 'newpayload');
             const data = await axios.post('http://localhost:3001/company/', newPayload);
             handleClose();
-            toast.success('Email is sent on Register EmailID');
+            toast.success('Email has been sent to register email, Please verify you mail');
+
             //('successfully');
             //(data);
         } catch (error) {

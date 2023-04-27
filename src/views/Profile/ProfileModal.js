@@ -83,9 +83,14 @@ const ProfileModal = ({ isLoading }) => {
     const handleFileUpload = async (event) => {
         try {
             const file = event.target.files[0];
+            console.log('file', file);
             const formData = new FormData();
             formData.append('files', file);
-            const { data } = await apiClient().post(`/user/updateProfilePicture/${user._id}`, formData);
+            const { data } = await apiClient().post(`/user/updateProfilePicture/${user._id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             dispatch(setUser(data.user));
             toast.success(data.message);
             window.location.reload();

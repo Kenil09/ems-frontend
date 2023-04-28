@@ -99,6 +99,7 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
     }, []);
 
     const getFiles = async (id) => {
+        // dispatch(startLoader());
         const s3Files = await getTaskAttchements(id, 'attachments');
         if (s3Files.length) {
             setFiles(s3Files);
@@ -114,6 +115,7 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                 setSubmissionFiles([]);
             }
         }
+        // dispatch(endLoader());
     };
 
     const ratingPermission = () => {
@@ -394,6 +396,7 @@ const TaskModal = ({ handleEvent, modalTitle, isEditMode, selectedUser, getTaskD
                                                 </Grid>
                                                 <Grid item xs={7}>
                                                     <UserSelect
+                                                        reporter
                                                         user={watch('reporter')}
                                                         setUser={(val) => {
                                                             setValue('reporter', val);

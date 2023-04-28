@@ -26,6 +26,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from 'store/userSlice';
 import Profile from 'ui-component/Profile';
 import apiClient from 'service/service';
+import { endLoader, startLoader } from 'store/loaderSlice';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     overflow: 'hidden',
@@ -82,6 +83,7 @@ const ProfileModal = ({ isLoading }) => {
 
     const handleFileUpload = async (event) => {
         try {
+            dispatch(startLoader());
             const file = event.target.files[0];
             const formData = new FormData();
             formData.append('files', file);
@@ -93,6 +95,7 @@ const ProfileModal = ({ isLoading }) => {
             dispatch(setUser(data.user));
             toast.success(data.message);
             window.location.reload();
+            dispatch(endLoader());
         } catch (err) {
             toast.error('Internal server error');
         }

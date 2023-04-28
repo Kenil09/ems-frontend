@@ -7,11 +7,14 @@ import { getUserOptions } from 'views/utilities/FormOptions';
 
 const containsText = (text, searchText) => text.toLowerCase().indexOf(searchText.toLowerCase()) > -1;
 
-const UserSelect = ({ user, setUser, searchAble, disableCurrentUser, profileSize = 1 }) => {
+const UserSelect = ({ user, setUser, searchAble, disableCurrentUser, profileSize = 1, reporter }) => {
     const currentUser = useSelector(({ user }) => user.details);
     const usersData = useSelector(({ users }) => users.data).filter(({ company }) => company?._id === currentUser?.company?._id);
     const users = usersData.filter((user) => {
         if (currentUser?._id === user?._id) {
+            return true;
+        }
+        if (reporter) {
             return true;
         }
         if (currentUser?.role === 'teamMember') {
